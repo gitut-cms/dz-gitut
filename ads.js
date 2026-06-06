@@ -84,6 +84,7 @@
             }
         });
     };
+    window.refreshAds = window.injectGitutAds;
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', window.injectGitutAds);
     else window.injectGitutAds();
