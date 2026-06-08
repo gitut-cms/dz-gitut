@@ -21,7 +21,7 @@
         }
     }
 
-    const rawData = [{"id":"a4b187c1-1038-4472-82de-576191e3860b","placements":["DASHBOARD_TOP","SERVICE_STEP_2","PDF_INTERSTITIAL"],"html":null,"title":"2LPYrNmEINmF2KzYp9mG2Kcg2YjYp9io2K/YoyDZg9iz2Kgg2KfZhNmF2KfZhCDZhdmGINi52LHYtiDYp9mE2KfYudmE2KfZhtin2Kog2LnZhNmJINmF2YjZgti52YM=","content":"2KfZhti22YUg2KXZhNmJINmF2YTYp9mK2YrZhiDZhdmE2KfZitmK2YYg2KfZhNmF2LPYqtmC2YTZitmGINmIINit2YjZhCDZhdmI2YLYudmDINil2YTZiSDYo9ix2KjYp9itINit2YLZitmC2YrYqQ==","imageUrl":"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhUQF3NVLbFaB7rqQwKAP9G2LPzjQo1yqeaqZmeAKz0i9hrKPUz_8XIgNWSEJRIc-oq-Pan26mAlW2xAHDDtDIL641aM-LEh4WwKxI-LRLwCd7DSyJNyknKCenkC32Eue6g-O2PMkinxzvoIkTzaHuI-gHNhBmNzWIUnE75yFntwfaBRj2oDLc0gE0f0kM/s16000/4c95cc03-1a95-4906-8687-b2a57c24011f.png","link":"https://monetag.com/?ref_id=nVvX","displayStyle":"overlay","adFormat":"overlay","color":"blue","buttonText":"fNiz2KzZhCDYp9mE2KfZhg==","isEncoded":true}];
+    const rawData = [];
     window.GITUT_ADS = rawData.map(ad => {
         if (ad.isEncoded) {
             return {
