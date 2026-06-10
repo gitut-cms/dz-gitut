@@ -170,7 +170,7 @@
             const imgHtml = ad.imageUrl ? '<img src="' + ad.imageUrl + '" style="width:70px;height:70px;object-fit:cover;border-radius:12px;margin-' + (isRtl ? 'left' : 'right') + ':16px;box-shadow:0 4px 10px rgba(0,0,0,0.06);" referrerPolicy="no-referrer"/>' : '';
 
             htmlContent = 
-                '<div style="background:#ffffff; position:relative; display:flex; align-items:center; border:1px solid #e1e8f0; border-radius:30px; box-shadow:0 15px 40px rgba(15,23,42,0.15); padding:16px 20px; width:100%; font-family:system-ui, -apple-system, sans-serif;">' +
+                '<div style="background:#ffffff; position:relative; display:flex; align-items:center; border:1px solid #e1e8f0; border-radius:30px; box-shadow:0 15px 40px rgba(15,23,42,0.15); padding:16px 20px; width:100%; font-family:inherit;">' +
                     '<button class="close-gitut-popup" style="position:absolute; top:12px; ' + (isRtl ? 'left' : 'right') + ':16px; background:none; border:none; cursor:pointer; color:#94a3b8; font-size:18px; width:24px; height:24px; display:flex; align-items:center; justify-content:center; transition:color 0.2s;">✕</button>' +
                     '<div style="display:flex; align-items:center; flex-grow:1; flex-direction:' + (isRtl ? 'row-reverse' : 'row') + '; margin-' + (isRtl ? 'left' : 'right') + ':40px; width:100%">' +
                         '<div style="display:flex; align-items:center; flex-grow:1; ' + (isRtl ? 'text-align:right' : 'text-align:left') + '; flex-direction:' + (isRtl ? 'row-reverse' : 'row') + '; gap:16px">' +
@@ -196,7 +196,7 @@
             const imgHtml = ad.imageUrl ? '<img src="' + ad.imageUrl + '" style="width:100%; max-height:350px; object-fit:cover; border-radius:24px; margin-bottom:24px; box-shadow:0 10px 30px rgba(0,0,0,0.3);" referrerPolicy="no-referrer"/>' : '';
 
             htmlContent = 
-                '<div class="gitut-popup-card" style="position:relative; width:100%; max-width:650px; text-align:center; color:white; font-family:system-ui, -apple-system, sans-serif; transition:transform 0.4s ease; transform:scale(0.95);">' +
+                '<div class="gitut-popup-card" style="position:relative; width:100%; max-width:650px; text-align:center; color:white; font-family:inherit; transition:transform 0.4s ease; transform:scale(0.95);">' +
                     '<button class="close-gitut-popup" style="position:absolute; top:-40px; ' + (isRtl ? 'left' : 'right') + ':0px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); cursor:pointer; color:white; font-size:18px; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background 0.2s;">✕</button>' +
                     imgHtml +
                     '<div style="font-size:11px; color:' + color + '; font-weight:900; text-transform:uppercase; margin-bottom:8px; letter-spacing:0.1em;">' + (isRtl ? 'إعلان ترويجي مميز' : 'FEATURED PROMOTION') + '</div>' +
@@ -255,7 +255,7 @@
             const imgHtml = ad.imageUrl ? '<div style="width:100%; height:200px; overflow:hidden; border-radius:18px; margin-bottom:18px; background:#f1f5f9; position:relative;"><img src="' + ad.imageUrl + '" style="width:100%; height:100%; object-fit:cover;" referrerPolicy="no-referrer"/><div style="position:absolute; top:12px; ' + (isRtl ? 'right' : 'left') + ':12px; ' + badgeStyle + ' padding:3px 10px; border-radius:6px; font-size:10px; font-weight:800; text-transform:uppercase;">' + (isRtl ? 'إعلان مروّج' : 'SPONSORED') + '</div></div>' : '<div style="display:inline-block; ' + badgeStyle + ' padding:4px 12px; border-radius:6px; font-size:10px; font-weight:800; text-transform:uppercase; margin-bottom:12px; width:fit-content;">' + (isRtl ? 'إعلان مروّج' : 'SPONSORED') + '</div>';
 
             htmlContent = 
-                '<div class="gitut-popup-card" style="' + cardStyles + ' position:relative; width:100%; max-width:440px; border-radius:28px; padding:24px; font-family:system-ui, -apple-system, sans-serif; transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform:scale(0.9); text-align:' + (isRtl ? 'right' : 'left') + ';">' +
+                '<div class="gitut-popup-card" style="' + cardStyles + ' position:relative; width:100%; max-width:440px; border-radius:28px; padding:24px; font-family:inherit; transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform:scale(0.9); text-align:' + (isRtl ? 'right' : 'left') + ';">' +
                     '<button class="close-gitut-popup" style="position:absolute; top:20px; ' + (isRtl ? 'left' : 'right') + ':20px; background:none; border:none; cursor:pointer; color:#94a3b8; font-size:22px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; transition:color 0.2s; z-index:100;">✕</button>' +
                     imgHtml +
                     '<h3 style="margin:0 0 8px 0; font-size:20px; font-weight:800; color:' + titleColor + '; line-height:1.3;">' + ad.title + '</h3>' +
@@ -339,9 +339,25 @@
         const adContainers = document.querySelectorAll('[data-gitut-ad], .dynamic-ad-container');
         const placementCounts = {};
         adContainers.forEach(container => {
-            const placement = container.getAttribute('data-gitut-ad') || container.getAttribute('data-placement');
+            let placement = container.getAttribute('data-gitut-ad') || container.getAttribute('data-placement');
             if (!placement) return;
-            const matches = window.GITUT_ADS.filter(ad => ad.placements.includes(placement));
+
+            let possiblePlacements = [placement];
+            if (placement === 'BLOG_SIDEBAR') {
+                const sidebarAdContainers = Array.from(document.querySelectorAll('[data-gitut-ad="BLOG_SIDEBAR"]'));
+                const idx = sidebarAdContainers.indexOf(container);
+                if (idx !== -1) {
+                    if (idx < 2) {
+                        placement = 'BLOG_POST_RELATED_TOP';
+                        possiblePlacements = ['BLOG_POST_RELATED_TOP', 'BLOG_SIDEBAR'];
+                    } else {
+                        placement = 'BLOG_POST_RELATED_BOTTOM';
+                        possiblePlacements = ['BLOG_POST_RELATED_BOTTOM', 'BLOG_SIDEBAR'];
+                    }
+                }
+            }
+
+            const matches = window.GITUT_ADS.filter(ad => ad.placements.some(p => possiblePlacements.includes(p)));
             if (matches.length === 0) {
                 container.innerHTML = '';
                 container.style.display = 'none';
@@ -377,7 +393,7 @@
 
                 if (format === 'minimal') {
                     const imgHtml = match.imageUrl ? '<img src="' + match.imageUrl + '" style="width:48px;height:48px;object-fit:cover;border-radius:8px;margin-' + (isRtl ? 'left' : 'right') + ':12px;box-shadow:0 2px 4px rgba(0,0,0,0.05);" referrerPolicy="no-referrer"/>' : '';
-                    container.innerHTML = '<div style="margin:16px 0;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;padding:12px;border:1px solid #e5e7eb;border-radius:12px;background:#f9fafb;text-decoration:none;color:inherit;transition:all 0.2s ease;">' +
+                    container.innerHTML = '<div style="margin:16px 0; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;padding:12px;border:1px solid #e5e7eb;border-radius:12px;background:#f9fafb;text-decoration:none;color:inherit;transition:all 0.2s ease; font-family: inherit;">' +
                         imgHtml +
                         '<div style="flex-grow:1;text-align:' + (isRtl ? 'right' : 'left') + '">' +
                             '<div style="font-size:10px;color:#9ca3af;font-weight:bold;text-transform:uppercase;margin-bottom:2px">' + (isRtl ? 'إعلان مروّج' : 'SPONSORED') + '</div>' +
@@ -388,7 +404,7 @@
                     '</a></div>';
                 } else if (format === 'banner') {
                     const imgHtml = match.imageUrl ? '<img src="' + match.imageUrl + '" style="width:100%;height:140px;object-fit:cover;display:block;opacity:0.85;" referrerPolicy="no-referrer"/>' : '<div style="height:140px;background:#1e293b;"></div>';
-                    container.innerHTML = '<div style="margin:16px 0;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:block;border-radius:16px;overflow:hidden;position:relative;text-decoration:none;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);background:#000;">' +
+                    container.innerHTML = '<div style="margin:16px 0; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:block;border-radius:16px;overflow:hidden;position:relative;text-decoration:none;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);background:#000; font-family: inherit;">' +
                         imgHtml +
                         '<div style="position:absolute;top:12px;' + (isRtl ? 'left' : 'right') + ':12px;">' +
                             '<span style="background:rgba(255,255,255,0.9);color:#000;padding:4px 8px;border-radius:6px;font-size:10px;font-weight:900;letter-spacing:0.5px;box-shadow:0 2px 4px rgba(0,0,0,0.2);">' + (isRtl ? 'إعلان AD' : 'AD') + '</span>' +
@@ -400,7 +416,7 @@
                     '</a></div>';
                 } else if (format === 'card') {
                     const imgHtml = match.imageUrl ? '<div style="position:relative;"><img src="' + match.imageUrl + '" style="width:100%;height:160px;object-fit:cover;display:block;" referrerPolicy="no-referrer"/><div style="position:absolute;top:10px;' + (isRtl ? 'right' : 'left') + ':10px;background:rgba(0,0,0,0.6);color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold;backdrop-filter:blur(4px);">' + (isRtl ? 'إعلان مروّج' : 'Sponsored') + '</div></div>' : '<div style="background:#f3f4f6;padding:4px 8px;font-size:11px;font-weight:bold;color:#6b7280;text-align:center;">' + (isRtl ? 'إعلان مروّج' : 'Sponsored') + '</div>';
-                    container.innerHTML = '<div style="margin:16px 0;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;border:1px solid #e5e7eb;border-radius:16px;background:#ffffff;text-decoration:none;color:inherit;overflow:hidden;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);transition:transform 0.2s;">' +
+                    container.innerHTML = '<div style="margin:16px 0; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;border:1px solid #e5e7eb;border-radius:16px;background:#ffffff;text-decoration:none;color:inherit;overflow:hidden;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);transition:transform 0.2s; font-family: inherit;">' +
                         imgHtml +
                         '<div style="padding:16px;text-align:' + (isRtl ? 'right' : 'left') + '">' +
                             '<h3 style="margin:0 0 8px 0;font-size:16px;font-weight:bold;color:#111827;">' + match.title + '</h3>' +
@@ -410,7 +426,7 @@
                     '</a></div>';
                 } else {
                     const imgHtml = match.imageUrl ? '<div style="position:relative;flex-shrink:0;width:120px;height:120px;overflow:hidden;border-radius:12px;background:#f3f4f6;"><img src="' + match.imageUrl + '" style="width:100%;height:100%;object-fit:cover;" referrerPolicy="no-referrer"/><div style="position:absolute;top:8px;' + (isRtl ? 'right' : 'left') + ':8px;background:rgba(0,0,0,0.6);color:white;padding:2px 6px;border-radius:4px;font-size:9px;font-weight:bold;letter-spacing:0.5px;">AD</div></div>' : '';
-                    container.innerHTML = '<div style="margin:16px 0;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:block;border:1px solid #e2e8f0;border-radius:16px;background:#ffffff;padding:16px;text-decoration:none;color:inherit;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);transition:all 0.2s ease;">' +
+                    container.innerHTML = '<div style="margin:16px 0; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:block;border:1px solid #e2e8f0;border-radius:16px;background:#ffffff;padding:16px;text-decoration:none;color:inherit;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);transition:all 0.2s ease; font-family: inherit;">' +
                         '<div style="display:flex;align-items:center;gap:16px;flex-direction:' + (isRtl ? 'row-reverse' : 'row') + '">' +
                             imgHtml +
                             '<div style="flex-grow:1;text-align:' + (isRtl ? 'right' : 'left') + ';">' +
