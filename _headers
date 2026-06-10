@@ -1,0 +1,12 @@
+/*/amp/
+  cf-analytics-bypass: true
+  Cache-Control: no-transform
+/*/amp/*
+  cf-analytics-bypass: true
+  Cache-Control: no-transform
+*/amp/*
+  cf-analytics-bypass: true
+  Cache-Control: no-transform
+*/amp/
+  cf-analytics-bypass: true
+  Cache-Control: no-transform
