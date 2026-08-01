@@ -21,7 +21,7 @@
         }
     }
 
-    const rawData = [];
+    const rawData = [{"id":"ef6d36c8-0ae2-407d-b8ff-4646df223280","placements":["DASHBOARD_TOP","POPUP_BLOG","BLOG_POST_RELATED_TOP","BLOG_POST_BODY_TOP","BLOG_P3","SERVICE_LIST_TOP","BLOG_LIST_LAST_ITEM_TOP","SERVICE_DETAIL_TOP","PREVIEW_MODAL_LEFT","SERVICE_P1","SERVICE_DETAIL_RELATED_TOP","PDF_INTERSTITIAL","SERVICE_STEP_1","SERVICE_STEP_2"],"html":"PHNjcmlwdD4KICBhdE9wdGlvbnMgPSB7CiAgICAna2V5JyA6ICc0NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOCcsCiAgICAnZm9ybWF0JyA6ICdpZnJhbWUnLAogICAgJ2hlaWdodCcgOiAyNTAsCiAgICAnd2lkdGgnIDogMzAwLAogICAgJ3BhcmFtcycgOiB7fQogIH07Cjwvc2NyaXB0Pgo8c2NyaXB0IHNyYz0iaHR0cHM6Ly93d3cuaGlnaHBlcmZvcm1hbmNlZm9ybWF0LmNvbS80NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOC9pbnZva2UuanMiPjwvc2NyaXB0Pgo=","title":"","content":"","imageUrl":"","link":"","displayStyle":"overlay","adFormat":"standard","color":"blue","buttonText":"","isPopup":false,"popupDelay":3,"popupStyle":"modern_light","isEncoded":true}];
     window.GITUT_ADS = rawData.map(ad => {
         if (ad.isEncoded) {
             return {
