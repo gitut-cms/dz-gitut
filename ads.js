@@ -21,7 +21,7 @@
         }
     }
 
-    const rawData = [{"id":"ef6d36c8-0ae2-407d-b8ff-4646df223280","placements":["DASHBOARD_TOP","BLOG_POST_RELATED_TOP","BLOG_POST_BODY_TOP","BLOG_P3","SERVICE_LIST_TOP","BLOG_LIST_LAST_ITEM_TOP","SERVICE_DETAIL_TOP","PREVIEW_MODAL_LEFT","SERVICE_P1","PDF_INTERSTITIAL","SERVICE_STEP_1","SERVICE_STEP_2","STATIC_DOC_ABOVE_DOWNLOAD_BTN","STATIC_DOC_BELOW_ABOUT","STATIC_DOC_SECOND_TIMER","STATIC_DOC_OPEN_NEW_TAB","STATIC_DOC_CREATE_CV","STATIC_DOC_ABOVE_ABOUT","STATIC_DOC_TIMER_MODAL","DYNAMIC_DOC_ABOVE_DOWNLOAD_BTN","DYNAMIC_DOC_ABOVE_ABOUT","DYNAMIC_DOC_BELOW_ABOUT","DYNAMIC_DOC_TIMER_MODAL","DYNAMIC_DOC_SECOND_TIMER","DYNAMIC_DOC_OPEN_NEW_TAB","DYNAMIC_DOC_CREATE_CV","SERVICE_STEP_3","BLOG_SIDEBAR","BLOG_LAST_P_TOP"],"html":"PHNjcmlwdD4KICBhdE9wdGlvbnMgPSB7CiAgICAna2V5JyA6ICc0NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOCcsCiAgICAnZm9ybWF0JyA6ICdpZnJhbWUnLAogICAgJ2hlaWdodCcgOiAyNTAsCiAgICAnd2lkdGgnIDogMzAwLAogICAgJ3BhcmFtcycgOiB7fQogIH07Cjwvc2NyaXB0Pgo8c2NyaXB0IHNyYz0iaHR0cHM6Ly93d3cuaGlnaHBlcmZvcm1hbmNlZm9ybWF0LmNvbS80NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOC9pbnZva2UuanMiPjwvc2NyaXB0Pgo=","title":"","content":"","imageUrl":"","link":"","displayStyle":"overlay","adFormat":"standard","color":"blue","buttonText":"","isPopup":false,"popupDelay":3,"popupStyle":"modern_light","isEncoded":true}];
+    const rawData = [{"id":"ef6d36c8-0ae2-407d-b8ff-4646df223280","placements":["DASHBOARD_TOP","BLOG_POST_RELATED_TOP","SERVICE_LIST_TOP","BLOG_LIST_LAST_ITEM_TOP","SERVICE_DETAIL_TOP","PREVIEW_MODAL_LEFT","SERVICE_P1","PDF_INTERSTITIAL","SERVICE_STEP_1","SERVICE_STEP_2","STATIC_DOC_ABOVE_DOWNLOAD_BTN","STATIC_DOC_BELOW_ABOUT","STATIC_DOC_SECOND_TIMER","STATIC_DOC_OPEN_NEW_TAB","STATIC_DOC_CREATE_CV","STATIC_DOC_ABOVE_ABOUT","STATIC_DOC_TIMER_MODAL","DYNAMIC_DOC_ABOVE_DOWNLOAD_BTN","DYNAMIC_DOC_ABOVE_ABOUT","DYNAMIC_DOC_BELOW_ABOUT","DYNAMIC_DOC_TIMER_MODAL","DYNAMIC_DOC_SECOND_TIMER","DYNAMIC_DOC_OPEN_NEW_TAB","DYNAMIC_DOC_CREATE_CV","SERVICE_STEP_3","BLOG_EVERY_2_PARAGRAPHS"],"html":"PHNjcmlwdD4KICBhdE9wdGlvbnMgPSB7CiAgICAna2V5JyA6ICc0NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOCcsCiAgICAnZm9ybWF0JyA6ICdpZnJhbWUnLAogICAgJ2hlaWdodCcgOiAyNTAsCiAgICAnd2lkdGgnIDogMzAwLAogICAgJ3BhcmFtcycgOiB7fQogIH07Cjwvc2NyaXB0Pgo8c2NyaXB0IHNyYz0iaHR0cHM6Ly93d3cuaGlnaHBlcmZvcm1hbmNlZm9ybWF0LmNvbS80NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOC9pbnZva2UuanMiPjwvc2NyaXB0Pgo=","title":"","content":"","imageUrl":"","link":"","displayStyle":"overlay","adFormat":"standard","color":"blue","buttonText":"","isPopup":false,"popupDelay":3,"popupStyle":"modern_light","isEncoded":true}];
     window.GITUT_ADS = rawData.map(ad => {
         if (ad.isEncoded) {
             return {
@@ -377,13 +377,25 @@
 
     window.initGitutPopups = function() {
         const currentPageType = window.PAGE_TYPE || '';
-        const popupAds = window.GITUT_ADS.filter(ad => {
-            if (ad.isPopup) return true;
-            if (ad.placements && ad.placements.some(p => p === 'POPUP' || p === 'POPUP_GLOBAL' || p.startsWith('POPUP_'))) return true;
-            if (ad.placements && ad.placements.includes('POPUP_DYNAMIC_DOCS') && (currentPageType === 'تعبئة_طلب' || currentPageType === 'عرض_طلب_ثابت')) return true;
-            if (ad.placements && ad.placements.includes('POPUP_BLOG') && currentPageType === 'تفاصيل_التدوينة') return true;
-            if (ad.placements && ad.placements.includes('POPUP_LISTS') && (currentPageType === 'قائمة_الخدمات' || currentPageType === 'المدونة')) return true;
-            return false;
+        const popupAds = (window.GITUT_ADS || []).filter(ad => {
+            const isPopup = ad.isPopup || (ad.placements && ad.placements.some(p => p === 'POPUP' || p === 'POPUP_GLOBAL' || p.startsWith('POPUP_') || p.includes('INTERSTITIAL') || p.includes('TIMER_MODAL')));
+            if (!isPopup) return false;
+
+            const placements = ad.placements || (ad.placement ? [ad.placement] : []);
+
+            if (currentPageType === 'تفاصيل_التدوينة' || currentPageType === 'المدونة') {
+                return placements.includes('POPUP_BLOG') || placements.includes('BLOG_POPUP') || placements.includes('POPUP_GLOBAL') || placements.includes('POPUP');
+            }
+
+            if (currentPageType === 'تعبئة_طلب' || currentPageType === 'عرض_طلب_ثابت' || currentPageType === 'خدمة') {
+                return placements.includes('POPUP_DYNAMIC_DOCS') || placements.includes('PDF_INTERSTITIAL') || placements.includes('STATIC_DOC_TIMER_MODAL') || placements.includes('DYNAMIC_DOC_TIMER_MODAL') || placements.includes('POPUP_GLOBAL') || placements.includes('POPUP');
+            }
+
+            if (currentPageType === 'قائمة_الخدمات') {
+                return placements.includes('POPUP_LISTS') || placements.includes('POPUP_GLOBAL') || placements.includes('POPUP');
+            }
+
+            return placements.includes('POPUP_GLOBAL') || placements.includes('POPUP') || placements.length === 0;
         });
         popupAds.forEach(ad => {
             const delayMs = (ad.popupDelay || 0) * 1000;
@@ -407,13 +419,19 @@
                 possiblePlacements.push(fallbackPlacement);
             }
             if (placement.indexOf('SERVICE_STEP_') === 0) {
-                possiblePlacements.push('SERVICE_SIDEBAR');
+                possiblePlacements.push('SERVICE_SIDEBAR', 'SERVICE_DETAIL_TOP');
             }
             if (placement.indexOf('TIMER_MODAL') !== -1) {
-                possiblePlacements.push('PDF_INTERSTITIAL');
+                possiblePlacements.push('PDF_INTERSTITIAL', 'SERVICE_DETAIL_TOP');
+            }
+            if (placement.indexOf('SECOND_TIMER') !== -1) {
+                possiblePlacements.push('DYNAMIC_DOC_TIMER_MODAL', 'STATIC_DOC_TIMER_MODAL', 'PDF_INTERSTITIAL', 'SERVICE_SIDEBAR');
             }
             if (placement.indexOf('ABOVE_DOWNLOAD_BTN') !== -1) {
                 possiblePlacements.push('SERVICE_DETAIL_TOP');
+            }
+            if (placement === 'BLOG_LAST_P_TOP') {
+                possiblePlacements.push('BLOG_POST_BODY_BOTTOM', 'BLOG_POST_BODY_TOP');
             }
 
             if (placement === 'BLOG_POST_RELATED_TOP' || placement === 'BLOG_POST_RELATED_BOTTOM') {
@@ -432,10 +450,18 @@
                 }
             }
 
-            const matches = window.GITUT_ADS.filter(ad => ad.placements && ad.placements.some(p => possiblePlacements.includes(p)));
+            const matches = (window.GITUT_ADS || []).filter(ad => {
+                const adPlacements = ad.placements || (ad.placement ? [ad.placement] : []);
+                return adPlacements.some(p => possiblePlacements.includes(p));
+            });
             if (matches.length === 0) {
                 container.innerHTML = '';
-                container.style.display = 'none';
+                container.style.setProperty('display', 'none', 'important');
+                container.style.margin = '0';
+                container.style.padding = '0';
+                container.style.border = 'none';
+                container.style.boxShadow = 'none';
+                container.style.background = 'transparent';
                 return;
             }
             if (placementCounts[placement] === undefined) {
@@ -446,10 +472,20 @@
             const match = matches[placementCounts[placement] % matches.length];
             if (!match) {
                 container.innerHTML = '';
-                container.style.display = 'none';
+                container.style.setProperty('display', 'none', 'important');
+                container.style.margin = '0';
+                container.style.padding = '0';
+                container.style.border = 'none';
+                container.style.boxShadow = 'none';
+                container.style.background = 'transparent';
                 return;
             }
-            container.style.display = 'flex';
+            container.style.removeProperty('margin');
+            container.style.removeProperty('padding');
+            container.style.removeProperty('border');
+            container.style.removeProperty('box-shadow');
+            container.style.removeProperty('background');
+            container.style.setProperty('display', 'flex', 'important');
             container.style.flexDirection = 'column';
             container.style.justifyContent = 'center';
             container.style.alignItems = 'center';
