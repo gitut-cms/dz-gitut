@@ -119,15 +119,28 @@
  }
  const finalBtnAddress = $('final-btn');
  if (finalBtnAddress) {
- finalBtnAddress.onclick = () => {
- setTimeout(() => {
+ let finalClickCount = 0;
+ finalBtnAddress.onclick = (e) => {
+ finalClickCount++;
+ if (finalClickCount === 1) {
+ if (e) e.preventDefault();
+ if (typeof window.triggerDirectAd === 'function') {
+ window.triggerDirectAd('DIRECT_LINK_DOWNLOAD');
+ }
+ return false;
+ } else {
+ if (e) e.preventDefault();
+ const pdfUrl = finalBtnAddress.getAttribute('href');
+ if (pdfUrl && pdfUrl !== '#') {
+ window.open(pdfUrl, '_blank');
+ }
  if (finalDownload) finalDownload.style.display = 'none';
  const successView = $('success-view');
  if (successView) {
  successView.style.display = 'flex';
  window.refreshAds();
  }
- }, 500);
+ }
  };
  }
  });
@@ -187,4 +200,4 @@
  // Auto refresh ads on load
  window.addEventListener('load', () => window.refreshAds());
  })();
- </script><script src="/ads.js" defer></script></body></html>
+ </script><script src="https://dz.gitut.com/ads.js" defer></script></body></html>
