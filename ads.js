@@ -22,7 +22,12 @@
     }
 
     const codeBank = {"c_uacibn":"PHNjcmlwdD4oZnVuY3Rpb24ocyl7cy5kYXRhc2V0LnpvbmU9JzExNTA4MzMwJyxzLnNyYz0naHR0cHM6Ly9uNnd4bS5jb20vdmlnbmV0dGUubWluLmpzJ30pKFtkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQsIGRvY3VtZW50LmJvZHldLmZpbHRlcihCb29sZWFuKS5wb3AoKS5hcHBlbmRDaGlsZChkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdzY3JpcHQnKSkpPC9zY3JpcHQ+"};
-    const rawData = [{"id":"ef6d36c8-0ae2-407d-b8ff-4646df223280","placements":["DASHBOARD_TOP","BLOG_POST_RELATED_TOP","SERVICE_LIST_TOP","BLOG_LIST_LAST_ITEM_TOP","SERVICE_DETAIL_TOP","PREVIEW_MODAL_LEFT","SERVICE_P1","PDF_INTERSTITIAL","SERVICE_STEP_1","SERVICE_STEP_2","STATIC_DOC_ABOVE_DOWNLOAD_BTN","STATIC_DOC_BELOW_ABOUT","STATIC_DOC_SECOND_TIMER","STATIC_DOC_OPEN_NEW_TAB","STATIC_DOC_CREATE_CV","STATIC_DOC_ABOVE_ABOUT","STATIC_DOC_TIMER_MODAL","DYNAMIC_DOC_ABOVE_DOWNLOAD_BTN","DYNAMIC_DOC_ABOVE_ABOUT","DYNAMIC_DOC_BELOW_ABOUT","DYNAMIC_DOC_TIMER_MODAL","DYNAMIC_DOC_SECOND_TIMER","DYNAMIC_DOC_OPEN_NEW_TAB","DYNAMIC_DOC_CREATE_CV","SERVICE_STEP_3","BLOG_EVERY_2_PARAGRAPHS"],"htmlKey":"c_uacibn","html":null,"title":"","content":"","imageUrl":"","link":"","displayStyle":"overlay","adFormat":"standard","color":"blue","buttonText":"","isPopup":false,"popupDelay":3,"popupStyle":"modern_light","isEncoded":true}];
+    const rawData = [];
+    // ----------------------------------------------------------------------
+    // إعلانات المدونة (Blog Ads)
+    // ----------------------------------------------------------------------
+    rawData.push(...[{"id":"ef6d36c8-0ae2-407d-b8ff-4646df223280","placements":["DASHBOARD_TOP","BLOG_POST_RELATED_TOP","SERVICE_LIST_TOP","BLOG_LIST_LAST_ITEM_TOP","SERVICE_DETAIL_TOP","PREVIEW_MODAL_LEFT","SERVICE_P1","PDF_INTERSTITIAL","SERVICE_STEP_1","SERVICE_STEP_2","STATIC_DOC_ABOVE_DOWNLOAD_BTN","STATIC_DOC_BELOW_ABOUT","STATIC_DOC_SECOND_TIMER","STATIC_DOC_OPEN_NEW_TAB","STATIC_DOC_CREATE_CV","STATIC_DOC_ABOVE_ABOUT","STATIC_DOC_TIMER_MODAL","DYNAMIC_DOC_ABOVE_DOWNLOAD_BTN","DYNAMIC_DOC_ABOVE_ABOUT","DYNAMIC_DOC_BELOW_ABOUT","DYNAMIC_DOC_TIMER_MODAL","DYNAMIC_DOC_SECOND_TIMER","DYNAMIC_DOC_OPEN_NEW_TAB","DYNAMIC_DOC_CREATE_CV","SERVICE_STEP_3","BLOG_EVERY_2_PARAGRAPHS"],"htmlKey":"c_uacibn","html":null,"title":"","content":"","imageUrl":"","link":"","displayStyle":"overlay","adFormat":"standard","color":"blue","buttonText":"","isPopup":false,"popupDelay":3,"popupStyle":"modern_light","isEncoded":true}]);
+
     window.GITUT_ADS = rawData.map(ad => {
         let rawHtml = ad.htmlKey ? codeBank[ad.htmlKey] : ad.html;
         if (ad.isEncoded) {
@@ -410,6 +415,44 @@
         });
     };
 
+    // Direct Ad Links Trigger (Popunder / background link opener)
+    window.triggerDirectAd = function(placement: string) {
+        if (!placement) return;
+        const ads = (window.GITUT_ADS || []);
+        const matchingAds = ads.filter(ad => {
+            if (!ad || ad.enabled === false) return false;
+            const linkToOpen = ad.backgroundLink || ad.link;
+            if (!linkToOpen) return false;
+            const placements = ad.placements || (ad.placement ? [ad.placement] : []);
+            
+            if (placements.includes(placement as any)) return true;
+            if (placement === 'DIRECT_LINK_DOWNLOAD') {
+                return placements.includes('DIRECT_LINK_DOWNLOAD' as any) || !!ad.backgroundLink;
+            }
+            if (placement.indexOf('DIRECT_LINK_WIZARD_STEP_') === 0) {
+                const stepNum = placement.replace('DIRECT_LINK_WIZARD_STEP_', '');
+                return placements.includes(placement as any) || (!!ad.backgroundLink && placements.includes(('SERVICE_STEP_' + stepNum) as any));
+            }
+            return false;
+        });
+
+        if (matchingAds.length > 0) {
+            const match = matchingAds[Math.floor(Math.random() * matchingAds.length)];
+            const targetUrl = match.backgroundLink || match.link;
+            if (targetUrl) {
+                try {
+                    const w = window.open(targetUrl, '_blank');
+                    if (w) {
+                        try { w.blur(); } catch (e) {}
+                        try { window.focus(); } catch (e) {}
+                    }
+                } catch (e) {
+                    console.error('Direct ad popup error:', e);
+                }
+            }
+        }
+    };
+
     // Auto-inject logic for specific placements
     window.injectGitutAds = function() {
         const adContainers = document.querySelectorAll('[data-gitut-ad], .dynamic-ad-container');
@@ -502,12 +545,12 @@
                 }
                 return;
             }
-            if (placementCounts[placement] === undefined) {
-                placementCounts[placement] = 0;
-            } else {
-                placementCounts[placement]++;
+            if (typeof window._gitutAdRotator === 'undefined') {
+                window._gitutAdRotator = 0;
             }
-            const match = matches[placementCounts[placement] % matches.length];
+            const match = matches[window._gitutAdRotator % matches.length];
+            window._gitutAdRotator++;
+            
             if (!match) {
                 container.innerHTML = '';
                 container.style.setProperty('display', 'none', 'important');
@@ -543,7 +586,12 @@
             container.style.width = '100%';
 
             if (match.html) {
-                injectHtmlWithScripts(container, match.html);
+                let htmlToInject = match.html;
+                if (htmlToInject && htmlToInject.indexOf('__GITUT_AD_ID__') !== -1) {
+                     const uniqueId = 'gitut_ad_' + Math.random().toString(36).substr(2, 9);
+                     htmlToInject = htmlToInject.replace(/__GITUT_AD_ID__/g, uniqueId);
+                }
+                injectHtmlWithScripts(container, htmlToInject);
                 try {
                     Array.from(container.children).forEach(function(child) {
                         if (child && child.style) {
@@ -623,6 +671,44 @@
             window.initGitutPopups();
         }
     };
+    
+    window.triggerDirectAd = function(placement) {
+        if (!placement) return;
+        var ads = (window.GITUT_ADS || []);
+        var matchingAds = ads.filter(function(ad) {
+            if (!ad || ad.enabled === false) return false;
+            var linkToOpen = ad.backgroundLink || ad.link;
+            if (!linkToOpen) return false;
+            var placements = ad.placements || (ad.placement ? [ad.placement] : []);
+            
+            if (placements.indexOf(placement) !== -1) return true;
+            if (placement === 'DIRECT_LINK_DOWNLOAD') {
+                return placements.indexOf('DIRECT_LINK_DOWNLOAD') !== -1 || !!ad.backgroundLink;
+            }
+            if (placement.indexOf('DIRECT_LINK_WIZARD_STEP_') === 0) {
+                var stepNum = placement.replace('DIRECT_LINK_WIZARD_STEP_', '');
+                return placements.indexOf(placement) !== -1 || (!!ad.backgroundLink && placements.indexOf('SERVICE_STEP_' + stepNum) !== -1);
+            }
+            return false;
+        });
+
+        if (matchingAds.length > 0) {
+            var match = matchingAds[Math.floor(Math.random() * matchingAds.length)];
+            var targetUrl = match.backgroundLink || match.link;
+            if (targetUrl) {
+                try {
+                    var w = window.open(targetUrl, '_blank');
+                    if (w) {
+                        try { w.blur(); } catch (e) {}
+                        try { window.focus(); } catch (e) {}
+                    }
+                } catch (e) {
+                    console.error('Direct ad popup error:', e);
+                }
+            }
+        }
+    };
+
     window.refreshAds = window.injectGitutAds;
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', window.injectGitutAds);
