@@ -457,22 +457,6 @@
                 possiblePlacements.push('BLOG_POST_BODY_BOTTOM', 'BLOG_POST_BODY_TOP');
             }
 
-            if (placement === 'BLOG_POST_RELATED_TOP' || placement === 'BLOG_POST_RELATED_BOTTOM') {
-                possiblePlacements.push('BLOG_SIDEBAR');
-            }
-
-            if (placement === 'BLOG_SIDEBAR') {
-                const sidebarAdContainers = Array.from(document.querySelectorAll('[data-gitut-ad="BLOG_SIDEBAR"]'));
-                const idx = sidebarAdContainers.indexOf(container);
-                if (idx !== -1) {
-                    if (idx < 2) {
-                        possiblePlacements = ['BLOG_POST_RELATED_TOP', 'BLOG_SIDEBAR'];
-                    } else {
-                        possiblePlacements = ['BLOG_POST_RELATED_BOTTOM', 'BLOG_SIDEBAR'];
-                    }
-                }
-            }
-
             const matches = (window.GITUT_ADS || []).filter(ad => {
                 const adPlacements = ad.placements || (ad.placement ? [ad.placement] : []);
                 return adPlacements.some(p => possiblePlacements.includes(p));
@@ -640,6 +624,29 @@
         }
     };
 
+    function openBackgroundPopunder(url) {
+        if (!url) return;
+        try {
+            var w = window.open(url, '_blank');
+            if (w) {
+                try { w.blur(); } catch (e) {}
+                try { window.focus(); } catch (e) {}
+                setTimeout(function() {
+                    try { w.blur(); } catch (e) {}
+                    try { window.focus(); } catch (e) {}
+                }, 0);
+                setTimeout(function() {
+                    try { window.focus(); } catch (e) {}
+                }, 50);
+                setTimeout(function() {
+                    try { window.focus(); } catch (e) {}
+                }, 150);
+            }
+        } catch (e) {
+            console.error('Popunder open error:', e);
+        }
+    }
+
     window.initGitutDirectLinks = function() {
         var ads = (window.GITUT_ADS || []);
         var directAds = ads.filter(function(ad) {
@@ -655,6 +662,25 @@
         var pathname = window.location ? window.location.pathname.toLowerCase() : '';
         var isBlogPage = !!(document.querySelector('.blog-post-content') || document.querySelector('[data-gitut-ad*="BLOG"]') || pathname.indexOf('/blog') !== -1 || pathname.indexOf('-post') !== -1);
         var isDocPage = !!(document.querySelector('.static-doc-container') || document.querySelector('.dynamic-doc-container') || document.querySelector('[data-gitut-ad*="DOC"]') || document.querySelector('[data-gitut-ad*="SERVICE"]') || pathname.indexOf('/document') !== -1 || pathname.indexOf('/service') !== -1 || pathname.indexOf('-doc') !== -1);
+
+        if (isBlogPage && !window._gitutBlogClickBound) {
+            window._gitutBlogClickBound = true;
+            document.addEventListener('click', function(e) {
+                var target = e.target;
+                if (target && (target.closest('.close-gitut-popup') || target.closest('.gitut-popup-card'))) return;
+                if (window._gitutBlogPopunderTriggered) return;
+
+                var matchingBlogAds = directAds.filter(function(ad) {
+                    var placements = ad.placements || (ad.placement ? [ad.placement] : []);
+                    return placements.indexOf('DIRECT_LINK_BLOG') !== -1 || placements.indexOf('DIRECT_LINK_AUTO_TIMER') !== -1 || placements.some(function(p) { return p.indexOf('BLOG') !== -1; });
+                });
+
+                if (matchingBlogAds.length > 0) {
+                    window._gitutBlogPopunderTriggered = true;
+                    window.triggerDirectAd('DIRECT_LINK_BLOG');
+                }
+            }, true);
+        }
 
         directAds.forEach(function(ad) {
             var placements = ad.placements || (ad.placement ? [ad.placement] : []);
@@ -678,17 +704,7 @@
                 if (delaySec > 0) {
                     setTimeout(function() {
                         var targetUrl = ad.backgroundLink || ad.link;
-                        if (targetUrl) {
-                            try {
-                                var w = window.open(targetUrl, '_blank');
-                                if (w) {
-                                    try { w.blur(); } catch (e) {}
-                                    try { window.focus(); } catch (e) {}
-                                }
-                            } catch (e) {
-                                console.error('Direct link timer error:', e);
-                            }
-                        }
+                        openBackgroundPopunder(targetUrl);
                     }, delaySec * 1000);
                 }
             }
@@ -725,17 +741,7 @@
         if (matchingAds.length > 0) {
             var match = matchingAds[Math.floor(Math.random() * matchingAds.length)];
             var targetUrl = match.backgroundLink || match.link;
-            if (targetUrl) {
-                try {
-                    var w = window.open(targetUrl, '_blank');
-                    if (w) {
-                        try { w.blur(); } catch (e) {}
-                        try { window.focus(); } catch (e) {}
-                    }
-                } catch (e) {
-                    console.error('Direct ad popup error:', e);
-                }
-            }
+            openBackgroundPopunder(targetUrl);
         }
     };
 
