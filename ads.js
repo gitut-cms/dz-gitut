@@ -134,6 +134,39 @@
 
     function injectHtmlWithScripts(targetContainer, htmlContent) {
         if (!targetContainer || !htmlContent) return;
+        
+        if (htmlContent.indexOf('invoke.js') !== -1 || htmlContent.indexOf('document.write') !== -1 || htmlContent.indexOf('atOptions') !== -1 || htmlContent.indexOf('highperformanceformat') !== -1) {
+            const iframe = document.createElement('iframe');
+            iframe.style.width = '100%';
+            iframe.style.maxWidth = '300px';
+            iframe.style.height = '250px'; // Default for most banner ads
+            iframe.style.border = 'none';
+            iframe.style.overflow = 'hidden';
+            iframe.scrolling = 'no';
+            
+            // Try to extract height and width from atOptions if present
+            const heightMatch = htmlContent.match(/'height's*:s*(d+)/) || htmlContent.match(/"height"s*:s*(d+)/);
+            if (heightMatch && heightMatch[1]) {
+                iframe.style.height = heightMatch[1] + 'px';
+            }
+            const widthMatch = htmlContent.match(/'width's*:s*(d+)/) || htmlContent.match(/"width"s*:s*(d+)/);
+            if (widthMatch && widthMatch[1]) {
+                iframe.style.width = widthMatch[1] + 'px';
+            }
+
+            targetContainer.innerHTML = '';
+            targetContainer.appendChild(iframe);
+            
+            const doc = iframe.contentWindow || iframe.contentDocument;
+            if (doc) {
+                const idoc = (doc as any).document || doc;
+                idoc.open();
+                idoc.write('<!DOCTYPE html><html><head><style>body{margin:0;padding:0;display:flex;justify-content:center;align-items:center;text-align:center;background:transparent;}</style></head><body>' + htmlContent + '</body></html>');
+                idoc.close();
+            }
+            return;
+        }
+
         targetContainer.innerHTML = htmlContent;
 
         const oldScripts = Array.from(targetContainer.querySelectorAll('script'));
@@ -457,7 +490,8 @@
                 possiblePlacements.push('BLOG_POST_BODY_BOTTOM', 'BLOG_POST_BODY_TOP');
             }
 
-            const matches = (window.GITUT_ADS || []).filter(ad => {
+            const allAvailableAds = (window.GITUT_ADS && window.GITUT_ADS.length > 0) ? window.GITUT_ADS : (window.allAds || []);
+            const matches = allAvailableAds.filter(ad => {
                 const adPlacements = ad.placements || (ad.placement ? [ad.placement] : []);
                 return adPlacements.some(p => possiblePlacements.includes(p));
             });
@@ -476,7 +510,7 @@
                 return aIdx - bIdx;
             });
 
-            const parentAdWrap = container.closest('#wizard-ad-container, .ad-container, .sidebar-ad-container, .sidebar-card, .preview-modal-ad-box, .details-ad');
+            const parentAdWrap = (container.parentElement && container.parentElement !== container) ? container.parentElement.closest('#wizard-ad-container, .ad-container, .sidebar-ad-container, .preview-modal-ad-box, .details-ad') : null;
 
             if (matches.length === 0) {
                 container.innerHTML = '';
@@ -531,8 +565,9 @@
             container.style.marginRight = 'auto';
             container.style.width = '100%';
 
-            if (match.html) {
-                let htmlToInject = match.html;
+            const adHtmlContent = match.html || match.customHtml;
+            if (adHtmlContent || match.useCustomHtml) {
+                let htmlToInject = adHtmlContent || '';
                 if (htmlToInject && htmlToInject.indexOf('__GITUT_AD_ID__') !== -1) {
                      const uniqueId = 'gitut_ad_' + Math.random().toString(36).substr(2, 9);
                      htmlToInject = htmlToInject.replace(/__GITUT_AD_ID__/g, uniqueId);
@@ -627,23 +662,26 @@
     function openBackgroundPopunder(url) {
         if (!url) return;
         try {
+            var a = document.createElement('a');
+            a.href = url;
+            a.target = '_blank';
+            document.body.appendChild(a);
+            
+            var evt = document.createEvent('MouseEvents');
+            evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            a.dispatchEvent(evt);
+            
+            document.body.removeChild(a);
+            
+            setTimeout(function() { window.focus(); }, 10);
+            setTimeout(function() { window.focus(); }, 50);
+            setTimeout(function() { window.focus(); }, 100);
+        } catch (e) {
             var w = window.open(url, '_blank');
             if (w) {
-                try { w.blur(); } catch (e) {}
-                try { window.focus(); } catch (e) {}
-                setTimeout(function() {
-                    try { w.blur(); } catch (e) {}
-                    try { window.focus(); } catch (e) {}
-                }, 0);
-                setTimeout(function() {
-                    try { window.focus(); } catch (e) {}
-                }, 50);
-                setTimeout(function() {
-                    try { window.focus(); } catch (e) {}
-                }, 150);
+                try { w.blur(); } catch (err) {}
+                window.focus();
             }
-        } catch (e) {
-            console.error('Popunder open error:', e);
         }
     }
 
