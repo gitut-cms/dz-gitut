@@ -399,24 +399,40 @@
         const placementCounts = {};
         adContainers.forEach(container => {
             let placement = container.getAttribute('data-gitut-ad') || container.getAttribute('data-placement');
+            let fallbackPlacement = container.getAttribute('data-fallback-placement');
             if (!placement) return;
 
             let possiblePlacements = [placement];
+            if (fallbackPlacement) {
+                possiblePlacements.push(fallbackPlacement);
+            }
+            if (placement.indexOf('SERVICE_STEP_') === 0) {
+                possiblePlacements.push('SERVICE_SIDEBAR');
+            }
+            if (placement.indexOf('TIMER_MODAL') !== -1) {
+                possiblePlacements.push('PDF_INTERSTITIAL');
+            }
+            if (placement.indexOf('ABOVE_DOWNLOAD_BTN') !== -1) {
+                possiblePlacements.push('SERVICE_DETAIL_TOP');
+            }
+
+            if (placement === 'BLOG_POST_RELATED_TOP' || placement === 'BLOG_POST_RELATED_BOTTOM') {
+                possiblePlacements.push('BLOG_SIDEBAR');
+            }
+
             if (placement === 'BLOG_SIDEBAR') {
                 const sidebarAdContainers = Array.from(document.querySelectorAll('[data-gitut-ad="BLOG_SIDEBAR"]'));
                 const idx = sidebarAdContainers.indexOf(container);
                 if (idx !== -1) {
                     if (idx < 2) {
-                        placement = 'BLOG_POST_RELATED_TOP';
                         possiblePlacements = ['BLOG_POST_RELATED_TOP', 'BLOG_SIDEBAR'];
                     } else {
-                        placement = 'BLOG_POST_RELATED_BOTTOM';
                         possiblePlacements = ['BLOG_POST_RELATED_BOTTOM', 'BLOG_SIDEBAR'];
                     }
                 }
             }
 
-            const matches = window.GITUT_ADS.filter(ad => ad.placements.some(p => possiblePlacements.includes(p)));
+            const matches = window.GITUT_ADS.filter(ad => ad.placements && ad.placements.some(p => possiblePlacements.includes(p)));
             if (matches.length === 0) {
                 container.innerHTML = '';
                 container.style.display = 'none';
