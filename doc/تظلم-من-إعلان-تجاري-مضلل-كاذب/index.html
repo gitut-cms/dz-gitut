@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","phone","residenceCommune","advertiserName","adMedium","deceptionDetails"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"advertiserName":{"t":"text","l":"اسم المعلن / الشركة","p":"اسم المعلن / الشركة","q":"اسم المعلن / الشركة"},"adMedium":{"t":"select","l":"أين رأيت الإعلان؟","p":"اختر...","q":"أين رأيت الإعلان؟","o":["فيسبوك/إنستغرام","تلفزيون","لافتة في الشارع","مطوية إشهارية"]},"deceptionDetails":{"t":"textarea","l":"تفاصيل التضليل (الفرق بين الإعلان والواقع)","p":"تفاصيل التضليل (الفرق بين الإعلان والواقع)","q":"تفاصيل التضليل (الفرق بين الإعلان والواقع)"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 23495<br>الهاتف: 91877</div><div style=\"text-align:left\">91853 في: 29039</div></div><div class=\"title\">الموضوع: شكوى بخصوص إشهار تجاري مضلل</div><div class=\"content\">إلى مصالح قمع الغش / جمعية حماية المستهلك،<br><br>أود لفت انتباهكم إلى ممارسة تجارية غير نزيهة تقوم بها شركة/جهة <strong>53151</strong>.<br><br>حيث قامت بنشر إعلان ترويجي عبر <strong>38292</strong> يتضمن عروضاً وخصائص مغرية للمنتج/الخدمة، ولكن عند التقرب للاستفادة منها تبين أن الواقع مخالف تماماً لما تم الترويج له، وتتمثل أوجه التضليل في:<br><strong>53770</strong>.<br><br>هذا التصرف يعتبر خداعاً للمستهلك ومخالفة لقانون الممارسات التجارية. لذا أرجو منكم التحقيق في الأمر وحماية المستهلكين من هذا التضليل.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\">المشتكي:<br>23495</div>",
+ th: "<div class=\"header\"><div>الاسم: 83290<br>الهاتف: 71255</div><div style=\"text-align:left\">60140 في: 82020</div></div><div class=\"title\">الموضوع: شكوى بخصوص إشهار تجاري مضلل</div><div class=\"content\">إلى مصالح قمع الغش / جمعية حماية المستهلك،<br><br>أود لفت انتباهكم إلى ممارسة تجارية غير نزيهة تقوم بها شركة/جهة <strong>63095</strong>.<br><br>حيث قامت بنشر إعلان ترويجي عبر <strong>53434</strong> يتضمن عروضاً وخصائص مغرية للمنتج/الخدمة، ولكن عند التقرب للاستفادة منها تبين أن الواقع مخالف تماماً لما تم الترويج له، وتتمثل أوجه التضليل في:<br><strong>32941</strong>.<br><br>هذا التصرف يعتبر خداعاً للمستهلك ومخالفة لقانون الممارسات التجارية. لذا أرجو منكم التحقيق في الأمر وحماية المستهلكين من هذا التضليل.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\">المشتكي:<br>83290</div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;text-align:left;font-size:16pt}</style>",
  hp: true,
- im: {"23495":"fullName","29039":"DateToday","38292":"adMedium","53151":"advertiserName","53770":"deceptionDetails","91853":"residenceCommune","91877":"phone"}
+ im: {"32941":"deceptionDetails","53434":"adMedium","60140":"residenceCommune","63095":"advertiserName","71255":"phone","82020":"DateToday","83290":"fullName"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

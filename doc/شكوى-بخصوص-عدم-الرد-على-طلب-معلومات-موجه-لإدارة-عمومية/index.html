@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","residenceCommune","employerName","details"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"employerName":{"t":"text","l":"اسم المؤسسة التي تعمل فيها","p":"مثال: سوناطراك","q":"الإدارة المعنية (التي لم ترد)"},"details":{"t":"text","l":"موضوع طلب المعلومات الأصلي وتاريخ إرساله","p":"موضوع طلب المعلومات الأصلي وتاريخ إرساله","q":"موضوع طلب المعلومات الأصلي وتاريخ إرساله"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 10053<br>العنوان: 45461</div><div style=\"text-align:left\">10868 في: 52136</div></div><div class=\"title\">الموضوع: شكوى بخصوص عدم الرد على طلب معلومات</div><div class=\"content\">إلى السيد المندوب المحلي لوسيط الجمهورية / المسؤول الأعلى،<br><br>أحيطكم علماً بأنني تقدمت بطلب الحصول على معلومات/وثائق إلى إدارة: <strong>93513</strong> بتاريخ: <strong>97843</strong>.<br><br>ورغم انقضاء الآجال القانونية المعقولة، لم أتلقَ أي رد، سواء بالقبول أو الرفض المعلل، وهو ما يعد مخالفة لحقي في الإعلام والشفافية الإدارية.<br><br>ألتمس تدخلكم لإلزام الإدارة المعنية بالرد على طلبي.<br><br>تقبلوا مني أسمى عبارات التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>10053</div></div>",
+ th: "<div class=\"header\"><div>الاسم: 58560<br>العنوان: 44219</div><div style=\"text-align:left\">17988 في: 24771</div></div><div class=\"title\">الموضوع: شكوى بخصوص عدم الرد على طلب معلومات</div><div class=\"content\">إلى السيد المندوب المحلي لوسيط الجمهورية / المسؤول الأعلى،<br><br>أحيطكم علماً بأنني تقدمت بطلب الحصول على معلومات/وثائق إلى إدارة: <strong>56328</strong> بتاريخ: <strong>42928</strong>.<br><br>ورغم انقضاء الآجال القانونية المعقولة، لم أتلقَ أي رد، سواء بالقبول أو الرفض المعلل، وهو ما يعد مخالفة لحقي في الإعلام والشفافية الإدارية.<br><br>ألتمس تدخلكم لإلزام الإدارة المعنية بالرد على طلبي.<br><br>تقبلوا مني أسمى عبارات التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>58560</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"10053":"fullName","10868":"residenceCommune","45461":"address","52136":"DateToday","93513":"employerName","97843":"details"}
+ im: {"17988":"residenceCommune","24771":"DateToday","42928":"details","44219":"address","56328":"employerName","58560":"fullName"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

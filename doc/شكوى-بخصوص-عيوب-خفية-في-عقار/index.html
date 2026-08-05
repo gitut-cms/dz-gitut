@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["declarationPlace","fullName","sellerName","purchaseDate","defectsDescription"],
  fc: {"declarationPlace":{"t":"text","l":"مكان التحرير","p":"مكان التحرير","q":"مكان التحرير"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"اسم المشتري"},"sellerName":{"t":"text","l":"اسم البائع","p":"اسم البائع","q":"اسم البائع"},"purchaseDate":{"t":"date","l":"تاريخ شراء العقار","p":"تاريخ شراء العقار","q":"تاريخ شراء العقار"},"defectsDescription":{"t":"textarea","l":"وصف العيوب التي ظهرت","p":"وصف العيوب التي ظهرت","q":"وصف العيوب التي ظهرت"}},
  lr: [],
- th: "<div>48849 في: 92764</div><h2 style='text-align:center'>موضوع: شكوى بخصوص عيوب خفية في عقار مباع</h2><p>لفائدة: 54051 (المشتري).</p><p>ضد: 88308 (البائع).</p><p>لي الشرف أن أعرض عليكم ما يلي:</p><p>بتاريخ 39529، قمت بشراء عقار من الطرف المشتكى منه. وبعد استلام المبيع، تبين ظهور عيوب خفية لم تكن ظاهرة وقت الشراء ولم يخبرني بها البائع، والمتمثلة في: 65722.</p><p>وحيث أن هذه العيوب تنقص من قيمة العقار وصلاحيته، فإنني أطالب بتفعيل ضمان العيوب الخفية طبقاً للقانون المدني.</p><br><b>إمضاء المشتري</b>",
+ th: "<div>90371 في: 46360</div><h2 style='text-align:center'>موضوع: شكوى بخصوص عيوب خفية في عقار مباع</h2><p>لفائدة: 49016 (المشتري).</p><p>ضد: 38303 (البائع).</p><p>لي الشرف أن أعرض عليكم ما يلي:</p><p>بتاريخ 23755، قمت بشراء عقار من الطرف المشتكى منه. وبعد استلام المبيع، تبين ظهور عيوب خفية لم تكن ظاهرة وقت الشراء ولم يخبرني بها البائع، والمتمثلة في: 96437.</p><p>وحيث أن هذه العيوب تنقص من قيمة العقار وصلاحيته، فإنني أطالب بتفعيل ضمان العيوب الخفية طبقاً للقانون المدني.</p><br><b>إمضاء المشتري</b>",
  ph: "<style>@page{size:A4;margin:0}.document-container{margin:25mm;font-family:serif;font-size:14pt;line-height:1.6} .content, .document-container { font-size: 14pt !important; line-height: 1.6 !important; } /* Ensure lists are compact if text is long */ </style>",
  hp: true,
- im: {"39529":"purchaseDate","48849":"declarationPlace","54051":"fullName","65722":"defectsDescription","88308":"sellerName","92764":"DateToday"}
+ im: {"23755":"purchaseDate","38303":"sellerName","46360":"DateToday","49016":"fullName","90371":"declarationPlace","96437":"defectsDescription"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

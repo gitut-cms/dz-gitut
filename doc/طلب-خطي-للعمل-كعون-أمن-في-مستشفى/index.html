@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","hospitalName","documentName","educationLevel","residenceCommune"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"hospitalName":{"t":"text","l":"اسم المستشفى","p":"مثال: مستشفى مصطفى باشا الجامعي","q":"اسم المستشفى"},"documentName":{"t":"text","l":"اسم المستند","p":"(يُملأ من اسم المستند)","q":"اسم المستند"},"educationLevel":{"t":"text","l":"المستوى التعليمي","p":"مثال: جامعي","q":"المستوى التعليمي"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"}},
  lr: [],
- th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 54050<br>العنوان: 49714<br>رقم الهاتف: 89001</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير مستشفى 42198</div><div class=\"title\">الموضوع: 87970</div><p>يشرفني أن أتقدم إلى سيادتكم المحترمة بطلبي هذا، والمتمثل في طلب توظيف لشغل منصب عون أمن على مستوى مؤسستكم الاستشفائية. أحيطكم علما بأنني متحصل على مستوى 92445 وأتمتع باليقظة والجدية اللازمة للقيام بهذه المهمة على أكمل وجه.</p><p>في انتظار ردكم الإيجابي، تقبلوا مني فائق عبارات التقدير والاحترام.</p></div><div class=\"footer\"><div>57743 بتاريخ: 12179</div><div class=\"signature-box\">إمضاء المعني</div></div>",
+ th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 45374<br>العنوان: 53529<br>رقم الهاتف: 60409</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير مستشفى 93029</div><div class=\"title\">الموضوع: 57208</div><p>يشرفني أن أتقدم إلى سيادتكم المحترمة بطلبي هذا، والمتمثل في طلب توظيف لشغل منصب عون أمن على مستوى مؤسستكم الاستشفائية. أحيطكم علما بأنني متحصل على مستوى 91448 وأتمتع باليقظة والجدية اللازمة للقيام بهذه المهمة على أكمل وجه.</p><p>في انتظار ردكم الإيجابي، تقبلوا مني فائق عبارات التقدير والاحترام.</p></div><div class=\"footer\"><div>63788 بتاريخ: 50504</div><div class=\"signature-box\">إمضاء المعني</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"12179":"DateToday","42198":"hospitalName","49714":"address","54050":"fullName","57743":"residenceCommune","87970":"documentName","89001":"phone","92445":"educationLevel"}
+ im: {"45374":"fullName","50504":"DateToday","53529":"address","57208":"documentName","60409":"phone","63788":"residenceCommune","91448":"educationLevel","93029":"hospitalName"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

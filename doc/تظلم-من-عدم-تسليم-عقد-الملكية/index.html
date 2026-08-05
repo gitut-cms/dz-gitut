@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["declarationPlace","promoterName","fullName","projectDetails","paymentDate"],
  fc: {"declarationPlace":{"t":"text","l":"مكان التحرير","p":"مكان التحرير","q":"مكان التحرير"},"promoterName":{"t":"text","l":"اسم المرقي العقاري/الهيئة","p":"اسم المرقي العقاري/الهيئة","q":"اسم المرقي العقاري/الهيئة"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم الكامل (المستفيد)"},"projectDetails":{"t":"text","l":"تفاصيل السكن/المشروع","p":"تفاصيل السكن/المشروع","q":"تفاصيل السكن/المشروع"},"paymentDate":{"t":"date","l":"تاريخ استكمال الدفع","p":"تاريخ استكمال الدفع","q":"تاريخ استكمال الدفع"}},
  lr: [],
- th: "<div>88613 في: 37111</div><h2 style='text-align:center'>تظلم بشأن تأخر تسليم عقد الملكية</h2><p>إلى السيد مدير 98087 / أو مديرية السكن،</p><p>أنا الممضي أسفله 16350، المستفيد من السكن الكائن بـ 44497.</p><p>أحيطكم علماً أنني قمت بتسديد كامل المستحقات المالية المترتبة عليّ منذ تاريخ 43533، إلا أنني لم أتسلم عقد الملكية الخاص بي لحد الآن.</p><p>وعليه، أطالبكم بتسوية وضعيتي القانونية وتسليمي العقد في أقرب الآجال.</p><br><b>إمضاء المعني</b>",
+ th: "<div>62793 في: 83008</div><h2 style='text-align:center'>تظلم بشأن تأخر تسليم عقد الملكية</h2><p>إلى السيد مدير 71415 / أو مديرية السكن،</p><p>أنا الممضي أسفله 10544، المستفيد من السكن الكائن بـ 12902.</p><p>أحيطكم علماً أنني قمت بتسديد كامل المستحقات المالية المترتبة عليّ منذ تاريخ 16691، إلا أنني لم أتسلم عقد الملكية الخاص بي لحد الآن.</p><p>وعليه، أطالبكم بتسوية وضعيتي القانونية وتسليمي العقد في أقرب الآجال.</p><br><b>إمضاء المعني</b>",
  ph: "<style>@page{size:A4;margin:0}.document-container{margin:25mm;font-family:serif;font-size:14pt;line-height:1.6} .content, .document-container { font-size: 14pt !important; line-height: 1.6 !important; } /* Ensure lists are compact if text is long */ </style>",
  hp: true,
- im: {"16350":"fullName","37111":"DateToday","43533":"paymentDate","44497":"projectDetails","88613":"declarationPlace","98087":"promoterName"}
+ im: {"10544":"fullName","12902":"projectDetails","16691":"paymentDate","62793":"declarationPlace","71415":"promoterName","83008":"DateToday"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

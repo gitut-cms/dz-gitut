@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","residenceCommune","details"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"details":{"t":"textarea","l":"الاسم/اللقب المراد تغييره ومبررات الطلب (حرج اجتماعي، سخرية...)","p":"الاسم/اللقب المراد تغييره ومبررات الطلب (حرج اجتماعي، سخرية...)","q":"الاسم/اللقب المراد تغييره ومبررات الطلب (حرج اجتماعي، سخرية...)"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 77427<br>العنوان: 57106</div><div style=\"text-align:left\">74262 في: 28067</div></div><div class=\"title\">الموضوع: تظلم من رفض طلب تعديل اللقب/الاسم</div><div class=\"content\">إلى السيد وزير العدل / حافظ الأختام،<br><br>أتقدم إليكم بهذا التظلم لإعادة النظر في ملف طلب تغيير اللقب العائلي (أو الاسم) المرفوض.<br><br>حيث أن لقبي الحالي: <strong>10516</strong> يسبب لي ولعائلتي حرجاً اجتماعياً وأذى نفسياً بالغاً (أو سبب آخر وجيه)، وهو ما يخوله القانون.<br><br>ألتمس من سيادتكم الموافقة على التغيير المقترح.<br><br>تقبلوا مني أسمى عبارات التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>77427</div></div>",
+ th: "<div class=\"header\"><div>الاسم: 93911<br>العنوان: 88856</div><div style=\"text-align:left\">47573 في: 42870</div></div><div class=\"title\">الموضوع: تظلم من رفض طلب تعديل اللقب/الاسم</div><div class=\"content\">إلى السيد وزير العدل / حافظ الأختام،<br><br>أتقدم إليكم بهذا التظلم لإعادة النظر في ملف طلب تغيير اللقب العائلي (أو الاسم) المرفوض.<br><br>حيث أن لقبي الحالي: <strong>86457</strong> يسبب لي ولعائلتي حرجاً اجتماعياً وأذى نفسياً بالغاً (أو سبب آخر وجيه)، وهو ما يخوله القانون.<br><br>ألتمس من سيادتكم الموافقة على التغيير المقترح.<br><br>تقبلوا مني أسمى عبارات التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>93911</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"10516":"details","28067":"DateToday","57106":"address","74262":"residenceCommune","77427":"fullName"}
+ im: {"42870":"DateToday","47573":"residenceCommune","86457":"details","88856":"address","93911":"fullName"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

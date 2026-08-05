@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["s_title","fullName","idCardNumber","registryNumber","lostDate","lostPlace","issuanceCity","s_signer"],
  fc: {"s_title":{"t":"text","l":"s_title","p":"s_title","q":"s_title"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: عبد الرزاق بوزيد","q":"الاسم واللقب بالكامل لصاحب السجل"},"idCardNumber":{"t":"text","l":"رقم بطاقة التعريف الوطنية","p":"رقم البطاقة","q":"رقم بطاقة التعريف الوطنية"},"registryNumber":{"t":"text","l":"رقم السجل التجاري الضائع","p":"رقم السجل","q":"رقم السجل التجاري الضائع"},"lostDate":{"t":"date","l":"تاريخ الضياع","p":"تاريخ الضياع","q":"تاريخ الضياع"},"lostPlace":{"t":"text","l":"مكان الضياع","p":"مكان ضياع الوثيقة","q":"مكان الضياع"},"issuanceCity":{"t":"text","l":"ولاية أو مدينة التحرير","p":"مثال: باتنة","q":"ولاية أو مدينة التحرير"},"s_signer":{"t":"text","l":"s_signer","p":"s_signer","q":"s_signer"}},
  lr: [],
- th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريـــح بضيـــاع سجـــل تجــــاري</div><div class=\"doc-content\">أنا الموقع أسفله 37514: <strong>71150</strong>، الحامل لبطاقة التعريف الوطنية رقم: 97349.<br><br>أصرح بأنني فقدت السجل التجاري الخاص بي رقم: 93812 بتاريخ: 99087 بـ: 67206 في ظروف مجهولة.<br><br>أدلي بهذا التصريح إلى مصالح المركز الوطني للسجل التجاري قصد الحصول على بدل ضائع، وأتحمل كامل المسؤولية عن صحة المعلومات الواردة.</div><div class=\"meta-header\">حرر بـ: 13735 في: 12189</div><div class=\"doc-signature\">إمضاء 77339<br><br><strong>71150</strong>",
+ th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريـــح بضيـــاع سجـــل تجــــاري</div><div class=\"doc-content\">أنا الموقع أسفله 58659: <strong>38227</strong>، الحامل لبطاقة التعريف الوطنية رقم: 71303.<br><br>أصرح بأنني فقدت السجل التجاري الخاص بي رقم: 72569 بتاريخ: 10323 بـ: 82987 في ظروف مجهولة.<br><br>أدلي بهذا التصريح إلى مصالح المركز الوطني للسجل التجاري قصد الحصول على بدل ضائع، وأتحمل كامل المسؤولية عن صحة المعلومات الواردة.</div><div class=\"meta-header\">حرر بـ: 68561 في: 87832</div><div class=\"doc-signature\">إمضاء 83959<br><br><strong>38227</strong>",
  ph: "<meta charset=\"utf-8\"><title>تصريح بضياع سجل تجاري</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.republic-header{text-align:center;font-weight:700;margin-bottom:10px}.meta-header{text-align:left;font-size:0.9em;margin-top:20px}.doc-title{text-align:center;font-size:1.7em;font-weight:700;text-decoration:underline;margin:40px 0 100px 0}.doc-content{flex-grow:1}.doc-signature{text-align:right;padding-right:1cm}</style>",
  hp: true,
- im: {"12189":"DateToday","13735":"issuanceCity","37514":"s_title","67206":"lostPlace","71150":"fullName","77339":"s_signer","93812":"registryNumber","97349":"idCardNumber","99087":"lostDate"}
+ im: {"10323":"lostDate","38227":"fullName","58659":"s_title","68561":"issuanceCity","71303":"idCardNumber","72569":"registryNumber","82987":"lostPlace","83959":"s_signer","87832":"DateToday"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

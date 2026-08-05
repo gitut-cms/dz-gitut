@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["declarationPlace","buildingAddress","fullName","decisionDate","decisionContent","objectionReason"],
  fc: {"declarationPlace":{"t":"text","l":"مكان التحرير","p":"مكان التحرير","q":"مكان التحرير"},"buildingAddress":{"t":"text","l":"عنوان العمارة/المجمع","p":"عنوان العمارة/المجمع","q":"عنوان العمارة/المجمع"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"اسم المالك المتظلم"},"decisionDate":{"t":"date","l":"تاريخ صدور القرار","p":"تاريخ صدور القرار","q":"تاريخ صدور القرار"},"decisionContent":{"t":"text","l":"محتوى القرار المطعون فيه","p":"محتوى القرار المطعون فيه","q":"محتوى القرار المطعون فيه"},"objectionReason":{"t":"textarea","l":"أسباب الرفض/التظلم","p":"أسباب الرفض/التظلم","q":"أسباب الرفض/التظلم"}},
  lr: [],
- th: "<div>54328 في: 91217</div><h2 style='text-align:center'>تظلم من قرار جمعية الملاك</h2><p>إلى السيد رئيس جمعية الملاك للعمارة الكائنة بـ: 77544</p><p>أنا الموقع أسفله 64430، أحد الشركاء في الملكية.</p><p>أتقدم بهذا التظلم ضد القرار الصادر عن الجمعية بتاريخ 40137 والقاضي بـ: 28238.</p><p>أحيطكم علماً اعتراضي على هذا القرار للأسباب التالية: 44546.</p><p>أطلب إعادة النظر في هذا القرار في أقرب جمعية عامة.</p><br><b>الإمضاء</b>",
+ th: "<div>85428 في: 22105</div><h2 style='text-align:center'>تظلم من قرار جمعية الملاك</h2><p>إلى السيد رئيس جمعية الملاك للعمارة الكائنة بـ: 96791</p><p>أنا الموقع أسفله 35418، أحد الشركاء في الملكية.</p><p>أتقدم بهذا التظلم ضد القرار الصادر عن الجمعية بتاريخ 20153 والقاضي بـ: 31555.</p><p>أحيطكم علماً اعتراضي على هذا القرار للأسباب التالية: 99403.</p><p>أطلب إعادة النظر في هذا القرار في أقرب جمعية عامة.</p><br><b>الإمضاء</b>",
  ph: "<style>@page{size:A4;margin:0}.document-container{margin:25mm;font-family:serif;font-size:14pt;line-height:1.6} .content, .document-container { font-size: 14pt !important; line-height: 1.6 !important; } /* Ensure lists are compact if text is long */ </style>",
  hp: true,
- im: {"28238":"decisionContent","40137":"decisionDate","44546":"objectionReason","54328":"declarationPlace","64430":"fullName","77544":"buildingAddress","91217":"DateToday"}
+ im: {"20153":"decisionDate","22105":"DateToday","31555":"decisionContent","35418":"fullName","85428":"declarationPlace","96791":"buildingAddress","99403":"objectionReason"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

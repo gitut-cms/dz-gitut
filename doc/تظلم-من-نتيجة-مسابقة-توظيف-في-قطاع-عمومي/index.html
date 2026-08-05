@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","residenceCommune","jobTitle","details"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"jobTitle":{"t":"text","l":"المهنة","p":"مثال: مهندس دولة","q":"اسم الرتبة/المسابقة"},"details":{"t":"textarea","l":"مبررات الطعن (الخبرة غير المحتسبة، الخطأ في التنقيط...)","p":"مبررات الطعن (الخبرة غير المحتسبة، الخطأ في التنقيط...)","q":"مبررات الطعن (الخبرة غير المحتسبة، الخطأ في التنقيط...)"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 36617<br>العنوان: 22888</div><div style=\"text-align:left\">18478 في: 38838</div></div><div class=\"title\">الموضوع: تظلم من نتيجة مسابقة توظيف</div><div class=\"content\">إلى السيد رئيس لجنة المسابقة / مدير الوظيف العمومي،<br><br>لي الشرف أن أتقدم بهذا الطعن في النتائج المعلن عنها بخصوص مسابقة التوظيف لرتبة: <strong>44982</strong>.<br><br>حيث أنني لاحظت إجحافاً في تقييم ملفي/مقابلتي، خاصة فيما يتعلق بـ: <strong>44990</strong>، وهو ما أثر سلباً على ترتيبي النهائي.<br><br>أرجو منكم إعادة دراسة ملفي والتحقق من سلم التنقيط المعتمد لضمان الشفافية وتكافؤ الفرص.<br><br>تقبلوا مني فائق التقدير والاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المترشح:<br>36617</div></div>",
+ th: "<div class=\"header\"><div>الاسم: 54998<br>العنوان: 48311</div><div style=\"text-align:left\">59206 في: 12943</div></div><div class=\"title\">الموضوع: تظلم من نتيجة مسابقة توظيف</div><div class=\"content\">إلى السيد رئيس لجنة المسابقة / مدير الوظيف العمومي،<br><br>لي الشرف أن أتقدم بهذا الطعن في النتائج المعلن عنها بخصوص مسابقة التوظيف لرتبة: <strong>19732</strong>.<br><br>حيث أنني لاحظت إجحافاً في تقييم ملفي/مقابلتي، خاصة فيما يتعلق بـ: <strong>22951</strong>، وهو ما أثر سلباً على ترتيبي النهائي.<br><br>أرجو منكم إعادة دراسة ملفي والتحقق من سلم التنقيط المعتمد لضمان الشفافية وتكافؤ الفرص.<br><br>تقبلوا مني فائق التقدير والاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المترشح:<br>54998</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"18478":"residenceCommune","22888":"address","36617":"fullName","38838":"DateToday","44982":"jobTitle","44990":"details"}
+ im: {"12943":"DateToday","19732":"jobTitle","22951":"details","48311":"address","54998":"fullName","59206":"residenceCommune"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

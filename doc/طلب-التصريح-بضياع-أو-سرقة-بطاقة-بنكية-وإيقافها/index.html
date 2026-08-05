@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","bankName","bankAgencyName","maritalStatus","vehicleRegistrationCardNumber","passportIssueDate","bankAccountNumber","residenceCommune"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"bankName":{"t":"text","l":"اسم البنك","p":"مثال: بنك الفلاحة والتنمية الريفية","q":"اسم البنك"},"bankAgencyName":{"t":"text","l":"اسم الوكالة البنكية","p":"مثال: وكالة الأمير عبد القادر","q":"اسم الوكالة البنكية"},"maritalStatus":{"t":"text","l":"الحالة المدنية","p":"مثال: أعزب","q":"الحالة المدنية"},"vehicleRegistrationCardNumber":{"t":"text","l":"رقم البطاقة الرمادية","p":"مثال: 12345 123 16","q":"رقم البطاقة الرمادية"},"passportIssueDate":{"t":"text","l":"تاريخ إصدار جواز السفر","p":"مثال: 2022/01/01","q":"تاريخ إصدار جواز السفر"},"bankAccountNumber":{"t":"text","l":"رقم الحساب البنكي (RIB)","p":"مثال: 0030012345678901234567","q":"رقم الحساب البنكي (RIB)"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"}},
  lr: [],
- th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 82300<br>العنوان: 23410<br>رقم الهاتف: 39760</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد/السيدة مدير(ة) بنك 85846 وكالة 81438</div><div class=\"title\">الموضوع: تصريح بـ35752 بطاقة وطلب إيقافها</div><p>يشرفني أن أتقدم إلى سيادتكم المحترمة بهذا الطلب، لأصرح بـ35752 بطاقتي البنكية رقم: 66926، وذلك بتاريخ 64192 تقريبًا.</p><p>وعليه، ألتمس من سيادتكم اتخاذ الإجراءات اللازمة لإيقاف التعامل بهذه البطاقة في أقرب وقت ممكن لتفادي أي استعمال غير قانوني لها. البطاقة مرتبطة بحسابي البنكي رقم: 65033.</p><p>في انتظار تدخلكم، تقبلوا مني فائق عبارات التقدير والاحترام.</p></div><div class=\"footer\"><div>48049 بتاريخ: 87834</div><div class=\"signature-box\">إمضاء المعني</div></div>",
+ th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 93928<br>العنوان: 17954<br>رقم الهاتف: 97641</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد/السيدة مدير(ة) بنك 44616 وكالة 39506</div><div class=\"title\">الموضوع: تصريح بـ48538 بطاقة وطلب إيقافها</div><p>يشرفني أن أتقدم إلى سيادتكم المحترمة بهذا الطلب، لأصرح بـ48538 بطاقتي البنكية رقم: 69046، وذلك بتاريخ 19591 تقريبًا.</p><p>وعليه، ألتمس من سيادتكم اتخاذ الإجراءات اللازمة لإيقاف التعامل بهذه البطاقة في أقرب وقت ممكن لتفادي أي استعمال غير قانوني لها. البطاقة مرتبطة بحسابي البنكي رقم: 16492.</p><p>في انتظار تدخلكم، تقبلوا مني فائق عبارات التقدير والاحترام.</p></div><div class=\"footer\"><div>82108 بتاريخ: 68119</div><div class=\"signature-box\">إمضاء المعني</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"23410":"address","35752":"maritalStatus","39760":"phone","48049":"residenceCommune","64192":"passportIssueDate","65033":"bankAccountNumber","66926":"vehicleRegistrationCardNumber","81438":"bankAgencyName","82300":"fullName","85846":"bankName","87834":"DateToday"}
+ im: {"16492":"bankAccountNumber","17954":"address","19591":"passportIssueDate","39506":"bankAgencyName","44616":"bankName","48538":"maritalStatus","68119":"DateToday","69046":"vehicleRegistrationCardNumber","82108":"residenceCommune","93928":"fullName","97641":"phone"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

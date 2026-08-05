@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","ToTheGovernorOftheStateOf","documentName","drivingLicenseNumber","drivingLicenseCategory","residenceCommune"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"ToTheGovernorOftheStateOf":{"t":"text","l":"الولاية التي تقدم لها الوثيقة","p":"مثال: إلى السيد والي ولاية [ToTheGovernorOftheStateOf]","q":"ولاية مديرية النقل"},"documentName":{"t":"text","l":"اسم المستند","p":"(يُملأ من اسم المستند)","q":"اسم المستند"},"drivingLicenseNumber":{"t":"text","l":"رقم رخصة السياقة","p":"مثال: 123456789","q":"رقم رخصة السياقة"},"drivingLicenseCategory":{"t":"text","l":"فئة رخصة السياقة","p":"مثال: ب","q":"صنف رخصة السياقة (B, D...)"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"}},
  lr: [],
- th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 59907<br>العنوان: 10767<br>رقم الهاتف: 26568</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير النقل لولاية 52335</div><div class=\"title\">الموضوع: 69389</div><p>يشرفني أن أتقدم إليكم بطلبي هذا للحصول على البطاقة المهنية لسائقي النقل العمومي/سيارات الأجرة.</p><p>أحيطكم علمًا أنني حائز على رخصة سياقة رقم <strong>38181</strong> صنف <strong>82967</strong>، وقد أتممت التكوين المطلوب (أو أطلب التسجيل فيه) للحصول على شهادة الكفاءة المهنية.</p><p>في انتظار ردكم، تقبلوا مني أسمى عبارات التقدير.</p></div><div class=\"footer\"><div>54580 بتاريخ: 98272</div><div class=\"signature-box\">إمضاء المعني</div></div>",
+ th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 12010<br>العنوان: 68578<br>رقم الهاتف: 53943</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير النقل لولاية 45735</div><div class=\"title\">الموضوع: 71563</div><p>يشرفني أن أتقدم إليكم بطلبي هذا للحصول على البطاقة المهنية لسائقي النقل العمومي/سيارات الأجرة.</p><p>أحيطكم علمًا أنني حائز على رخصة سياقة رقم <strong>92720</strong> صنف <strong>31261</strong>، وقد أتممت التكوين المطلوب (أو أطلب التسجيل فيه) للحصول على شهادة الكفاءة المهنية.</p><p>في انتظار ردكم، تقبلوا مني أسمى عبارات التقدير.</p></div><div class=\"footer\"><div>93638 بتاريخ: 76274</div><div class=\"signature-box\">إمضاء المعني</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"10767":"address","26568":"phone","38181":"drivingLicenseNumber","52335":"ToTheGovernorOftheStateOf","54580":"residenceCommune","59907":"fullName","69389":"documentName","82967":"drivingLicenseCategory","98272":"DateToday"}
+ im: {"12010":"fullName","31261":"drivingLicenseCategory","45735":"ToTheGovernorOftheStateOf","53943":"phone","68578":"address","71563":"documentName","76274":"DateToday","92720":"drivingLicenseNumber","93638":"residenceCommune"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["gender","firstName","lastName","address","phone","issuanceCity","recipient","activity","applicationPurpose","signer_title"],
  fc: {"gender":{"t":"select","l":"الجنس","p":"اختر...","q":"الجنس","o":[{"v":"male","l":"ذكر","m":{"senderTitle":"السيد","signer_title":"المعني","born_title":"المولود"}},{"v":"female","l":"أنثى","m":{"senderTitle":"السيدة","signer_title":"المعنية","born_title":"المولودة"}}]},"firstName":{"t":"text","l":"الاسم","p":"مثال: محمد","q":"الاسم الشخصي"},"lastName":{"t":"text","l":"اللقب","p":"مثال: علي","q":"اللقب (اسم العائلة)"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان الشخصي"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"issuanceCity":{"t":"text","l":"مكان التحرير","p":"مكان التحرير","q":"مكان التحرير"},"recipient":{"t":"select","l":"الجهة المرسل إليها","p":"اختر...","q":"الجهة المرسل إليها","o":[{"v":"السيد رئيس مفتشية الضرائب لبلدية...","l":"السيد رئيس مفتشية الضرائب لبلدية..."},{"v":"CUSTOM_OTHER","l":"أخرى (كتابة نص مخصص)"}]},"activity":{"t":"text","l":"النشاط المقترح","p":"النشاط المقترح","q":"النشاط المقترح"},"applicationPurpose":{"t":"select","l":"الغرض من الطلب","p":"اختر...","q":"الغرض من الطلب","o":[{"v":"بدء نشاطي","l":"بدء نشاط جديد"},{"v":"استئناف نشاطي","l":"استئناف نشاط سابق"}]},"signer_title":{"t":"text","l":"signer_title","p":"signer_title","q":"signer_title"}},
  lr: [],
- th: "<div class=\"header-row\"><div class=\"sender-info\">الاسم: 49817<br>اللقب: 13217<br>العنوان: 88441<br>الهاتف: 34677</div><div class=\"date-place\">حرر بـ: 35107 في: 81503</div></div><div class=\"recipient-block\">إلى: 51300</div><div class=\"subject-line\">الموضوع: طلب فتح ملف جبائي</div><div class=\"doc-content\"><p>أتشرف بأن أتقدم لسيادتكم بطلبي هذا والرامي إلى التماس فتح ملف جبائي لنشاطي المتمثل في: <strong>40317</strong>.</p><p>أحيطكم علماً أنني قمت بكافة الإجراءات الأولية وأنا بصدد 86267، وتجدون رفقة هذا الطلب الملف الإداري المطلوب.</p><p>تقبلوا مني أسمى عبارات التقدير والاحترام.</p></div><div class=\"signature-block\">إمضاء 00100<br><br><strong>13217 49817</strong>",
+ th: "<div class=\"header-row\"><div class=\"sender-info\">الاسم: 60184<br>اللقب: 65863<br>العنوان: 83791<br>الهاتف: 35045</div><div class=\"date-place\">حرر بـ: 34340 في: 20980</div></div><div class=\"recipient-block\">إلى: 18615</div><div class=\"subject-line\">الموضوع: طلب فتح ملف جبائي</div><div class=\"doc-content\"><p>أتشرف بأن أتقدم لسيادتكم بطلبي هذا والرامي إلى التماس فتح ملف جبائي لنشاطي المتمثل في: <strong>64316</strong>.</p><p>أحيطكم علماً أنني قمت بكافة الإجراءات الأولية وأنا بصدد 76442، وتجدون رفقة هذا الطلب الملف الإداري المطلوب.</p><p>تقبلوا مني أسمى عبارات التقدير والاحترام.</p></div><div class=\"signature-block\">إمضاء 00100<br><br><strong>65863 60184</strong>",
  ph: "<meta charset=\"utf-8\"><title>فتح ملف جبائي</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.header-row{display:flex;justify-content:space-between;margin-bottom:50px}.sender-info{text-align:right}.date-place{text-align:left}.recipient-block{text-align:center;margin:40px 0;font-weight:700}.subject-line{text-align:right;font-weight:700;text-decoration:underline;margin-bottom:30px}.doc-content{flex-grow:1}.signature-block{text-align:left;margin-top:50px;padding-left:1cm}</style>",
  hp: true,
- im: {"13217":"lastName","34677":"phone","35107":"issuanceCity","40317":"activity","49817":"firstName","51300":"recipient","81503":"DateToday","86267":"applicationPurpose","88441":"address","00100":"signer_title"}
+ im: {"18615":"recipient","20980":"DateToday","34340":"issuanceCity","35045":"phone","60184":"firstName","64316":"activity","65863":"lastName","76442":"applicationPurpose","83791":"address","00100":"signer_title"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","ToTheGovernorOftheStateOf","documentName","commercialRegistryNumber","residenceCommune"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"ToTheGovernorOftheStateOf":{"t":"text","l":"الولاية التي تقدم لها الوثيقة","p":"مثال: إلى السيد والي ولاية [ToTheGovernorOftheStateOf]","q":"ولاية مديرية النقل"},"documentName":{"t":"text","l":"اسم المستند","p":"(يُملأ من اسم المستند)","q":"اسم المستند"},"commercialRegistryNumber":{"t":"text","l":"رقم السجل التجاري","p":"مثال: 16/00-1234567 A 24","q":"رقم الوثيقة المفقودة (إن وجد)"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"}},
  lr: [],
- th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 19926<br>العنوان: 95636<br>رقم الهاتف: 39950</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير النقل لولاية 18764</div><div class=\"title\">الموضوع: طلب نسخة ثانية (Duplicata)</div><p>يشرفني أن أطلب منكم استخراج نسخة ثانية من وثيقة: <strong>60903</strong>.</p><p>وذلك بسبب (الضياع / التلف / السرقة) للنسخة الأصلية التي كانت تحمل الرقم: <strong>80881</strong>.</p><p>مرفق بهذا الطلب التصريح بالضياع (في حالة الضياع) والوثائق اللازمة.</p><p>تقبلوا مني فائق الاحترام والتقدير.</p></div><div class=\"footer\"><div>52349 بتاريخ: 61960</div><div class=\"signature-box\">إمضاء المعني</div></div>",
+ th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 22815<br>العنوان: 24369<br>رقم الهاتف: 17541</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير النقل لولاية 26055</div><div class=\"title\">الموضوع: طلب نسخة ثانية (Duplicata)</div><p>يشرفني أن أطلب منكم استخراج نسخة ثانية من وثيقة: <strong>37372</strong>.</p><p>وذلك بسبب (الضياع / التلف / السرقة) للنسخة الأصلية التي كانت تحمل الرقم: <strong>95781</strong>.</p><p>مرفق بهذا الطلب التصريح بالضياع (في حالة الضياع) والوثائق اللازمة.</p><p>تقبلوا مني فائق الاحترام والتقدير.</p></div><div class=\"footer\"><div>14615 بتاريخ: 80828</div><div class=\"signature-box\">إمضاء المعني</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"18764":"ToTheGovernorOftheStateOf","19926":"fullName","39950":"phone","52349":"residenceCommune","60903":"documentName","61960":"DateToday","80881":"commercialRegistryNumber","95636":"address"}
+ im: {"14615":"residenceCommune","17541":"phone","22815":"fullName","24369":"address","26055":"ToTheGovernorOftheStateOf","37372":"documentName","80828":"DateToday","95781":"commercialRegistryNumber"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

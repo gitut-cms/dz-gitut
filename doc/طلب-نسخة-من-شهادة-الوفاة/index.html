@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","deceasedParentPod","deceasedParentFullName","deceasedParentDod"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"اسم مقدم الطلب"},"deceasedParentPod":{"t":"text","l":"مكان وفاة الوالد","p":"مثال: مستشفى مصطفى باشا","q":"مكان الوفاة (البلدية)"},"deceasedParentFullName":{"t":"text","l":"اسم ولقب الوالد المتوفى","p":"مثال: علي محمودي","q":"اسم المتوفى"},"deceasedParentDod":{"t":"text","l":"تاريخ وفاة الوالد","p":"مثال: 2023/10/25","q":"تاريخ وفاة الوالد"}},
  lr: [],
- th: "<div class=\"header\"><div>مقدم الطلب: 51421</div><div style=\"text-align:left\">54546</div></div><div class=\"title\">الموضوع: طلب نسخة من شهادة الوفاة</div><div class=\"content\">إلى السيد رئيس بلدية 69736،<br><br>لي الشرف أن أطلب منكم استخراج شهادة وفاة للمرحوم(ة): <strong>56088</strong>.<br><br>تاريخ الوفاة: <strong>50147</strong><br>مكان الوفاة: <strong>69736</strong><br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">الإمضاء:<br>51421</div></div>",
+ th: "<div class=\"header\"><div>مقدم الطلب: 74936</div><div style=\"text-align:left\">21594</div></div><div class=\"title\">الموضوع: طلب نسخة من شهادة الوفاة</div><div class=\"content\">إلى السيد رئيس بلدية 81024،<br><br>لي الشرف أن أطلب منكم استخراج شهادة وفاة للمرحوم(ة): <strong>91913</strong>.<br><br>تاريخ الوفاة: <strong>31572</strong><br>مكان الوفاة: <strong>81024</strong><br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">الإمضاء:<br>74936</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"50147":"deceasedParentDod","51421":"fullName","54546":"DateToday","56088":"deceasedParentFullName","69736":"deceasedParentPod"}
+ im: {"21594":"DateToday","31572":"deceasedParentDod","74936":"fullName","81024":"deceasedParentPod","91913":"deceasedParentFullName"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

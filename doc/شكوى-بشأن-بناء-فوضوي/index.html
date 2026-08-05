@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["declarationPlace","fullName","neighborName","constructionType","harmDescription"],
  fc: {"declarationPlace":{"t":"text","l":"مكان التحرير","p":"مكان التحرير","q":"مكان التحرير"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم الكامل"},"neighborName":{"t":"text","l":"اسم الجار","p":"اسم الجار","q":"اسم الجار"},"constructionType":{"t":"text","l":"نوع البناء الفوضوي","p":"نوع البناء الفوضوي","q":"نوع البناء الفوضوي"},"harmDescription":{"t":"textarea","l":"الضرر الناتج (حجب ضوء، تصدع جدران...)","p":"الضرر الناتج (حجب ضوء، تصدع جدران...)","q":"الضرر الناتج (حجب ضوء، تصدع جدران...)"}},
  lr: [],
- th: "<div>67311 في: 24140</div><h2 style='text-align:center'>شكوى بخصوص بناء فوضوي</h2><p>إلى السيد رئيس المجلس الشعبي البلدي،</p><p>أنا الموقع أسفله 41293، أتقدم بشكوى ضد جاري السيد 21559.</p><p>حيث شرع المذكور في إنجاز بناء 28641 بطريقة فوضوية ودون احترام قواعد العمران، مما ألحق بي ضرراً يتمثل في: 59886.</p><p>ألتمس منكم إيفاد لجنة لمعاينة المخالفة وتوقيف الأشغال.</p><br><b>الإمضاء</b>",
+ th: "<div>89621 في: 22954</div><h2 style='text-align:center'>شكوى بخصوص بناء فوضوي</h2><p>إلى السيد رئيس المجلس الشعبي البلدي،</p><p>أنا الموقع أسفله 19004، أتقدم بشكوى ضد جاري السيد 86858.</p><p>حيث شرع المذكور في إنجاز بناء 89721 بطريقة فوضوية ودون احترام قواعد العمران، مما ألحق بي ضرراً يتمثل في: 66520.</p><p>ألتمس منكم إيفاد لجنة لمعاينة المخالفة وتوقيف الأشغال.</p><br><b>الإمضاء</b>",
  ph: "<style>@page{size:A4;margin:0}.document-container{margin:25mm;font-family:serif;font-size:14pt;line-height:1.6} .content, .document-container { font-size: 14pt !important; line-height: 1.6 !important; } /* Ensure lists are compact if text is long */ </style>",
  hp: true,
- im: {"21559":"neighborName","24140":"DateToday","28641":"constructionType","41293":"fullName","59886":"harmDescription","67311":"declarationPlace"}
+ im: {"19004":"fullName","22954":"DateToday","66520":"harmDescription","86858":"neighborName","89621":"declarationPlace","89721":"constructionType"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

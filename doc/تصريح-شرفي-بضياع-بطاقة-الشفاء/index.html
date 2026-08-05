@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["gender","citizen_title","fullName","nationalId","ssn","issuanceCity","declarant_title"],
  fc: {"gender":{"t":"select","l":"الجنس","p":"اختر...","q":"الجنس","o":[{"v":"male","l":"ذكر","m":{"citizen_title":"أنا الموقع أسفله السيد","declarant_title":"المصرح"}},{"v":"female","l":"أنثى","m":{"citizen_title":"أنا الموقعة أسفله السيدة","declarant_title":"المصرحة"}}]},"citizen_title":{"t":"text","l":"citizen_title","p":"citizen_title","q":"citizen_title"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"nationalId":{"t":"text","l":"رقم بطاقة التعريف الوطنية","p":"مثال: 123456789012345678","q":"رقم بطاقة التعريف الوطنية"},"ssn":{"t":"text","l":"رقم الضمان الاجتماعي","p":"اتركه فارغاً إن لم تكن تذكره","q":"رقم الضمان الاجتماعي"},"issuanceCity":{"t":"text","l":"issuanceCity","p":"issuanceCity","q":"issuanceCity"},"declarant_title":{"t":"text","l":"declarant_title","p":"declarant_title","q":"declarant_title"}},
  lr: [],
- th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريح شرفي بضياع بطاقة الشفاء</div><div class=\"doc-content\"><p>00100: <strong>13791</strong>، الحامل لبطاقة التعريف الوطنية رقم: 62864.<br>رقم الضمان الاجتماعي: 58287.</p><br><p>أصرح بأنني فقدت بطاقة الشفاء الخاصة بي في ظروف مجهولة.</p><p>أدلي بهذا التصريح قصد الحصول على بطاقة شفاء جديدة، وأتحمل كامل المسؤولية عن أقوالي.</p></div><div class=\"meta-header\">حرر بـ: 33356 في: 38374</div><div class=\"doc-signature\">إمضاء 00200<br><br><strong>13791</strong>",
+ th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريح شرفي بضياع بطاقة الشفاء</div><div class=\"doc-content\"><p>00100: <strong>30402</strong>، الحامل لبطاقة التعريف الوطنية رقم: 97227.<br>رقم الضمان الاجتماعي: 36942.</p><br><p>أصرح بأنني فقدت بطاقة الشفاء الخاصة بي في ظروف مجهولة.</p><p>أدلي بهذا التصريح قصد الحصول على بطاقة شفاء جديدة، وأتحمل كامل المسؤولية عن أقوالي.</p></div><div class=\"meta-header\">حرر بـ: 57953 في: 63158</div><div class=\"doc-signature\">إمضاء 00200<br><br><strong>30402</strong>",
  ph: "<meta charset=\"utf-8\"><title>ضياع بطاقة الشفاء</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.republic-header{text-align:center;font-weight:700;margin-bottom:10px}.meta-header{text-align:left;font-size:0.9em;margin-top:20px}.doc-title{text-align:center;font-size:1.7em;font-weight:700;text-decoration:underline;margin:40px 0 100px 0}.doc-content{flex-grow:1}.doc-signature{text-align:right;padding-right:1cm}</style>",
  hp: true,
- im: {"13791":"fullName","33356":"issuanceCity","38374":"DateToday","58287":"ssn","62864":"nationalId","00100":"citizen_title","00200":"declarant_title"}
+ im: {"30402":"fullName","36942":"ssn","57953":"issuanceCity","63158":"DateToday","97227":"nationalId","00100":"citizen_title","00200":"declarant_title"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

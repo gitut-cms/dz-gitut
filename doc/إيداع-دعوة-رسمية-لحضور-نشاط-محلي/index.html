@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["employerName","fullName","details","employmentStartDate","address"],
  fc: {"employerName":{"t":"text","l":"اسم المؤسسة التي تعمل فيها","p":"مثال: سوناطراك","q":"اسم الجمعية / الهيئة المنظمة"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"اسم ممثل الجمعية (الرئيس)"},"details":{"t":"text","l":"اسم النشاط / التظاهرة","p":"اسم النشاط / التظاهرة","q":"اسم النشاط / التظاهرة"},"employmentStartDate":{"t":"date","l":"تاريخ بدء العمل","p":"مثال: 2016/02/01","q":"تاريخ وتوقيت النشاط"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"مكان إقامة النشاط"}},
  lr: [],
- th: "<div class=\"header\"><div>الجمعية/الهيئة: 97299<br>الممثل: 51718</div><div style=\"text-align:left\">في: 75173</div></div><div class=\"title\">الموضوع: دعوة رسمية لحضور نشاط</div><div class=\"content\">إلى السيد المحترم،<br><br>يسرنا ويشرفنا، نيابة عن أعضاء الجمعية، أن نتوجه إلى سيادتكم بهذه الدعوة الرسمية لحضور فعاليات: <strong>24854</strong>.<br><br>وذلك يوم: <strong>53524</strong>.<br>بالمكان المسمى: <strong>90402</strong>.<br><br>إن حضوركم سيضفي طابعاً مميزاً على نشاطنا وسيكون دعماً وتشجيعاً كبيراً لمبادراتنا المحلية.<br><br>تقبلوا منا، سيدي، أسمى عبارات التقدير والاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">الرئيس / الممثل:<br>51718</div></div>",
+ th: "<div class=\"header\"><div>الجمعية/الهيئة: 22403<br>الممثل: 79265</div><div style=\"text-align:left\">في: 93957</div></div><div class=\"title\">الموضوع: دعوة رسمية لحضور نشاط</div><div class=\"content\">إلى السيد المحترم،<br><br>يسرنا ويشرفنا، نيابة عن أعضاء الجمعية، أن نتوجه إلى سيادتكم بهذه الدعوة الرسمية لحضور فعاليات: <strong>35724</strong>.<br><br>وذلك يوم: <strong>77872</strong>.<br>بالمكان المسمى: <strong>90303</strong>.<br><br>إن حضوركم سيضفي طابعاً مميزاً على نشاطنا وسيكون دعماً وتشجيعاً كبيراً لمبادراتنا المحلية.<br><br>تقبلوا منا، سيدي، أسمى عبارات التقدير والاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">الرئيس / الممثل:<br>79265</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"24854":"details","51718":"fullName","53524":"employmentStartDate","75173":"DateToday","90402":"address","97299":"employerName"}
+ im: {"22403":"employerName","35724":"details","77872":"employmentStartDate","79265":"fullName","90303":"address","93957":"DateToday"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

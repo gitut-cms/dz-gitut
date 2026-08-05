@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","residenceCommune","details","amountReceived"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"details":{"t":"textarea","l":"نوع المرض وطبيعة العلاج المطلوب","p":"نوع المرض وطبيعة العلاج المطلوب","q":"نوع المرض وطبيعة العلاج المطلوب"},"amountReceived":{"t":"text","l":"المبلغ المستلم","p":"مثال: 15000","q":"تكلفة العلاج التقديرية"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 82360<br>العنوان: 99318<br>الهاتف: 70487</div><div style=\"text-align:left\">82750 في: 12270</div></div><div class=\"title\">الموضوع: طلب مساعدة لتغطية تكاليف علاج طبي</div><div class=\"content\">إلى السيد الوالي / رئيس لجنة الشؤون الاجتماعية،<br><br>أتقدم إليكم بهذا الطلب الإنساني العاجل، راجياً منكم مد يد العون والمساعدة.<br><br>أحيطكم علماً بأنني أعاني من مرض: <strong>51535</strong>، ويتطلب علاجي مصاريف باهظة (أدوية/تحاليل) تقدر بحوالي: <strong>67344</strong>، وهو مبلغ يفوق قدرتي المادية المحدودة.<br><br>ونظراً لعدم توفر هذا العلاج مجاناً أو عدم تغطيته بالكامل من قبل الضمان الاجتماعي، ألتمس من سيادتكم التكفل بجزء من هذه المصاريف.<br><br>تقبلوا مني فائق الاحترام والتقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المريض:<br>82360</div></div>",
+ th: "<div class=\"header\"><div>الاسم: 99919<br>العنوان: 92521<br>الهاتف: 21310</div><div style=\"text-align:left\">91175 في: 99614</div></div><div class=\"title\">الموضوع: طلب مساعدة لتغطية تكاليف علاج طبي</div><div class=\"content\">إلى السيد الوالي / رئيس لجنة الشؤون الاجتماعية،<br><br>أتقدم إليكم بهذا الطلب الإنساني العاجل، راجياً منكم مد يد العون والمساعدة.<br><br>أحيطكم علماً بأنني أعاني من مرض: <strong>11402</strong>، ويتطلب علاجي مصاريف باهظة (أدوية/تحاليل) تقدر بحوالي: <strong>87030</strong>، وهو مبلغ يفوق قدرتي المادية المحدودة.<br><br>ونظراً لعدم توفر هذا العلاج مجاناً أو عدم تغطيته بالكامل من قبل الضمان الاجتماعي، ألتمس من سيادتكم التكفل بجزء من هذه المصاريف.<br><br>تقبلوا مني فائق الاحترام والتقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المريض:<br>99919</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"12270":"DateToday","51535":"details","67344":"amountReceived","70487":"phone","82360":"fullName","82750":"residenceCommune","99318":"address"}
+ im: {"11402":"details","21310":"phone","87030":"amountReceived","91175":"residenceCommune","92521":"address","99614":"DateToday","99919":"fullName"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

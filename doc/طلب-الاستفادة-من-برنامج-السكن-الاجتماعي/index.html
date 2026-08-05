@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","residenceCommune","details"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"details":{"t":"textarea","l":"وصف وضعية السكن الحالية والدخل الشهري","p":"وصف وضعية السكن الحالية والدخل الشهري","q":"وصف وضعية السكن الحالية والدخل الشهري"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 32550<br>العنوان: 29879<br>الهاتف: 70384</div><div style=\"text-align:left\">60995 في: 26705</div></div><div class=\"title\">الموضوع: طلب الاستفادة من السكن الاجتماعي (LPL)</div><div class=\"content\">إلى السيد رئيس لجنة السكن / رئيس الدائرة المحترم،<br><br>يشرفني أن أتقدم بطلبي هذا لتسجيلي ضمن طالبي السكن العمومي الإيجاري.<br><br>أحيطكم علماً سيدي الرئيس أنني متزوج وأب لعدة أطفال، وأعيش حالياً في ظروف سكنية صعبة جداً تتمثل في: <strong>49265</strong>. كما أن دخلي الشهري لا يسمح لي باقتناء سكن أو استئجار مسكن لائق.<br><br>ألتمس من سيادتكم أخذ وضعيتي المزرية بعين الاعتبار ومنحي سكناً يحفظ كرامة عائلتي.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>32550</div></div>",
+ th: "<div class=\"header\"><div>الاسم: 24897<br>العنوان: 39226<br>الهاتف: 98111</div><div style=\"text-align:left\">28215 في: 79952</div></div><div class=\"title\">الموضوع: طلب الاستفادة من السكن الاجتماعي (LPL)</div><div class=\"content\">إلى السيد رئيس لجنة السكن / رئيس الدائرة المحترم،<br><br>يشرفني أن أتقدم بطلبي هذا لتسجيلي ضمن طالبي السكن العمومي الإيجاري.<br><br>أحيطكم علماً سيدي الرئيس أنني متزوج وأب لعدة أطفال، وأعيش حالياً في ظروف سكنية صعبة جداً تتمثل في: <strong>50519</strong>. كما أن دخلي الشهري لا يسمح لي باقتناء سكن أو استئجار مسكن لائق.<br><br>ألتمس من سيادتكم أخذ وضعيتي المزرية بعين الاعتبار ومنحي سكناً يحفظ كرامة عائلتي.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>24897</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"26705":"DateToday","29879":"address","32550":"fullName","49265":"details","60995":"residenceCommune","70384":"phone"}
+ im: {"24897":"fullName","28215":"residenceCommune","39226":"address","50519":"details","79952":"DateToday","98111":"phone"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

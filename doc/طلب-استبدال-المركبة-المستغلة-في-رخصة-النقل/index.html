@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","ToTheGovernorOftheStateOf","documentName","vehicleRegistrationCardNumber","commercialRegistryNumber","residenceCommune"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"ToTheGovernorOftheStateOf":{"t":"text","l":"الولاية التي تقدم لها الوثيقة","p":"مثال: إلى السيد والي ولاية [ToTheGovernorOftheStateOf]","q":"ولاية مديرية النقل"},"documentName":{"t":"text","l":"اسم المستند","p":"(يُملأ من اسم المستند)","q":"اسم المستند"},"vehicleRegistrationCardNumber":{"t":"text","l":"رقم البطاقة الرمادية","p":"مثال: 12345 123 16","q":"ترقيم المركبة القديمة"},"commercialRegistryNumber":{"t":"text","l":"رقم السجل التجاري","p":"مثال: 16/00-1234567 A 24","q":"معلومات المركبة الجديدة (نوع وترقيم)"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"}},
  lr: [],
- th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 43086<br>العنوان: 67112<br>رقم الهاتف: 96166</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير النقل لولاية 71643</div><div class=\"title\">الموضوع: 25718</div><p>يشرفني أن أتقدم إليكم بطلب الموافقة على استبدال المركبة المستغلة حاليًا في نشاط النقل الخاص بي.</p><p>المركبة القديمة: ذات الترقيم <strong>34658</strong>.<br>المركبة الجديدة المقترحة: <strong>96920</strong>.</p><p>السبب: تجديد الحظيرة / عطل تقني / بيع المركبة القديمة.</p><p>تقبلوا مني فائق الاحترام والتقدير.</p></div><div class=\"footer\"><div>70623 بتاريخ: 53440</div><div class=\"signature-box\">إمضاء المعني</div></div>",
+ th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 21254<br>العنوان: 19571<br>رقم الهاتف: 35638</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير النقل لولاية 46372</div><div class=\"title\">الموضوع: 13606</div><p>يشرفني أن أتقدم إليكم بطلب الموافقة على استبدال المركبة المستغلة حاليًا في نشاط النقل الخاص بي.</p><p>المركبة القديمة: ذات الترقيم <strong>38399</strong>.<br>المركبة الجديدة المقترحة: <strong>20117</strong>.</p><p>السبب: تجديد الحظيرة / عطل تقني / بيع المركبة القديمة.</p><p>تقبلوا مني فائق الاحترام والتقدير.</p></div><div class=\"footer\"><div>40472 بتاريخ: 45928</div><div class=\"signature-box\">إمضاء المعني</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"25718":"documentName","34658":"vehicleRegistrationCardNumber","43086":"fullName","53440":"DateToday","67112":"address","70623":"residenceCommune","71643":"ToTheGovernorOftheStateOf","96166":"phone","96920":"commercialRegistryNumber"}
+ im: {"13606":"documentName","19571":"address","20117":"commercialRegistryNumber","21254":"fullName","35638":"phone","38399":"vehicleRegistrationCardNumber","40472":"residenceCommune","45928":"DateToday","46372":"ToTheGovernorOftheStateOf"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

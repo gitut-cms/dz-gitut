@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","residenceCommune","documentName","details"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"documentName":{"t":"select","l":"اسم المستند","p":"اختر...","q":"نوع المنحة المتأخرة","o":["منحة البطالة","منحة التضامن الجزافية (AFS)","إعانة السكن الريفي","منحة ذوي الاحتياجات الخاصة","منحة المتمدرسين","قفة رمضان"]},"details":{"t":"text","l":"تاريخ الاستفادة/إيداع الملف ومدة التأخر","p":"تاريخ الاستفادة/إيداع الملف ومدة التأخر","q":"تاريخ الاستفادة/إيداع الملف ومدة التأخر"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 71743<br>العنوان: 57427</div><div style=\"text-align:left\">20515 في: 48975</div></div><div class=\"title\">الموضوع: شكوى بخصوص تأخر في صرف منحة</div><div class=\"content\">إلى السيد المدير المعني (النشاط الاجتماعي / التشغيل)،<br><br>أحيطكم علماً بأنني من المستفيدين الشرعيين من منحة: <strong>82568</strong>.<br><br>ورغم استيفائي لجميع الشروط وإيداعي للملفات المطلوبة (التفاصيل: <strong>80856</strong>)، إلا أنني لم أتلقَ مستحقاتي المالية لعدة أشهر، مما أثر على وضعي المعيشي.<br><br>ألتمس منكم التدخل لتسوية وضعيتي المالية وصرف مستحقاتي العالقة.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>71743</div></div>",
+ th: "<div class=\"header\"><div>الاسم: 21561<br>العنوان: 99420</div><div style=\"text-align:left\">20172 في: 21588</div></div><div class=\"title\">الموضوع: شكوى بخصوص تأخر في صرف منحة</div><div class=\"content\">إلى السيد المدير المعني (النشاط الاجتماعي / التشغيل)،<br><br>أحيطكم علماً بأنني من المستفيدين الشرعيين من منحة: <strong>59517</strong>.<br><br>ورغم استيفائي لجميع الشروط وإيداعي للملفات المطلوبة (التفاصيل: <strong>66547</strong>)، إلا أنني لم أتلقَ مستحقاتي المالية لعدة أشهر، مما أثر على وضعي المعيشي.<br><br>ألتمس منكم التدخل لتسوية وضعيتي المالية وصرف مستحقاتي العالقة.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>21561</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"20515":"residenceCommune","48975":"DateToday","57427":"address","71743":"fullName","80856":"details","82568":"documentName"}
+ im: {"20172":"residenceCommune","21561":"fullName","21588":"DateToday","59517":"documentName","66547":"details","99420":"address"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

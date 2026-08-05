@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","residenceCommune","utilityType","billNumber","counterNumber","realIndex"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"utilityType":{"t":"select","l":"نوع الخدمة","p":"اختر...","q":"نوع الخدمة","o":["الكهرباء والغاز (Sonelgaz)","المياه (ADE)"]},"billNumber":{"t":"text","l":"رقم الفاتورة محل الشكوى","p":"رقم الفاتورة محل الشكوى","q":"رقم الفاتورة محل الشكوى"},"counterNumber":{"t":"text","l":"رقم العداد","p":"رقم العداد","q":"رقم العداد"},"realIndex":{"t":"text","l":"البيان الحقيقي للعداد (الرقم الحالي)","p":"البيان الحقيقي للعداد (الرقم الحالي)","q":"البيان الحقيقي للعداد (الرقم الحالي)"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 94954<br>العنوان: 71425</div><div style=\"text-align:left\">30164 في: 52571</div></div><div class=\"title\">الموضوع: طعن في مبلغ فاتورة 11457</div><div class=\"content\">إلى السيد مدير الوكالة التجارية لـ 11457،<br><br>يشرفني أن أتقدم إليكم بهذا الطعن بخصوص الفاتورة رقم <strong>36110</strong>، الخاصة بالعداد رقم <strong>87331</strong>.<br><br>حيث تفاجأت بقيمة المبلغ المطلوب دفعه والذي لا يتناسب إطلاقاً مع استهلاكي المعتاد. وبعد تفقدي للعداد، وجدت أن البيان الحقيقي هو: <strong>67588</strong>، وهو أقل بكثير مما هو مسجل في الفاتورة (والذي يبدو أنه تقديري أو ناجم عن خطأ في القراءة).<br><br>لذا، أطلب منكم إرسال تقني للتحقق من العداد ومراجعة الفاتورة وتصحيح المبلغ قبل أن أقوم بالتسديد.<br><br>في انتظار ردكم، تقبلوا مني التحية.</div><div class=\"footer\">الزبون:<br>94954</div>",
+ th: "<div class=\"header\"><div>الاسم: 18999<br>العنوان: 24503</div><div style=\"text-align:left\">11239 في: 54315</div></div><div class=\"title\">الموضوع: طعن في مبلغ فاتورة 93137</div><div class=\"content\">إلى السيد مدير الوكالة التجارية لـ 93137،<br><br>يشرفني أن أتقدم إليكم بهذا الطعن بخصوص الفاتورة رقم <strong>85895</strong>، الخاصة بالعداد رقم <strong>73410</strong>.<br><br>حيث تفاجأت بقيمة المبلغ المطلوب دفعه والذي لا يتناسب إطلاقاً مع استهلاكي المعتاد. وبعد تفقدي للعداد، وجدت أن البيان الحقيقي هو: <strong>23838</strong>، وهو أقل بكثير مما هو مسجل في الفاتورة (والذي يبدو أنه تقديري أو ناجم عن خطأ في القراءة).<br><br>لذا، أطلب منكم إرسال تقني للتحقق من العداد ومراجعة الفاتورة وتصحيح المبلغ قبل أن أقوم بالتسديد.<br><br>في انتظار ردكم، تقبلوا مني التحية.</div><div class=\"footer\">الزبون:<br>18999</div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;text-align:left;font-size:16pt}</style>",
  hp: true,
- im: {"11457":"utilityType","30164":"residenceCommune","36110":"billNumber","52571":"DateToday","67588":"realIndex","71425":"address","87331":"counterNumber","94954":"fullName"}
+ im: {"11239":"residenceCommune","18999":"fullName","23838":"realIndex","24503":"address","54315":"DateToday","73410":"counterNumber","85895":"billNumber","93137":"utilityType"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","ToTheGovernorOftheStateOf","maritalStatus","commercialRegistryNumber","residenceCommune"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"ToTheGovernorOftheStateOf":{"t":"text","l":"الولاية التي تقدم لها الوثيقة","p":"مثال: إلى السيد والي ولاية [ToTheGovernorOftheStateOf]","q":"ولاية مديرية النقل"},"maritalStatus":{"t":"select","l":"الحالة المدنية","p":"اختر...","q":"نوع التوقف","o":["توقف مؤقت","توقف نهائي"]},"commercialRegistryNumber":{"t":"text","l":"رقم السجل التجاري","p":"مثال: 16/00-1234567 A 24","q":"رقم الرخصة"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"}},
  lr: [],
- th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 93891<br>العنوان: 52384<br>رقم الهاتف: 12996</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير النقل لولاية 26598</div><div class=\"title\">الموضوع: إعلام بوقف نشاط النقل (22148)</div><p>يؤسفني أن أعلمكم بقراري بوقف ممارسة نشاط النقل المستغل بموجب الرخصة رقم: <strong>85487</strong>.</p><p>نوع التوقف: <strong>22148</strong>.</p><p>سأقوم بإيداع وثائق الاستغلال (الرخصة، البطاقة البنفسجية، إلخ) لدى مصالحكم في الآجال القانونية.</p><p>تقبلوا مني فائق الاحترام والتقدير.</p></div><div class=\"footer\"><div>45914 بتاريخ: 33977</div><div class=\"signature-box\">إمضاء المعني</div></div>",
+ th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 41564<br>العنوان: 25657<br>رقم الهاتف: 47363</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير النقل لولاية 35492</div><div class=\"title\">الموضوع: إعلام بوقف نشاط النقل (62290)</div><p>يؤسفني أن أعلمكم بقراري بوقف ممارسة نشاط النقل المستغل بموجب الرخصة رقم: <strong>64680</strong>.</p><p>نوع التوقف: <strong>62290</strong>.</p><p>سأقوم بإيداع وثائق الاستغلال (الرخصة، البطاقة البنفسجية، إلخ) لدى مصالحكم في الآجال القانونية.</p><p>تقبلوا مني فائق الاحترام والتقدير.</p></div><div class=\"footer\"><div>55700 بتاريخ: 47174</div><div class=\"signature-box\">إمضاء المعني</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"12996":"phone","22148":"maritalStatus","26598":"ToTheGovernorOftheStateOf","33977":"DateToday","45914":"residenceCommune","52384":"address","85487":"commercialRegistryNumber","93891":"fullName"}
+ im: {"25657":"address","35492":"ToTheGovernorOftheStateOf","41564":"fullName","47174":"DateToday","47363":"phone","55700":"residenceCommune","62290":"maritalStatus","64680":"commercialRegistryNumber"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

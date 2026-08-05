@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["position","details","amountRequested","fullName"],
  fc: {"position":{"t":"text","l":"صفة الطالب","p":"صفة الطالب","q":"صفة الطالب"},"details":{"t":"textarea","l":"تفاصيل الوفد (طبيعته، عدده، مدة الزيارة)","p":"تفاصيل الوفد (طبيعته، عدده، مدة الزيارة)","q":"تفاصيل الوفد (طبيعته، عدده، مدة الزيارة)"},"amountRequested":{"t":"text","l":"المبلغ التقديري للمصاريف","p":"المبلغ التقديري للمصاريف","q":"المبلغ التقديري للمصاريف"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"}},
  lr: [],
- th: "<div class=\"header\"><div>من: 67849</div><div style=\"text-align:left\">في: 75159</div></div><div class=\"title\">الموضوع: طلب الموافقة على مصاريف استقبال</div><div class=\"content\">إلى السيد (السلطة الوصية / المدير العام)،<br><br>في إطار نشاطات المؤسسة، نعتزم استقبال وفد رسمي يتكون من:<br><strong>65131</strong>.<br><br>ونظراً للطابع الرسمي لهذه الزيارة، نلتمس من سيادتكم الموافقة والترخيص المسبق لتغطية مصاريف الإيواء والإطعام المتعلقة بهذا الوفد، والتي تقدر بحوالي:<br><strong>30885</strong>.<br><br>سيتم تسوية هذه المصاريف من بند \"الاستقبالات والإكراميات\" في الميزانية.<br><br>تقبلوا مني فائق التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">المسؤول:<br>26562</div></div>",
+ th: "<div class=\"header\"><div>من: 26049</div><div style=\"text-align:left\">في: 75441</div></div><div class=\"title\">الموضوع: طلب الموافقة على مصاريف استقبال</div><div class=\"content\">إلى السيد (السلطة الوصية / المدير العام)،<br><br>في إطار نشاطات المؤسسة، نعتزم استقبال وفد رسمي يتكون من:<br><strong>30033</strong>.<br><br>ونظراً للطابع الرسمي لهذه الزيارة، نلتمس من سيادتكم الموافقة والترخيص المسبق لتغطية مصاريف الإيواء والإطعام المتعلقة بهذا الوفد، والتي تقدر بحوالي:<br><strong>96736</strong>.<br><br>سيتم تسوية هذه المصاريف من بند \"الاستقبالات والإكراميات\" في الميزانية.<br><br>تقبلوا مني فائق التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">المسؤول:<br>38350</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"26562":"fullName","30885":"amountRequested","65131":"details","67849":"position","75159":"DateToday"}
+ im: {"26049":"position","30033":"details","38350":"fullName","75441":"DateToday","96736":"amountRequested"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

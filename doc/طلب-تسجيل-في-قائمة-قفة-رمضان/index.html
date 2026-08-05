@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","numberOfChildren","residenceCommune","monthlyIncome"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"numberOfChildren":{"t":"text","l":"عدد الأطفال (الإجمالي)","p":"مثال: 2","q":"عدد الأطفال (الإجمالي)"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"monthlyIncome":{"t":"text","l":"الدخل الشهري (أو: بدون دخل)","p":"الدخل الشهري (أو: بدون دخل)","q":"الدخل الشهري (أو: بدون دخل)"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم واللقب: 98576<br>العنوان: 28607<br>عدد الأبناء: 24726</div><div style=\"text-align:left\">75261 في: 70278</div></div><div class=\"title\">الموضوع: طلب تسجيل في قائمة قفة رمضان</div><div class=\"content\">إلى السيد رئيس المجلس الشعبي البلدي لبلدية 75261،<br><br>أتشرف بأن أتقدم إليكم بطلبي هذا قصد تسجيلي ضمن القائمة الاسمية للمستفيدين من العملية التضامنية لشهر رمضان المبارك (منحة رمضان).<br><br>أحيطكم علماً سيدي الرئيس أنني رب عائلة، ولا أملك دخلاً كافياً لتلبية حاجيات أسرتي (الدخل الشهري: <strong>14555</strong>)، وظروفي الاجتماعية جد قاسية.<br><br>ألتمس منكم قبول طلبي ومساعدتي في هذا الشهر الفضيل.<br><br>تقبلوا مني أسمى عبارات التقدير والاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>98576</div></div>",
+ th: "<div class=\"header\"><div>الاسم واللقب: 60995<br>العنوان: 64983<br>عدد الأبناء: 98624</div><div style=\"text-align:left\">77206 في: 75227</div></div><div class=\"title\">الموضوع: طلب تسجيل في قائمة قفة رمضان</div><div class=\"content\">إلى السيد رئيس المجلس الشعبي البلدي لبلدية 77206،<br><br>أتشرف بأن أتقدم إليكم بطلبي هذا قصد تسجيلي ضمن القائمة الاسمية للمستفيدين من العملية التضامنية لشهر رمضان المبارك (منحة رمضان).<br><br>أحيطكم علماً سيدي الرئيس أنني رب عائلة، ولا أملك دخلاً كافياً لتلبية حاجيات أسرتي (الدخل الشهري: <strong>34943</strong>)، وظروفي الاجتماعية جد قاسية.<br><br>ألتمس منكم قبول طلبي ومساعدتي في هذا الشهر الفضيل.<br><br>تقبلوا مني أسمى عبارات التقدير والاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>60995</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"14555":"monthlyIncome","24726":"numberOfChildren","28607":"address","70278":"DateToday","75261":"residenceCommune","98576":"fullName"}
+ im: {"34943":"monthlyIncome","60995":"fullName","64983":"address","75227":"DateToday","77206":"residenceCommune","98624":"numberOfChildren"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

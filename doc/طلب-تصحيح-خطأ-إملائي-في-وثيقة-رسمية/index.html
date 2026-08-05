@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","documentType","errorDescription","correctionRequested"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"documentType":{"t":"text","l":"الوثيقة التي بها خطأ","p":"الوثيقة التي بها خطأ","q":"الوثيقة التي بها خطأ"},"errorDescription":{"t":"text","l":"وصف الخطأ (كيف كُتبت خطأً)","p":"وصف الخطأ (كيف كُتبت خطأً)","q":"وصف الخطأ (كيف كُتبت خطأً)"},"correctionRequested":{"t":"text","l":"التصحيح المطلوب (كيف يجب أن تكون)","p":"التصحيح المطلوب (كيف يجب أن تكون)","q":"التصحيح المطلوب (كيف يجب أن تكون)"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم واللقب: 10243<br>العنوان: 39144</div><div style=\"text-align:left\">في: 40649</div></div><div class=\"title\">الموضوع: طلب تصحيح خطأ مادي</div><div class=\"content\">إلى السيد المسؤول (رئيس مصلحة الحالة المدنية / المدير)،<br><br>أتشرف بأن أتقدم إليكم بهذا الطلب قصد تصحيح خطأ مادي ورد في الوثيقة التالية: <strong>51041</strong>.<br><br>حيث أن المعلومات وردت خاطئة كالتالي:<br><span style=\"text-decoration: line-through;\"><strong>25608</strong></span><br><br>والصواب هو:<br><strong>62596</strong><br><br>مرفق بهذا الطلب الوثائق الثبوتية الصحيحة التي تؤكد صحة ادعائي.<br><br>أرجو من سيادتكم القيام بالتصحيح اللازم في السجلات أو إصدار وثيقة مصححة.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>10243</div></div>",
+ th: "<div class=\"header\"><div>الاسم واللقب: 70414<br>العنوان: 52492</div><div style=\"text-align:left\">في: 82655</div></div><div class=\"title\">الموضوع: طلب تصحيح خطأ مادي</div><div class=\"content\">إلى السيد المسؤول (رئيس مصلحة الحالة المدنية / المدير)،<br><br>أتشرف بأن أتقدم إليكم بهذا الطلب قصد تصحيح خطأ مادي ورد في الوثيقة التالية: <strong>86959</strong>.<br><br>حيث أن المعلومات وردت خاطئة كالتالي:<br><span style=\"text-decoration: line-through;\"><strong>63226</strong></span><br><br>والصواب هو:<br><strong>53968</strong><br><br>مرفق بهذا الطلب الوثائق الثبوتية الصحيحة التي تؤكد صحة ادعائي.<br><br>أرجو من سيادتكم القيام بالتصحيح اللازم في السجلات أو إصدار وثيقة مصححة.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>70414</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"10243":"fullName","25608":"errorDescription","39144":"address","40649":"DateToday","51041":"documentType","62596":"correctionRequested"}
+ im: {"52492":"address","53968":"correctionRequested","63226":"errorDescription","70414":"fullName","82655":"DateToday","86959":"documentType"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

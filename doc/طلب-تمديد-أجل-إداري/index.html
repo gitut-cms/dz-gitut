@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","fileReference","deadlineDate","reason"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"fileReference":{"t":"text","l":"مرجع الملف / الإعذار","p":"مرجع الملف / الإعذار","q":"مرجع الملف / الإعذار"},"deadlineDate":{"t":"date","l":"تاريخ انتهاء الأجل الحالي","p":"تاريخ انتهاء الأجل الحالي","q":"تاريخ انتهاء الأجل الحالي"},"reason":{"t":"textarea","l":"سبب طلب التمديد","p":"سبب طلب التمديد","q":"سبب طلب التمديد"}},
  lr: [],
- th: "<div class=\"header\"><div>من: 65899<br>العنوان: 62231</div><div style=\"text-align:left\">في: 99621</div></div><div class=\"title\">الموضوع: طلب تمديد أجل إداري</div><div class=\"content\">إلى السيد المسؤول،<br><br>رداً على مراسلتكم/إعذاركم رقم <strong>86479</strong> والمتضمن تحديد تاريخ <strong>84625</strong> كأجل نهائي للقيام بـ (ذكر الإجراء المطلوب).<br><br>يؤسفني إبلاغكم أنني لم أتمكن من الالتزام بهذا الأجل بسبب ظروف قاهرة خارجة عن إرادتي تتمثل في:<br><strong>77389</strong><br><br>وعليه، ألتمس من سيادتكم منحي مهلة إضافية معقولة حتى أتمكن من تسوية الوضعية والاستجابة لطلبكم.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>65899</div></div>",
+ th: "<div class=\"header\"><div>من: 28262<br>العنوان: 12555</div><div style=\"text-align:left\">في: 30324</div></div><div class=\"title\">الموضوع: طلب تمديد أجل إداري</div><div class=\"content\">إلى السيد المسؤول،<br><br>رداً على مراسلتكم/إعذاركم رقم <strong>26904</strong> والمتضمن تحديد تاريخ <strong>30561</strong> كأجل نهائي للقيام بـ (ذكر الإجراء المطلوب).<br><br>يؤسفني إبلاغكم أنني لم أتمكن من الالتزام بهذا الأجل بسبب ظروف قاهرة خارجة عن إرادتي تتمثل في:<br><strong>83006</strong><br><br>وعليه، ألتمس من سيادتكم منحي مهلة إضافية معقولة حتى أتمكن من تسوية الوضعية والاستجابة لطلبكم.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>28262</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"62231":"address","65899":"fullName","77389":"reason","84625":"deadlineDate","86479":"fileReference","99621":"DateToday"}
+ im: {"12555":"address","26904":"fileReference","28262":"fullName","30324":"DateToday","30561":"deadlineDate","83006":"reason"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["s_title","fullName","idCardNumber","phoneNumber","operator","lostDate","issuanceCity","s_signer"],
  fc: {"s_title":{"t":"text","l":"s_title","p":"s_title","q":"s_title"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: عيسى مراد","q":"الاسم واللقب بالكامل"},"idCardNumber":{"t":"text","l":"رقم بطاقة التعريف الوطنية","p":"رقم البطاقة","q":"رقم بطاقة التعريف الوطنية"},"phoneNumber":{"t":"text","l":"رقم الهاتف الضائع","p":"0XXXXXXXXX","q":"رقم الهاتف الضائع"},"operator":{"t":"select","l":"متعامل الهاتف","p":"اختر...","q":"متعامل الهاتف","o":[{"v":"موبيليس","l":"موبيليس"},{"v":"جيزي","l":"جيزي"},{"v":"أوريدو","l":"أوريدو"}]},"lostDate":{"t":"date","l":"تاريخ الضياع","p":"تاريخ الضياع","q":"تاريخ الضياع"},"issuanceCity":{"t":"text","l":"ولاية أو مدينة التحرير","p":"مثال: باتنة","q":"ولاية أو مدينة التحرير"},"s_signer":{"t":"text","l":"s_signer","p":"s_signer","q":"s_signer"}},
  lr: [],
- th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريـــح بضيـــاع شريحـــة هاتـــف نقـــال</div><div class=\"doc-content\">أنا الموقع أسفله 82029: <strong>57566</strong>، الحامل لبطاقة التعريف الوطنية رقم: 33187.<br><br>أصرح بأنني تعرضت لضياع شريحة الهاتف النقال الخاصة بي الحاملة للرقم: 81052 التابعة للمتعامل 78616 بتاريخ: 57490.<br><br>أدلي بهذا التصريح قصد الحصول على شريحة جديدة بنفس الرقم (SIM Swap)، وأتحمل كامل المسؤولية عن صحة هذا التصريح.</div><div class=\"meta-header\">حرر بـ: 78444 في: 37309</div><div class=\"doc-signature\">إمضاء 97403<br><br><strong>57566</strong>",
+ th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريـــح بضيـــاع شريحـــة هاتـــف نقـــال</div><div class=\"doc-content\">أنا الموقع أسفله 50081: <strong>47354</strong>، الحامل لبطاقة التعريف الوطنية رقم: 98718.<br><br>أصرح بأنني تعرضت لضياع شريحة الهاتف النقال الخاصة بي الحاملة للرقم: 26267 التابعة للمتعامل 81402 بتاريخ: 53663.<br><br>أدلي بهذا التصريح قصد الحصول على شريحة جديدة بنفس الرقم (SIM Swap)، وأتحمل كامل المسؤولية عن صحة هذا التصريح.</div><div class=\"meta-header\">حرر بـ: 67050 في: 41119</div><div class=\"doc-signature\">إمضاء 29739<br><br><strong>47354</strong>",
  ph: "<meta charset=\"utf-8\"><title>تصريح بضياع شريحة هاتف</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.republic-header{text-align:center;font-weight:700;margin-bottom:10px}.meta-header{text-align:left;font-size:0.9em;margin-top:20px}.doc-title{text-align:center;font-size:1.7em;font-weight:700;text-decoration:underline;margin:40px 0 100px 0}.doc-content{flex-grow:1}.doc-signature{text-align:right;padding-right:1cm}</style>",
  hp: true,
- im: {"33187":"idCardNumber","37309":"DateToday","57490":"lostDate","57566":"fullName","78444":"issuanceCity","78616":"operator","81052":"phoneNumber","82029":"s_title","97403":"s_signer"}
+ im: {"26267":"phoneNumber","29739":"s_signer","41119":"DateToday","47354":"fullName","50081":"s_title","53663":"lostDate","67050":"issuanceCity","81402":"operator","98718":"idCardNumber"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

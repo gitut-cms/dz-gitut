@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["gender","citizen_title","fullName","nationalId","born_title","birthDate","birthPlace","address","signer_title","issuanceCity","declarant_title"],
  fc: {"gender":{"t":"select","l":"الجنس","p":"اختر...","q":"الجنس","o":[{"v":"male","l":"ذكر","m":{"citizen_title":"أنا الموقع أسفله السيد","born_title":"المولود","signer_title":"أصرح بأنني","declarant_title":"المصرح"}},{"v":"female","l":"أنثى","m":{"citizen_title":"أنا الموقعة أسفله السيدة","born_title":"المولودة","signer_title":"أصرح بأنني","declarant_title":"المصرحة"}}]},"citizen_title":{"t":"text","l":"citizen_title","p":"citizen_title","q":"citizen_title"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"الاسم واللقب","q":"الاسم واللقب الكامل"},"nationalId":{"t":"text","l":"رقم بطاقة التعريف الوطنية","p":"رقم البطاقة","q":"رقم بطاقة التعريف الوطنية"},"born_title":{"t":"text","l":"born_title","p":"born_title","q":"born_title"},"birthDate":{"t":"date","l":"تاريخ الازدياد","p":"تاريخ الازدياد","q":"تاريخ الازدياد"},"birthPlace":{"t":"text","l":"مكان الازدياد","p":"مكان الازدياد","q":"مكان الازدياد"},"address":{"t":"text","l":"العنوان","p":"العنوان الكامل","q":"العنوان الشخصي"},"signer_title":{"t":"text","l":"signer_title","p":"signer_title","q":"signer_title"},"issuanceCity":{"t":"text","l":"ولاية أو مدينة التحرير","p":"مثال: ميلة","q":"ولاية أو مدينة التحرير"},"declarant_title":{"t":"text","l":"declarant_title","p":"declarant_title","q":"declarant_title"}},
  lr: [],
- th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريح شرفي بضياع رخصة السياقة المؤقتة</div><div class=\"doc-content\"><p>أنا الموقع أسفله 00100: <strong>17679</strong>، الحامل لبطاقة التعريف الوطنية رقم: 16891.</p><p>00200 بتاريخ: 83884 بـ: 71917. الساكن بـ: 93316.</p><br><p>00300 وتحت كامل مسؤوليتي قد أضعت رخصة سياقتي المؤقتة في ظروف مجهولة.</p><p>أقدم هذا التصريح قصد إعلام المصالح المعنية واتخاذ الإجراءات اللازمة لاستخراج نظير عنها.</p></div><div class=\"meta-header\">حرر بـ: 62334 في: 81095</div><div class=\"doc-signature\">إمضاء 00400<br><br><strong>17679</strong>",
+ th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريح شرفي بضياع رخصة السياقة المؤقتة</div><div class=\"doc-content\"><p>أنا الموقع أسفله 00100: <strong>95670</strong>، الحامل لبطاقة التعريف الوطنية رقم: 41798.</p><p>00200 بتاريخ: 71697 بـ: 53317. الساكن بـ: 93200.</p><br><p>00300 وتحت كامل مسؤوليتي قد أضعت رخصة سياقتي المؤقتة في ظروف مجهولة.</p><p>أقدم هذا التصريح قصد إعلام المصالح المعنية واتخاذ الإجراءات اللازمة لاستخراج نظير عنها.</p></div><div class=\"meta-header\">حرر بـ: 49432 في: 20314</div><div class=\"doc-signature\">إمضاء 00400<br><br><strong>95670</strong>",
  ph: "<meta charset=\"utf-8\"><title>تصريح بضياع رخصة مؤقتة</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.republic-header{text-align:center;font-weight:700;margin-bottom:10px}.meta-header{text-align:left;font-size:0.9em;margin-top:20px}.doc-title{text-align:center;font-size:1.7em;font-weight:700;text-decoration:underline;margin:40px 0 100px 0}.doc-content{flex-grow:1}.doc-signature{text-align:right;padding-right:1cm}</style>",
  hp: true,
- im: {"16891":"nationalId","17679":"fullName","62334":"issuanceCity","71917":"birthPlace","81095":"DateToday","83884":"birthDate","93316":"address","00100":"citizen_title","00200":"born_title","00300":"signer_title","00400":"declarant_title"}
+ im: {"20314":"DateToday","41798":"nationalId","49432":"issuanceCity","53317":"birthPlace","71697":"birthDate","93200":"address","95670":"fullName","00100":"citizen_title","00200":"born_title","00300":"signer_title","00400":"declarant_title"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

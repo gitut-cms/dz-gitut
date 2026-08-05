@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["s_title","fullName","idCardNumber","s_born","birthDate","birthPlace","address","s_work","issuanceCity","s_signer"],
  fc: {"s_title":{"t":"text","l":"s_title","p":"s_title","q":"s_title"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: بلقاسم أحمد","q":"الاسم واللقب بالكامل"},"idCardNumber":{"t":"text","l":"رقم بطاقة التعريف الوطنية","p":"رقم البطاقة","q":"رقم بطاقة التعريف الوطنية"},"s_born":{"t":"text","l":"s_born","p":"s_born","q":"s_born"},"birthDate":{"t":"date","l":"تاريخ الميلاد","p":"تاريخ الميلاد","q":"تاريخ الميلاد"},"birthPlace":{"t":"text","l":"مكان الميلاد","p":"مثال: باتنة","q":"مكان الميلاد"},"address":{"t":"text","l":"العنوان","p":"حي الزهور، باتنة","q":"عنوان السكن الحالي"},"s_work":{"t":"text","l":"s_work","p":"s_work","q":"s_work"},"issuanceCity":{"t":"text","l":"ولاية أو مدينة التحرير","p":"مثال: باتنة","q":"ولاية أو مدينة التحرير"},"s_signer":{"t":"text","l":"s_signer","p":"s_signer","q":"s_signer"}},
  lr: [],
- th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريـــح شرفــــي (عـدم العمــل)</div><div class=\"doc-content\">أنا الموقع أسفله 80984: <strong>39177</strong>، الحامل لبطاقة التعريف الوطنية رقم: 35641.<br>15918 بتاريخ: 99086 بـ: 89130. الساكن بـ: 77569.<br><br>أصرح بأنني 80161 ولا أمارس أي نشاط مأجور إلى غاية هذا اليوم، كما أنني لست مسجلاً في أي من هيئات الضمان الاجتماعي (CNAS/CASNOS) كعامل بمقابل.<br><br>أتحمل المسؤولية الكاملة في حالة ما إذا تبين عكس ما صرحت به، وأدليت بهذا التصريح لاستعماله فيما يسمح به القانون.</div><div class=\"meta-header\">حرر بـ: 39222 في: 86426</div><div class=\"doc-signature\">إمضاء 95802<br><br><strong>39177</strong>",
+ th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريـــح شرفــــي (عـدم العمــل)</div><div class=\"doc-content\">أنا الموقع أسفله 30990: <strong>39932</strong>، الحامل لبطاقة التعريف الوطنية رقم: 70403.<br>86739 بتاريخ: 71038 بـ: 82231. الساكن بـ: 96929.<br><br>أصرح بأنني 56738 ولا أمارس أي نشاط مأجور إلى غاية هذا اليوم، كما أنني لست مسجلاً في أي من هيئات الضمان الاجتماعي (CNAS/CASNOS) كعامل بمقابل.<br><br>أتحمل المسؤولية الكاملة في حالة ما إذا تبين عكس ما صرحت به، وأدليت بهذا التصريح لاستعماله فيما يسمح به القانون.</div><div class=\"meta-header\">حرر بـ: 78239 في: 49213</div><div class=\"doc-signature\">إمضاء 71255<br><br><strong>39932</strong>",
  ph: "<meta charset=\"utf-8\"><title>تصريح عدم العمل</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.republic-header{text-align:center;font-weight:700;margin-bottom:10px}.meta-header{text-align:left;font-size:0.9em;margin-top:20px}.doc-title{text-align:center;font-size:1.7em;font-weight:700;text-decoration:underline;margin:40px 0 100px 0}.doc-content{flex-grow:1}.doc-signature{text-align:right;padding-right:1cm}</style>",
  hp: true,
- im: {"15918":"s_born","35641":"idCardNumber","39177":"fullName","39222":"issuanceCity","77569":"address","80161":"s_work","80984":"s_title","86426":"DateToday","89130":"birthPlace","95802":"s_signer","99086":"birthDate"}
+ im: {"30990":"s_title","39932":"fullName","49213":"DateToday","56738":"s_work","70403":"idCardNumber","71038":"birthDate","71255":"s_signer","78239":"issuanceCity","82231":"birthPlace","86739":"s_born","96929":"address"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

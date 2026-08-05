@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","residenceCommune","details","disabilityType"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"details":{"t":"text","l":"الجهاز المطلوب (كرسي متحرك، سماعة...)","p":"الجهاز المطلوب (كرسي متحرك، سماعة...)","q":"الجهاز المطلوب (كرسي متحرك، سماعة...)"},"disabilityType":{"t":"text","l":"نوع الإعاقة","p":"مثال: حركية، بصرية","q":"نوع الإعاقة"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 20461<br>العنوان: 63004<br>الهاتف: 73700</div><div style=\"text-align:left\">47807 في: 82452</div></div><div class=\"title\">الموضوع: طلب الحصول على جهاز طبي (كرسي متحرك/عضو اصطناعي)</div><div class=\"content\">إلى السيد مدير الضمان الاجتماعي (CNAS) / مدير النشاط الاجتماعي،<br><br>يشرفني أن أتقدم إليكم بطلبي هذا للحصول على الجهاز الطبي المتمثل في: <strong>82406</strong>.<br><br>أحيطكم علماً أنني مصاب بإعاقة: <strong>41286</strong>، وأن حالتي الصحية والبدنية تتطلب ضرورة استعمال هذا الجهاز لتسهيل تنقلاتي وحياتي اليومية، وذلك حسب الشهادة الطبية المرفقة.<br><br>ألتمس منكم الموافقة على طلبي وتمكيني من هذا الجهاز.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>20461</div></div>",
+ th: "<div class=\"header\"><div>الاسم: 20684<br>العنوان: 47359<br>الهاتف: 53570</div><div style=\"text-align:left\">75685 في: 43806</div></div><div class=\"title\">الموضوع: طلب الحصول على جهاز طبي (كرسي متحرك/عضو اصطناعي)</div><div class=\"content\">إلى السيد مدير الضمان الاجتماعي (CNAS) / مدير النشاط الاجتماعي،<br><br>يشرفني أن أتقدم إليكم بطلبي هذا للحصول على الجهاز الطبي المتمثل في: <strong>21840</strong>.<br><br>أحيطكم علماً أنني مصاب بإعاقة: <strong>79204</strong>، وأن حالتي الصحية والبدنية تتطلب ضرورة استعمال هذا الجهاز لتسهيل تنقلاتي وحياتي اليومية، وذلك حسب الشهادة الطبية المرفقة.<br><br>ألتمس منكم الموافقة على طلبي وتمكيني من هذا الجهاز.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>20684</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"20461":"fullName","41286":"disabilityType","47807":"residenceCommune","63004":"address","73700":"phone","82406":"details","82452":"DateToday"}
+ im: {"20684":"fullName","21840":"details","43806":"DateToday","47359":"address","53570":"phone","75685":"residenceCommune","79204":"disabilityType"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","birthDate","birthPlace","fatherFullName","motherFullName"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"birthDate":{"t":"text","l":"birthDate","p":"birthDate","q":"birthDate"},"birthPlace":{"t":"text","l":"بلدية الميلاد","p":"بلدية الميلاد","q":"بلدية الميلاد"},"fatherFullName":{"t":"text","l":"اسم الأب الكامل","p":"مثال: أحمد علي","q":"اسم الأب الكامل"},"motherFullName":{"t":"text","l":"اسم الأم الكامل","p":"مثال: فاطمة الزهراء علي","q":"اسم الأم الكامل"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم واللقب: 41792<br>تاريخ الميلاد: 52952<br>مكان الميلاد: 73369</div><div style=\"text-align:left\">في: 42850</div></div><div class=\"title\">الموضوع: طلب شهادة الميلاد الخاصة (S12)</div><div class=\"content\">إلى السيد ضابط الحالة المدنية لبلدية 73369،<br><br>أتشرف بأن أطلب من سيادتكم استخراج شهادة الميلاد الخاصة (12-خ) المسماة S12.<br><br>معلوماتي الشخصية هي:<br>ابن (ة): <strong>69970</strong><br>و: <strong>34682</strong><br><br>هذه الوثيقة ضرورية لتكوين ملف جواز السفر البيومتري / بطاقة التعريف الوطنية البيومترية.<br><br>مع خالص الشكر والتقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>41792</div></div>",
+ th: "<div class=\"header\"><div>الاسم واللقب: 29724<br>تاريخ الميلاد: 91741<br>مكان الميلاد: 41195</div><div style=\"text-align:left\">في: 48290</div></div><div class=\"title\">الموضوع: طلب شهادة الميلاد الخاصة (S12)</div><div class=\"content\">إلى السيد ضابط الحالة المدنية لبلدية 41195،<br><br>أتشرف بأن أطلب من سيادتكم استخراج شهادة الميلاد الخاصة (12-خ) المسماة S12.<br><br>معلوماتي الشخصية هي:<br>ابن (ة): <strong>14712</strong><br>و: <strong>28783</strong><br><br>هذه الوثيقة ضرورية لتكوين ملف جواز السفر البيومتري / بطاقة التعريف الوطنية البيومترية.<br><br>مع خالص الشكر والتقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>29724</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"34682":"motherFullName","41792":"fullName","42850":"DateToday","52952":"birthDate","69970":"fatherFullName","73369":"birthPlace"}
+ im: {"14712":"fatherFullName","28783":"motherFullName","29724":"fullName","41195":"birthPlace","48290":"DateToday","91741":"birthDate"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

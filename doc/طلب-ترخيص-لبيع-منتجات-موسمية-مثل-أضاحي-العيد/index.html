@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","productType","salesLocation"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"productType":{"t":"text","l":"نوع المنتج الموسمي (أضاحي، حلويات...)","p":"نوع المنتج الموسمي (أضاحي، حلويات...)","q":"نوع المنتج الموسمي (أضاحي، حلويات...)"},"salesLocation":{"t":"text","l":"المكان المقترح للبيع","p":"المكان المقترح للبيع","q":"المكان المقترح للبيع"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم واللقب: 84793<br>العنوان: 80080<br>الهاتف: 25445</div><div style=\"text-align:left\">في: 81808</div></div><div class=\"title\">الموضوع: طلب ترخيص لبيع منتجات موسمية</div><div class=\"content\">إلى السيد رئيس المجلس الشعبي البلدي،<br><br>بمناسبة اقتراب الموسم/العيد، يشرفني أن أتقدم إليكم بطلب الحصول على ترخيص استثنائي ومؤقت لممارسة نشاط بيع:<br><strong>11019</strong><br><br>وذلك في المكان المسمى: <strong>94264</strong>.<br><br>أتعهد بالالتزام التام بشروط النظافة والصحة العمومية، والحفاظ على النظام العام في الموقع، وإخلاء المكان وتنظيفه فور انتهاء المدة المرخصة.<br><br>في انتظار موافقتكم، تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>84793</div></div>",
+ th: "<div class=\"header\"><div>الاسم واللقب: 39858<br>العنوان: 58333<br>الهاتف: 11986</div><div style=\"text-align:left\">في: 52224</div></div><div class=\"title\">الموضوع: طلب ترخيص لبيع منتجات موسمية</div><div class=\"content\">إلى السيد رئيس المجلس الشعبي البلدي،<br><br>بمناسبة اقتراب الموسم/العيد، يشرفني أن أتقدم إليكم بطلب الحصول على ترخيص استثنائي ومؤقت لممارسة نشاط بيع:<br><strong>35839</strong><br><br>وذلك في المكان المسمى: <strong>18886</strong>.<br><br>أتعهد بالالتزام التام بشروط النظافة والصحة العمومية، والحفاظ على النظام العام في الموقع، وإخلاء المكان وتنظيفه فور انتهاء المدة المرخصة.<br><br>في انتظار موافقتكم، تقبلوا مني فائق الاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>39858</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"11019":"productType","25445":"phone","80080":"address","81808":"DateToday","84793":"fullName","94264":"salesLocation"}
+ im: {"11986":"phone","18886":"salesLocation","35839":"productType","39858":"fullName","52224":"DateToday","58333":"address"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

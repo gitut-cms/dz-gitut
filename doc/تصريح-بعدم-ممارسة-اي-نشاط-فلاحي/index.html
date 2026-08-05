@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["gender","citizen_title","lastName","firstName","birthDate","birthPlace","nationalId","act_status","issuanceCity","declarant_title"],
  fc: {"gender":{"t":"select","l":"الجنس","p":"اختر...","q":"الجنس","o":[{"v":"male","l":"ذكر","m":{"citizen_title":"أنا الموقع أسفله السيد","declarant_title":"المصرح","act_status":"لا أمارس أي نشاط فلاحي"}},{"v":"female","l":"أنثى","m":{"citizen_title":"أنا الموقعة أسفله السيدة","declarant_title":"المصرحة","act_status":"لا أمارس أي نشاط فلاحي"}}]},"citizen_title":{"t":"text","l":"citizen_title","p":"citizen_title","q":"citizen_title"},"lastName":{"t":"text","l":"اللقب","p":"مثال: بلقاسم","q":"اللقب (اسم العائلة)"},"firstName":{"t":"text","l":"الاسم","p":"مثال: أحمد","q":"الاسم الشخصي"},"birthDate":{"t":"date","l":"تاريخ الميلاد","p":"تاريخ الميلاد","q":"تاريخ الميلاد"},"birthPlace":{"t":"text","l":"مكان الميلاد","p":"مثال: باتنة","q":"مكان الميلاد"},"nationalId":{"t":"text","l":"رقم بطاقة التعريف الوطنية","p":"رقم البطاقة","q":"رقم بطاقة التعريف الوطنية"},"act_status":{"t":"text","l":"act_status","p":"act_status","q":"act_status"},"issuanceCity":{"t":"text","l":"ولاية أو مدينة التحرير","p":"مثال: باتنة","q":"ولاية أو مدينة التحرير"},"declarant_title":{"t":"text","l":"declarant_title","p":"declarant_title","q":"declarant_title"}},
  lr: [],
- th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريح بعدم ممارسة نشاط فلاحي</div><div class=\"doc-content\"><p>00100: <strong>95976 59750</strong>، المولود بتاريخ: 28974 بـ: 17796.<br>الحامل لبطاقة التعريف الوطنية رقم: 54525.</p><br><p>أصرح وتحت كامل مسؤوليتي القانونية أنني 85980 وليس لدي أي بطاقة فلاح، كما أنني لا أحوز ولا أستغل أي أراضٍ فلاحية تدر عليّ دخلاً.</p><p>أتحمل المسؤولية الكاملة عن صحة هذا التصريح أمام الجهات المعنية.</p></div><div class=\"meta-header\">حرر بـ: 41496 في: 99815</div><div class=\"doc-signature\">إمضاء 00200<br><br><strong>95976 59750</strong>",
+ th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريح بعدم ممارسة نشاط فلاحي</div><div class=\"doc-content\"><p>00100: <strong>39528 39018</strong>، المولود بتاريخ: 13928 بـ: 60074.<br>الحامل لبطاقة التعريف الوطنية رقم: 40537.</p><br><p>أصرح وتحت كامل مسؤوليتي القانونية أنني 92913 وليس لدي أي بطاقة فلاح، كما أنني لا أحوز ولا أستغل أي أراضٍ فلاحية تدر عليّ دخلاً.</p><p>أتحمل المسؤولية الكاملة عن صحة هذا التصريح أمام الجهات المعنية.</p></div><div class=\"meta-header\">حرر بـ: 86669 في: 82839</div><div class=\"doc-signature\">إمضاء 00200<br><br><strong>39528 39018</strong>",
  ph: "<meta charset=\"utf-8\"><title>عدم ممارسة نشاط فلاحي</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.republic-header{text-align:center;font-weight:700;margin-bottom:10px}.meta-header{text-align:left;font-size:0.9em;margin-top:20px}.doc-title{text-align:center;font-size:1.7em;font-weight:700;text-decoration:underline;margin:40px 0 100px 0}.doc-content{flex-grow:1}.doc-signature{text-align:right;padding-right:1cm}</style>",
  hp: true,
- im: {"17796":"birthPlace","28974":"birthDate","41496":"issuanceCity","54525":"nationalId","59750":"firstName","85980":"act_status","95976":"lastName","99815":"DateToday","00100":"citizen_title","00200":"declarant_title"}
+ im: {"13928":"birthDate","39018":"firstName","39528":"lastName","40537":"nationalId","60074":"birthPlace","82839":"DateToday","86669":"issuanceCity","92913":"act_status","00100":"citizen_title","00200":"declarant_title"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

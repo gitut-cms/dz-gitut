@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","residenceCommune","details","amountReceived"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"details":{"t":"textarea","l":"نوع العملية الجراحية والعيادة","p":"نوع العملية الجراحية والعيادة","q":"نوع العملية الجراحية والعيادة"},"amountReceived":{"t":"text","l":"المبلغ المستلم","p":"مثال: 15000","q":"تكلفة العملية"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 54700<br>العنوان: 33366<br>الهاتف: 32328</div><div style=\"text-align:left\">44297 في: 56506</div></div><div class=\"title\">الموضوع: طلب مساعدة لتغطية تكاليف عملية جراحية</div><div class=\"content\">إلى السادة المحسنين / رئيس الجمعية الخيرية / السلطات المعنية،<br><br>أتوجه إليكم بهذا النداء العاجل لمساعدتي في إجراء عملية جراحية متمثلة في: <strong>18192</strong>.<br><br>حيث أن حالتي الصحية تتطلب التدخل الجراحي السريع، وقد حددت تكلفة العملية بـ: <strong>73985</strong> حسب الفاتورة التقديرية المرفقة، وهو مبلغ لا أستطيع توفيره.<br><br>أناشد فيكم روح التضامن والإنسانية لمساعدتي في استعادة عافيتي.<br><br>جزاكم الله خيراً وحفظكم من كل سوء.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>54700</div></div>",
+ th: "<div class=\"header\"><div>الاسم: 96197<br>العنوان: 28997<br>الهاتف: 13784</div><div style=\"text-align:left\">25408 في: 64011</div></div><div class=\"title\">الموضوع: طلب مساعدة لتغطية تكاليف عملية جراحية</div><div class=\"content\">إلى السادة المحسنين / رئيس الجمعية الخيرية / السلطات المعنية،<br><br>أتوجه إليكم بهذا النداء العاجل لمساعدتي في إجراء عملية جراحية متمثلة في: <strong>36537</strong>.<br><br>حيث أن حالتي الصحية تتطلب التدخل الجراحي السريع، وقد حددت تكلفة العملية بـ: <strong>55697</strong> حسب الفاتورة التقديرية المرفقة، وهو مبلغ لا أستطيع توفيره.<br><br>أناشد فيكم روح التضامن والإنسانية لمساعدتي في استعادة عافيتي.<br><br>جزاكم الله خيراً وحفظكم من كل سوء.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>96197</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"18192":"details","32328":"phone","33366":"address","44297":"residenceCommune","54700":"fullName","56506":"DateToday","73985":"amountReceived"}
+ im: {"13784":"phone","25408":"residenceCommune","28997":"address","36537":"details","55697":"amountReceived","64011":"DateToday","96197":"fullName"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["position","supplierName","invoiceDetails","totalAmount","fullName"],
  fc: {"position":{"t":"text","l":"المصلحة الطالبة (رئيس المصلحة)","p":"المصلحة الطالبة (رئيس المصلحة)","q":"المصلحة الطالبة (رئيس المصلحة)"},"supplierName":{"t":"text","l":"اسم الممون / المؤسسة","p":"اسم الممون / المؤسسة","q":"اسم الممون / المؤسسة"},"invoiceDetails":{"t":"textarea","l":"أرقام وتواريخ الفواتير","p":"أرقام وتواريخ الفواتير","q":"أرقام وتواريخ الفواتير"},"totalAmount":{"t":"text","l":"المبلغ الإجمالي للدفع","p":"المبلغ الإجمالي للدفع","q":"المبلغ الإجمالي للدفع"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"}},
  lr: [],
- th: "<div class=\"header\"><div>من: 41693</div><div style=\"text-align:left\">في: 54634</div></div><div class=\"title\">الموضوع: طلب تسديد فواتير (الخدمة المنجزة)</div><div class=\"content\">إلى السيد رئيس مصلحة المحاسبة والمالية،<br><br>تجدون رفقة هذا الإرسال ملف الفواتير الخاص بالممون: <strong>68179</strong>.<br><br><strong>تفاصيل الفواتير:</strong><br>74192<br><br><strong>المبلغ الإجمالي:</strong> 49147.<br><br>أشهد بأن المواد/الخدمات المذكورة في هذه الفواتير قد تم استلامها وإنجازها وفقاً للمواصفات المطلوبة (Service Fait)، وعليه يرجى اتخاذ الإجراءات اللازمة لتسديد مستحقات المعني في أقرب الآجال.<br><br>تقبلوا مني فائق التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">رئيس المصلحة:<br>42474</div></div>",
+ th: "<div class=\"header\"><div>من: 17350</div><div style=\"text-align:left\">في: 32550</div></div><div class=\"title\">الموضوع: طلب تسديد فواتير (الخدمة المنجزة)</div><div class=\"content\">إلى السيد رئيس مصلحة المحاسبة والمالية،<br><br>تجدون رفقة هذا الإرسال ملف الفواتير الخاص بالممون: <strong>77173</strong>.<br><br><strong>تفاصيل الفواتير:</strong><br>27770<br><br><strong>المبلغ الإجمالي:</strong> 61956.<br><br>أشهد بأن المواد/الخدمات المذكورة في هذه الفواتير قد تم استلامها وإنجازها وفقاً للمواصفات المطلوبة (Service Fait)، وعليه يرجى اتخاذ الإجراءات اللازمة لتسديد مستحقات المعني في أقرب الآجال.<br><br>تقبلوا مني فائق التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">رئيس المصلحة:<br>57846</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"41693":"position","42474":"fullName","49147":"totalAmount","54634":"DateToday","68179":"supplierName","74192":"invoiceDetails"}
+ im: {"17350":"position","27770":"invoiceDetails","32550":"DateToday","57846":"fullName","61956":"totalAmount","77173":"supplierName"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

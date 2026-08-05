@@ -109,10 +109,10 @@ window.serviceData={
  rf: ["fullName","phone","residenceCommune","agencyName","tripDestination","violations"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"agencyName":{"t":"text","l":"اسم الوكالة السياحية","p":"اسم الوكالة السياحية","q":"اسم الوكالة السياحية"},"tripDestination":{"t":"text","l":"وجهة الرحلة وتاريخها","p":"وجهة الرحلة وتاريخها","q":"وجهة الرحلة وتاريخها"},"violations":{"t":"textarea","l":"المخالفات (فندق سيء، تغيير برنامج...)","p":"المخالفات (فندق سيء، تغيير برنامج...)","q":"المخالفات (فندق سيء، تغيير برنامج...)"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 44295<br>الهاتف: 23291</div><div style=\"text-align:left\">53243 في: 78149</div></div><div class=\"title\">الموضوع: شكوى لعدم الالتزام ببرنامج سياحي</div><div class=\"content\">إلى السيد مدير السياحة والصناعة التقليدية / مديرية التجارة،<br><br>أتقدم بشكواي هذه ضد الوكالة السياحية <strong>89803</strong>.<br><br>حيث تعاقدت معهم من أجل رحلة إلى <strong>80378</strong>، ودفعت كامل المستحقات بناءً على برنامج ومواصفات متفق عليها (فندق، نقل، إطعام).<br><br>إلا أنني تفاجأت عند الوصول بأن الخدمات المقدمة لا تمت بصلة لما تم الاتفاق عليه، وتمثلت الإخلالات في:<br><strong>41286</strong>.<br><br>وهذا يعتبر إخلالاً بالعقد وتغليطاً للزبون. أطالب بفتح تحقيق وتعويضي عن الضرر المادي والمعنوي الذي لحق بي.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\">المشتكي:<br>44295</div>",
+ th: "<div class=\"header\"><div>الاسم: 58071<br>الهاتف: 74089</div><div style=\"text-align:left\">60701 في: 60694</div></div><div class=\"title\">الموضوع: شكوى لعدم الالتزام ببرنامج سياحي</div><div class=\"content\">إلى السيد مدير السياحة والصناعة التقليدية / مديرية التجارة،<br><br>أتقدم بشكواي هذه ضد الوكالة السياحية <strong>40199</strong>.<br><br>حيث تعاقدت معهم من أجل رحلة إلى <strong>78192</strong>، ودفعت كامل المستحقات بناءً على برنامج ومواصفات متفق عليها (فندق، نقل، إطعام).<br><br>إلا أنني تفاجأت عند الوصول بأن الخدمات المقدمة لا تمت بصلة لما تم الاتفاق عليه، وتمثلت الإخلالات في:<br><strong>42498</strong>.<br><br>وهذا يعتبر إخلالاً بالعقد وتغليطاً للزبون. أطالب بفتح تحقيق وتعويضي عن الضرر المادي والمعنوي الذي لحق بي.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\">المشتكي:<br>58071</div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;text-align:left;font-size:16pt}</style>",
  hp: true,
- im: {"23291":"phone","41286":"violations","44295":"fullName","53243":"residenceCommune","78149":"DateToday","80378":"tripDestination","89803":"agencyName"}
+ im: {"40199":"agencyName","42498":"violations","58071":"fullName","60694":"DateToday","60701":"residenceCommune","74089":"phone","78192":"tripDestination"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -274,7 +274,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -430,7 +431,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -442,6 +447,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -472,7 +482,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -485,6 +499,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

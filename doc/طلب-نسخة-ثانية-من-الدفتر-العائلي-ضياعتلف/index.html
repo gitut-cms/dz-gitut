@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["gender","firstName","lastName","address","phone","issuanceCity","recipient","reason","signer_title"],
  fc: {"gender":{"t":"select","l":"الجنس","p":"اختر...","q":"الجنس","o":[{"v":"male","l":"ذكر","m":{"senderTitle":"السيد","signer_title":"المعني"}},{"v":"female","l":"أنثى","m":{"senderTitle":"السيدة","signer_title":"المعنية"}}]},"firstName":{"t":"text","l":"الاسم","p":"مثال: محمد","q":"الاسم الشخصي"},"lastName":{"t":"text","l":"اللقب","p":"مثال: علي","q":"اللقب (اسم العائلة)"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"issuanceCity":{"t":"text","l":"مكان التحرير","p":"مكان التحرير","q":"مكان التحرير"},"recipient":{"t":"select","l":"الجهة المرسل إليها","p":"اختر...","q":"الجهة المرسل إليها","o":[{"v":"السيد رئيس المجلس الشعبي البلدي","l":"السيد رئيس المجلس الشعبي البلدي"},{"v":"CUSTOM_OTHER","l":"أخرى (كتابة نص مخصص)"}]},"reason":{"t":"select","l":"السبب","p":"اختر...","q":"السبب","o":[{"v":"بسبب ضياع النسخة الأصلية","l":"ضياع النسخة الأصلية"},{"v":"بسبب تلف النسخة الأصلية","l":"تلف النسخة الأصلية"},{"v":"CUSTOM_OTHER","l":"أخرى (كتابة نص مخصص)"}]},"signer_title":{"t":"text","l":"signer_title","p":"signer_title","q":"signer_title"}},
  lr: [],
- th: "<div class=\"header-row\"><div class=\"sender-info\">الاسم: 27662<br>اللقب: 35872<br>العنوان: 25467<br>الهاتف: 32754</div><div class=\"date-place\">حرر بـ: 96505 في: 22508</div></div><div class=\"recipient-block\">إلى: 75959</div><div class=\"subject-line\">الموضوع: طلب الحصول على نسخة ثانية من الدفتر العائلي</div><div class=\"doc-content\"><p>أتقدم لسيادتكم بهذا الطلب قصد الحصول على نسخة ثانية من دفتري العائلي، وهذا <strong>37969</strong>.</p><p>أحيطكم علماً أن المعلومات المتعلقة بالدفتر القديم موجودة في الملف المرفق بهذا الطلب (شهادة ضياع أو النسخة التالفة).</p><p>في انتظار ردكم الإيجابي، تقبلوا مني أسمى عبارات التقدير والاحترام.</p></div><div class=\"signature-block\">إمضاء 00100<br><br><strong>35872 27662</strong>",
+ th: "<div class=\"header-row\"><div class=\"sender-info\">الاسم: 17887<br>اللقب: 89291<br>العنوان: 17100<br>الهاتف: 80052</div><div class=\"date-place\">حرر بـ: 37389 في: 85615</div></div><div class=\"recipient-block\">إلى: 17774</div><div class=\"subject-line\">الموضوع: طلب الحصول على نسخة ثانية من الدفتر العائلي</div><div class=\"doc-content\"><p>أتقدم لسيادتكم بهذا الطلب قصد الحصول على نسخة ثانية من دفتري العائلي، وهذا <strong>87585</strong>.</p><p>أحيطكم علماً أن المعلومات المتعلقة بالدفتر القديم موجودة في الملف المرفق بهذا الطلب (شهادة ضياع أو النسخة التالفة).</p><p>في انتظار ردكم الإيجابي، تقبلوا مني أسمى عبارات التقدير والاحترام.</p></div><div class=\"signature-block\">إمضاء 00100<br><br><strong>89291 17887</strong>",
  ph: "<meta charset=\"utf-8\"><title>طلب نسخة ثانية من الدفتر العائلي</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.header-row{display:flex;justify-content:space-between;margin-bottom:50px}.sender-info{text-align:right}.date-place{text-align:left}.recipient-block{text-align:center;margin:40px 0;font-weight:700}.subject-line{text-align:right;font-weight:700;text-decoration:underline;margin-bottom:30px}.doc-content{flex-grow:1}.signature-block{text-align:left;margin-top:50px;padding-left:1cm}</style>",
  hp: true,
- im: {"22508":"DateToday","25467":"address","27662":"firstName","32754":"phone","35872":"lastName","37969":"reason","75959":"recipient","96505":"issuanceCity","00100":"signer_title"}
+ im: {"17100":"address","17774":"recipient","17887":"firstName","37389":"issuanceCity","80052":"phone","85615":"DateToday","87585":"reason","89291":"lastName","00100":"signer_title"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

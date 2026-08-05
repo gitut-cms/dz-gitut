@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","residenceCommune","residenceWilaya","details"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"residenceWilaya":{"t":"text","l":"ولاية السكن","p":"مثال: الجزائر","q":"ولاية السكن"},"details":{"t":"textarea","l":"تفاصيل القرار المطعون فيه، سبب الرفض السابق، والأدلة الجديدة","p":"تفاصيل القرار المطعون فيه، سبب الرفض السابق، والأدلة الجديدة","q":"تفاصيل القرار المطعون فيه، سبب الرفض السابق، والأدلة الجديدة"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 19821<br>العنوان: 13696</div><div style=\"text-align:left\">33540 في: 55812</div></div><div class=\"title\">الموضوع: تظلم أمام لجنة الطعن الولائية</div><div class=\"content\">إلى السيد والي ولاية 51046 المحترم،<br><br>بعد رفض طعني الأول على مستوى الدائرة، أتوجه إليكم بهذا التظلم ضد القرار المتعلق بـ: <strong>66710</strong>.<br><br>وأقدم لسيادتكم أدلة/وثائق جديدة تثبت أحقيتي وتؤكد الخطأ في القرار السابق.<br><br>كلي ثقة في عدالتكم وإنصافكم لإعادة الحق لأصحابه.<br><br>تقبلوا مني فائق الاحترام والتقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>19821</div></div>",
+ th: "<div class=\"header\"><div>الاسم: 39427<br>العنوان: 98917</div><div style=\"text-align:left\">38691 في: 69026</div></div><div class=\"title\">الموضوع: تظلم أمام لجنة الطعن الولائية</div><div class=\"content\">إلى السيد والي ولاية 73221 المحترم،<br><br>بعد رفض طعني الأول على مستوى الدائرة، أتوجه إليكم بهذا التظلم ضد القرار المتعلق بـ: <strong>55763</strong>.<br><br>وأقدم لسيادتكم أدلة/وثائق جديدة تثبت أحقيتي وتؤكد الخطأ في القرار السابق.<br><br>كلي ثقة في عدالتكم وإنصافكم لإعادة الحق لأصحابه.<br><br>تقبلوا مني فائق الاحترام والتقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>39427</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"13696":"address","19821":"fullName","33540":"residenceCommune","51046":"residenceWilaya","55812":"DateToday","66710":"details"}
+ im: {"38691":"residenceCommune","39427":"fullName","55763":"details","69026":"DateToday","73221":"residenceWilaya","98917":"address"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

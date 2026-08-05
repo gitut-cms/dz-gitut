@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","ToTheGovernorOftheStateOf","documentName","fieldOfStudy","residenceCommune"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"ToTheGovernorOftheStateOf":{"t":"text","l":"الولاية التي تقدم لها الوثيقة","p":"مثال: إلى السيد والي ولاية [ToTheGovernorOftheStateOf]","q":"ولاية مديرية النقل"},"documentName":{"t":"text","l":"اسم المستند","p":"(يُملأ من اسم المستند)","q":"مرجع القرار المطعون فيه"},"fieldOfStudy":{"t":"textarea","l":"مجال الدراسة","p":"مثال: هندسة معمارية","q":"حجج الطعن وأسبابه"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"}},
  lr: [],
- th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 24979<br>العنوان: 75300<br>رقم الهاتف: 63668</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير النقل لولاية 13653</div><div class=\"title\">الموضوع: طعن في القرار الإداري (مرجع: 80564)</div><p>يشرفني أن أرفع إلى سيادتكم هذا التظلم قصد إعادة النظر في القرار الصادر عن مصالحكم والمتضمن (العقوبة/الرفض/...).</p><p>حيث أن هذا القرار جانب الصواب للأسباب التالية:<br><strong>61676</strong></p><p>وعليه، ألتمس من سيادتكم دراسة طعني هذا وإنصافي بإلغاء القرار أو تعديله.</p><p>تقبلوا مني فائق الاحترام والتقدير.</p></div><div class=\"footer\"><div>41741 بتاريخ: 24609</div><div class=\"signature-box\">إمضاء المعني</div></div>",
+ th: "<div class=\"content\"><div style=\"text-align:right; margin-bottom:20px;\">الاسم واللقب: 72022<br>العنوان: 19001<br>رقم الهاتف: 85931</div><div style=\"text-align:left; margin-bottom:40px; padding-left:20px;\">إلى السيد مدير النقل لولاية 56927</div><div class=\"title\">الموضوع: طعن في القرار الإداري (مرجع: 74107)</div><p>يشرفني أن أرفع إلى سيادتكم هذا التظلم قصد إعادة النظر في القرار الصادر عن مصالحكم والمتضمن (العقوبة/الرفض/...).</p><p>حيث أن هذا القرار جانب الصواب للأسباب التالية:<br><strong>72683</strong></p><p>وعليه، ألتمس من سيادتكم دراسة طعني هذا وإنصافي بإلغاء القرار أو تعديله.</p><p>تقبلوا مني فائق الاحترام والتقدير.</p></div><div class=\"footer\"><div>80594 بتاريخ: 44408</div><div class=\"signature-box\">إمضاء المعني</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"13653":"ToTheGovernorOftheStateOf","24609":"DateToday","24979":"fullName","41741":"residenceCommune","61676":"fieldOfStudy","63668":"phone","75300":"address","80564":"documentName"}
+ im: {"19001":"address","44408":"DateToday","56927":"ToTheGovernorOftheStateOf","72022":"fullName","72683":"fieldOfStudy","74107":"documentName","80594":"residenceCommune","85931":"phone"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

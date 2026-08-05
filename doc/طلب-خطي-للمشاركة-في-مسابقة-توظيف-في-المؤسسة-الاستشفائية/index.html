@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["gender","firstName","lastName","address","phone","issuanceCity","recipient","grade","signer_title"],
  fc: {"gender":{"t":"select","l":"الجنس","p":"اختر...","q":"الجنس","o":[{"v":"male","l":"ذكر","m":{"senderTitle":"السيد","signer_title":"المعني"}},{"v":"female","l":"أنثى","m":{"senderTitle":"السيدة","signer_title":"المعنية"}}]},"firstName":{"t":"text","l":"الاسم","p":"مثال: محمد","q":"الاسم"},"lastName":{"t":"text","l":"اللقب","p":"مثال: علي","q":"اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"issuanceCity":{"t":"text","l":"مكان التحرير","p":"مكان التحرير","q":"مكان التحرير"},"recipient":{"t":"select","l":"الجهة المرسل إليها","p":"اختر...","q":"الجهة المرسل إليها","o":[{"v":"السيد مدير المؤسسة العمومية الاستشفائية لبلدية...","l":"السيد مدير المؤسسة العمومية الاستشفائية لبلدية..."},{"v":"CUSTOM_OTHER","l":"أخرى (كتابة نص مخصص)"}]},"grade":{"t":"text","l":"الرتبة المعنية بالمسابقة","p":"الرتبة المعنية بالمسابقة","q":"الرتبة المعنية بالمسابقة"},"signer_title":{"t":"text","l":"signer_title","p":"signer_title","q":"signer_title"}},
  lr: [],
- th: "<div class=\"header-row\"><div class=\"sender-info\">الاسم: 45725<br>اللقب: 62152<br>العنوان: 33216<br>الهاتف: 81330</div><div class=\"date-place\">حرر بـ: 67081 في: 63909</div></div><div class=\"recipient-block\">إلى: 46508</div><div class=\"subject-line\">الموضوع: طلب المشاركة في المسابقة للالتحاق برتبة 74402 بالمؤسسة العمومية الاستشفائية</div><div class=\"doc-content\"><p>يشرفني أن أتقدم لسيادتكم بطلبي هذا والرامي إلى تسجيل اسمي ضمن المترشحين للمشاركة في المسابقة الخارجية المعلن عنها للالتحاق برتبة <strong>74402</strong>.</p><p>أحيطكم علماً أنني تتوفر فيّ كافة الشروط اللازمة للمشاركة، وتجدون رفقة طلبي هذا الملف الإداري الكامل.</p><p>تقبلوا مني أسمى عبارات التقدير والاحترام.</p></div><div class=\"signature-block\">إمضاء 00100<br><br><strong>62152 45725</strong>",
+ th: "<div class=\"header-row\"><div class=\"sender-info\">الاسم: 92216<br>اللقب: 62725<br>العنوان: 31416<br>الهاتف: 56773</div><div class=\"date-place\">حرر بـ: 50053 في: 93259</div></div><div class=\"recipient-block\">إلى: 13468</div><div class=\"subject-line\">الموضوع: طلب المشاركة في المسابقة للالتحاق برتبة 54753 بالمؤسسة العمومية الاستشفائية</div><div class=\"doc-content\"><p>يشرفني أن أتقدم لسيادتكم بطلبي هذا والرامي إلى تسجيل اسمي ضمن المترشحين للمشاركة في المسابقة الخارجية المعلن عنها للالتحاق برتبة <strong>54753</strong>.</p><p>أحيطكم علماً أنني تتوفر فيّ كافة الشروط اللازمة للمشاركة، وتجدون رفقة طلبي هذا الملف الإداري الكامل.</p><p>تقبلوا مني أسمى عبارات التقدير والاحترام.</p></div><div class=\"signature-block\">إمضاء 00100<br><br><strong>62725 92216</strong>",
  ph: "<meta charset=\"utf-8\"><title>مسابقة استشفائية</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.header-row{display:flex;justify-content:space-between;margin-bottom:50px}.sender-info{text-align:right}.date-place{text-align:left}.recipient-block{text-align:center;margin:40px 0;font-weight:700}.subject-line{text-align:right;font-weight:700;text-decoration:underline;margin-bottom:30px}.doc-content{flex-grow:1}.signature-block{text-align:left;margin-top:50px;padding-left:1cm}</style>",
  hp: true,
- im: {"33216":"address","45725":"firstName","46508":"recipient","62152":"lastName","63909":"DateToday","67081":"issuanceCity","74402":"grade","81330":"phone","00100":"signer_title"}
+ im: {"13468":"recipient","31416":"address","50053":"issuanceCity","54753":"grade","56773":"phone","62725":"lastName","92216":"firstName","93259":"DateToday","00100":"signer_title"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

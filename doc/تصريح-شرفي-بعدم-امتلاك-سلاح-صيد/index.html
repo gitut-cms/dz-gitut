@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["gender","citizen_title","lastName","firstName","born_title","birthDate","birthPlace","nationalId","address","issuanceCity","declarant_title"],
  fc: {"gender":{"t":"select","l":"الجنس","p":"اختر...","q":"الجنس","o":[{"v":"male","l":"ذكر","m":{"citizen_title":"أنا الموقع أسفله السيد","born_title":"المولود","declarant_title":"المصرح"}},{"v":"female","l":"أنثى","m":{"citizen_title":"أنا الموقعة أسفله السيدة","born_title":"المولودة","declarant_title":"المصرحة"}}]},"citizen_title":{"t":"text","l":"citizen_title","p":"citizen_title","q":"citizen_title"},"lastName":{"t":"text","l":"اللقب","p":"مثال: بلقاسم","q":"اللقب (اسم العائلة)"},"firstName":{"t":"text","l":"الاسم","p":"مثال: أحمد","q":"الاسم الشخصي"},"born_title":{"t":"text","l":"born_title","p":"born_title","q":"born_title"},"birthDate":{"t":"date","l":"تاريخ الميلاد","p":"تاريخ الميلاد","q":"تاريخ الميلاد"},"birthPlace":{"t":"text","l":"مكان الميلاد","p":"مثال: باتنة","q":"مكان الميلاد"},"nationalId":{"t":"text","l":"رقم بطاقة التعريف الوطنية","p":"رقم البطاقة","q":"رقم بطاقة التعريف الوطنية"},"address":{"t":"text","l":"العنوان","p":"العنوان الكامل","q":"عنوان السكن الحالي"},"issuanceCity":{"t":"text","l":"ولاية أو مدينة التحرير","p":"مثال: باتنة","q":"ولاية أو مدينة التحرير"},"declarant_title":{"t":"text","l":"declarant_title","p":"declarant_title","q":"declarant_title"}},
  lr: [],
- th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريح شرفي بعدم امتلاك سلاح صيد</div><div class=\"doc-content\"><p>00100: <strong>12918 54205</strong>، 00200 بتاريخ: 25205 بـ: 56870.<br>الحامل لبطاقة التعريف الوطنية رقم: 58379.<br>الساكن بـ: 15253.</p><br><p>أصرح وتحت كامل مسؤوليتي القانونية أنني لا أحوز ولا أمتلك أي نوع من أنواع أسلحة الصيد، كما أنني لم يسبق لي وأن أودعت طلباً لحيازة سلاح صيد لدى المصالح المختصة.</p><p>أدليت بهذا التصريح لاستعماله في الملف الإداري المطلوب، وأنا على علم بالتبعات القانونية للتصريح الكاذب.</p></div><div class=\"meta-header\">حرر بـ: 11808 في: 72009</div><div class=\"doc-signature\">إمضاء 00300<br><br><strong>12918 54205</strong>",
+ th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريح شرفي بعدم امتلاك سلاح صيد</div><div class=\"doc-content\"><p>00100: <strong>80898 79800</strong>، 00200 بتاريخ: 35197 بـ: 52751.<br>الحامل لبطاقة التعريف الوطنية رقم: 17015.<br>الساكن بـ: 23776.</p><br><p>أصرح وتحت كامل مسؤوليتي القانونية أنني لا أحوز ولا أمتلك أي نوع من أنواع أسلحة الصيد، كما أنني لم يسبق لي وأن أودعت طلباً لحيازة سلاح صيد لدى المصالح المختصة.</p><p>أدليت بهذا التصريح لاستعماله في الملف الإداري المطلوب، وأنا على علم بالتبعات القانونية للتصريح الكاذب.</p></div><div class=\"meta-header\">حرر بـ: 86549 في: 56333</div><div class=\"doc-signature\">إمضاء 00300<br><br><strong>80898 79800</strong>",
  ph: "<meta charset=\"utf-8\"><title>عدم امتلاك سلاح صيد</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.republic-header{text-align:center;font-weight:700;margin-bottom:10px}.meta-header{text-align:left;font-size:0.9em;margin-top:20px}.doc-title{text-align:center;font-size:1.7em;font-weight:700;text-decoration:underline;margin:40px 0 100px 0}.doc-content{flex-grow:1}.doc-signature{text-align:right;padding-right:1cm}</style>",
  hp: true,
- im: {"11808":"issuanceCity","12918":"lastName","15253":"address","25205":"birthDate","54205":"firstName","56870":"birthPlace","58379":"nationalId","72009":"DateToday","00100":"citizen_title","00200":"born_title","00300":"declarant_title"}
+ im: {"17015":"nationalId","23776":"address","35197":"birthDate","52751":"birthPlace","56333":"DateToday","79800":"firstName","80898":"lastName","86549":"issuanceCity","00100":"citizen_title","00200":"born_title","00300":"declarant_title"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

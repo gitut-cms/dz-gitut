@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","clientNumber","residenceCommune","providerName","problemType"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"clientNumber":{"t":"text","l":"رقم الزبون / رقم الخط","p":"رقم الزبون / رقم الخط","q":"رقم الزبون / رقم الخط"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"providerName":{"t":"select","l":"مقدم الخدمة","p":"اختر...","q":"مقدم الخدمة","o":["اتصالات الجزائر (ADSL/Fibre)","موبيليس","جيزي","أوريدو"]},"problemType":{"t":"textarea","l":"وصف المشكلة (انقطاع، بطء، فاتورة...)","p":"وصف المشكلة (انقطاع، بطء، فاتورة...)","q":"وصف المشكلة (انقطاع، بطء، فاتورة...)"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 37055<br>رقم العقد/الخط: 55695</div><div style=\"text-align:left\">80348 في: 81845</div></div><div class=\"title\">الموضوع: شكوى بسبب سوء الخدمة</div><div class=\"content\">إلى السيد المدير التجاري لـ <strong>64317</strong> / سلطة ضبط البريد والمواصلات،<br><br>أنا الموقع أسفله، زبون لدى شركتكم بموجب الرقم المذكور أعلاه.<br><br>أتقدم إليكم بهذه الشكوى للتعبير عن استيائي الشديد من رداءة الخدمة المقدمة، والمتمثلة في:<br><strong>95874</strong>.<br><br>ورغم اتصالي المتكرر بمصلحة الزبائن، إلا أن المشكل لا يزال قائماً، مما يسبب لي ضرراً وتعطيلاً لمصالحي، خاصة وأنني ملتزم بدفع مستحقات الاشتراك بانتظام.<br><br>أطالبكم بالتدخل الفوري لإصلاح الخلل وتعويضي عن فترة انقطاع/رداءة الخدمة طبقاً لبنود العقد.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\">الزبون:<br>37055</div>",
+ th: "<div class=\"header\"><div>الاسم: 53214<br>رقم العقد/الخط: 47661</div><div style=\"text-align:left\">99202 في: 41565</div></div><div class=\"title\">الموضوع: شكوى بسبب سوء الخدمة</div><div class=\"content\">إلى السيد المدير التجاري لـ <strong>61616</strong> / سلطة ضبط البريد والمواصلات،<br><br>أنا الموقع أسفله، زبون لدى شركتكم بموجب الرقم المذكور أعلاه.<br><br>أتقدم إليكم بهذه الشكوى للتعبير عن استيائي الشديد من رداءة الخدمة المقدمة، والمتمثلة في:<br><strong>35747</strong>.<br><br>ورغم اتصالي المتكرر بمصلحة الزبائن، إلا أن المشكل لا يزال قائماً، مما يسبب لي ضرراً وتعطيلاً لمصالحي، خاصة وأنني ملتزم بدفع مستحقات الاشتراك بانتظام.<br><br>أطالبكم بالتدخل الفوري لإصلاح الخلل وتعويضي عن فترة انقطاع/رداءة الخدمة طبقاً لبنود العقد.<br><br>تقبلوا مني فائق الاحترام.</div><div class=\"footer\">الزبون:<br>53214</div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;text-align:left;font-size:16pt}</style>",
  hp: true,
- im: {"37055":"fullName","55695":"clientNumber","64317":"providerName","80348":"residenceCommune","81845":"DateToday","95874":"problemType"}
+ im: {"35747":"problemType","41565":"DateToday","47661":"clientNumber","53214":"fullName","61616":"providerName","99202":"residenceCommune"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

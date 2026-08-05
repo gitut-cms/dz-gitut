@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","sonName","sonDob","hospitalName"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"اسم الأب (المصرح)"},"sonName":{"t":"text","l":"اسم الابن","p":"مثال: كريم","q":"اسم المولود"},"sonDob":{"t":"text","l":"تاريخ ميلاد الابن","p":"مثال: 2022/05/01","q":"تاريخ ميلاد الابن"},"hospitalName":{"t":"text","l":"اسم المستشفى","p":"مثال: مستشفى مصطفى باشا الجامعي","q":"مكان الولادة (المستشفى/العيادة)"}},
  lr: [],
- th: "<div class=\"header\"><div>الأب: 84766</div><div style=\"text-align:left\">51619</div></div><div class=\"title\">الموضوع: تصريح بميلاد</div><div class=\"content\">إلى السيد ضابط الحالة المدنية،<br><br>أنا الموقع أسفله، <strong>84766</strong>، أصرح بميلاد طفلي:<br><br>الاسم: <strong>96874</strong><br>تاريخ الميلاد: <strong>15618</strong><br>مكان الميلاد: <strong>16070</strong><br><br>أرجو تسجيله في سجلات الحالة المدنية واستخراج شهادة ميلاده.<br><br>المرفقات: شهادة الميلاد الطبية.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء الأب:<br>84766</div></div>",
+ th: "<div class=\"header\"><div>الأب: 60342</div><div style=\"text-align:left\">71449</div></div><div class=\"title\">الموضوع: تصريح بميلاد</div><div class=\"content\">إلى السيد ضابط الحالة المدنية،<br><br>أنا الموقع أسفله، <strong>60342</strong>، أصرح بميلاد طفلي:<br><br>الاسم: <strong>29953</strong><br>تاريخ الميلاد: <strong>98522</strong><br>مكان الميلاد: <strong>42825</strong><br><br>أرجو تسجيله في سجلات الحالة المدنية واستخراج شهادة ميلاده.<br><br>المرفقات: شهادة الميلاد الطبية.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء الأب:<br>60342</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"15618":"sonDob","16070":"hospitalName","51619":"DateToday","84766":"fullName","96874":"sonName"}
+ im: {"29953":"sonName","42825":"hospitalName","60342":"fullName","71449":"DateToday","98522":"sonDob"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

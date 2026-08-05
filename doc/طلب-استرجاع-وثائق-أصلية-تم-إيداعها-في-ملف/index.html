@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","phone","fileContext","documentsList"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"fileContext":{"t":"text","l":"سياق إيداع الملف (مسابقة توظيف، تسجيل جامعي...)","p":"سياق إيداع الملف (مسابقة توظيف، تسجيل جامعي...)","q":"سياق إيداع الملف (مسابقة توظيف، تسجيل جامعي...)"},"documentsList":{"t":"textarea","l":"قائمة الوثائق المراد استرجاعها","p":"قائمة الوثائق المراد استرجاعها","q":"قائمة الوثائق المراد استرجاعها"}},
  lr: [],
- th: "<div class=\"header\"><div>من: 77206<br>رقم الهاتف: 54853</div><div style=\"text-align:left\">في: 16507</div></div><div class=\"title\">الموضوع: طلب استرجاع وثائق أصلية</div><div class=\"content\">إلى السيد المسؤول،<br><br>لي الشرف أن أطلب من سيادتكم تمكيني من استرجاع الوثائق الأصلية التي سبق وأن أودعتها لدى مصلحتكم ضمن ملف <strong>42945</strong>.<br><br>تتمثل الوثائق المطلوبة في:<br><strong>36491</strong><br><br>وذلك لحاجتي الماسة إليها في أغراض أخرى / نظراً لعدم قبولي في المسابقة / لتنازلي عن الطلب.<br><br>أتعهد بترك نسخ طبق الأصل عنها إذا تطلب الأمر ذلك.<br><br>تقبلوا مني فائق التقدير والاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>77206</div></div>",
+ th: "<div class=\"header\"><div>من: 20877<br>رقم الهاتف: 10602</div><div style=\"text-align:left\">في: 85514</div></div><div class=\"title\">الموضوع: طلب استرجاع وثائق أصلية</div><div class=\"content\">إلى السيد المسؤول،<br><br>لي الشرف أن أطلب من سيادتكم تمكيني من استرجاع الوثائق الأصلية التي سبق وأن أودعتها لدى مصلحتكم ضمن ملف <strong>44858</strong>.<br><br>تتمثل الوثائق المطلوبة في:<br><strong>37825</strong><br><br>وذلك لحاجتي الماسة إليها في أغراض أخرى / نظراً لعدم قبولي في المسابقة / لتنازلي عن الطلب.<br><br>أتعهد بترك نسخ طبق الأصل عنها إذا تطلب الأمر ذلك.<br><br>تقبلوا مني فائق التقدير والاحترام.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>20877</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"16507":"DateToday","36491":"documentsList","42945":"fileContext","54853":"phone","77206":"fullName"}
+ im: {"10602":"phone","20877":"fullName","37825":"documentsList","44858":"fileContext","85514":"DateToday"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

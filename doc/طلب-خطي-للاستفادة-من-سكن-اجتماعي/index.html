@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["firstName","lastName","address","phone","issuanceCity","recipient","situation"],
  fc: {"firstName":{"t":"text","l":"الاسم","p":"مثال: محمد","q":"الاسم الشخصي"},"lastName":{"t":"text","l":"اللقب","p":"مثال: علي","q":"اللقب (اسم العائلة)"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان الشخصي"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"issuanceCity":{"t":"text","l":"مكان التحرير","p":"مكان التحرير","q":"مكان التحرير"},"recipient":{"t":"text","l":"الجهة المرسل إليها","p":"مثال: السيد والي ولاية الجزائر","q":"الجهة المرسل إليها"},"situation":{"t":"textarea","l":"وصف مبسط لوضعيتك الحالية (مثال: ضيق السكن، كراء باهظ...)","p":"اشرح وضعيتك السكنية باختصار","q":"وصف مبسط لوضعيتك الحالية (مثال: ضيق السكن، كراء باهظ...)"}},
  lr: [],
- th: "<div class=\"header-row\"><div class=\"sender-info\">الاسم: 20495<br>اللقب: 22828<br>العنوان: 15795<br>رقم الهاتف: 33436</div><div class=\"date-place\">حرر بـ: 96242 في: 54084</div></div><div class=\"recipient-block\">إلى: 75558</div><div class=\"subject-line\">الموضوع: طلب خطي للاستفادة من سكن اجتماعي إيجاري</div><div class=\"doc-content\"><p>أتقدم إلى سيادتكم بطلبي هذا والرامي إلى التماس الحصول على سكن اجتماعي إيجاري، وذلك نظراً للوضعية الاجتماعية والسكنية الصعبة التي أعيشها والمتمثلة في: <strong>81586</strong>.</p><p>أرجو منكم أخذ طلبي هذا بعين الاعتبار وإدراج اسمي ضمن قوائم المستفيدين في أقرب عملية توزيع، مع العلم أنني استوفيت كافة الشروط القانونية وقد أودعت ملفاً كامل بمصالحكم لإثبات صحة ما ورد أعلاه.</p><p>تقبلوا مني أسمى عبارات التقدير والاحترام.</p></div><div class=\"signature-block\">إمضاء المعني<br><br><strong>22828 20495</strong>",
+ th: "<div class=\"header-row\"><div class=\"sender-info\">الاسم: 11199<br>اللقب: 25110<br>العنوان: 97686<br>رقم الهاتف: 84678</div><div class=\"date-place\">حرر بـ: 91647 في: 22263</div></div><div class=\"recipient-block\">إلى: 72381</div><div class=\"subject-line\">الموضوع: طلب خطي للاستفادة من سكن اجتماعي إيجاري</div><div class=\"doc-content\"><p>أتقدم إلى سيادتكم بطلبي هذا والرامي إلى التماس الحصول على سكن اجتماعي إيجاري، وذلك نظراً للوضعية الاجتماعية والسكنية الصعبة التي أعيشها والمتمثلة في: <strong>11004</strong>.</p><p>أرجو منكم أخذ طلبي هذا بعين الاعتبار وإدراج اسمي ضمن قوائم المستفيدين في أقرب عملية توزيع، مع العلم أنني استوفيت كافة الشروط القانونية وقد أودعت ملفاً كامل بمصالحكم لإثبات صحة ما ورد أعلاه.</p><p>تقبلوا مني أسمى عبارات التقدير والاحترام.</p></div><div class=\"signature-block\">إمضاء المعني<br><br><strong>25110 11199</strong>",
  ph: "<meta charset=\"utf-8\"><title>طلب سكن اجتماعي</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.header-row{display:flex;justify-content:space-between;margin-bottom:50px}.sender-info{text-align:right}.date-place{text-align:left}.recipient-block{text-align:center;margin:40px 0;font-weight:700}.subject-line{text-align:right;font-weight:700;text-decoration:underline;margin-bottom:30px}.doc-content{flex-grow:1}.signature-block{text-align:left;margin-top:50px;padding-left:1cm}</style>",
  hp: true,
- im: {"15795":"address","20495":"firstName","22828":"lastName","33436":"phone","54084":"DateToday","75558":"recipient","81586":"situation","96242":"issuanceCity"}
+ im: {"11004":"situation","11199":"firstName","22263":"DateToday","25110":"lastName","72381":"recipient","84678":"phone","91647":"issuanceCity","97686":"address"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

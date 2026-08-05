@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","phone","shopAddress","details"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"phone":{"t":"text","l":"رقم الهاتف","p":"مثال: 0550123456","q":"رقم الهاتف"},"shopAddress":{"t":"text","l":"موقع القاعة المقترحة","p":"موقع القاعة المقترحة","q":"موقع القاعة المقترحة"},"details":{"t":"textarea","l":"وصف القاعة (المساحة، طاقة الاستيعاب)","p":"وصف القاعة (المساحة، طاقة الاستيعاب)","q":"وصف القاعة (المساحة، طاقة الاستيعاب)"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم واللقب: 25700<br>العنوان: 76932<br>الهاتف: 38135</div><div style=\"text-align:left\">في: 77432</div></div><div class=\"title\">الموضوع: طلب ترخيص لفتح قاعة حفلات</div><div class=\"content\">إلى السيد والي الولاية / مدير التنظيم والشؤون العامة،<br><br>يشرفني أن أتقدم لسيادتكم بطلب الحصول على رخصة لاستغلال قاعة مخصصة للحفلات والأعراس.<br><br><strong>موقع المشروع:</strong> 11655<br><strong>المواصفات التقنية:</strong> 42442<br><br>أتعهد بتجهيز القاعة بكافة وسائل الأمن والسلامة والعزل الصوتي المطلوبة قانوناً، والامتثال لجميع تحفظات اللجان التقنية المختصة (الحماية المدنية، البناء والتعمير، الصحة).<br><br>في انتظار ردكم للشروع في الإجراءات، تقبلوا مني أسمى عبارات التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>25700</div></div>",
+ th: "<div class=\"header\"><div>الاسم واللقب: 30518<br>العنوان: 90343<br>الهاتف: 74728</div><div style=\"text-align:left\">في: 83819</div></div><div class=\"title\">الموضوع: طلب ترخيص لفتح قاعة حفلات</div><div class=\"content\">إلى السيد والي الولاية / مدير التنظيم والشؤون العامة،<br><br>يشرفني أن أتقدم لسيادتكم بطلب الحصول على رخصة لاستغلال قاعة مخصصة للحفلات والأعراس.<br><br><strong>موقع المشروع:</strong> 53932<br><strong>المواصفات التقنية:</strong> 63161<br><br>أتعهد بتجهيز القاعة بكافة وسائل الأمن والسلامة والعزل الصوتي المطلوبة قانوناً، والامتثال لجميع تحفظات اللجان التقنية المختصة (الحماية المدنية، البناء والتعمير، الصحة).<br><br>في انتظار ردكم للشروع في الإجراءات، تقبلوا مني أسمى عبارات التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>30518</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"11655":"shopAddress","25700":"fullName","38135":"phone","42442":"details","76932":"address","77432":"DateToday"}
+ im: {"30518":"fullName","53932":"shopAddress","63161":"details","74728":"phone","83819":"DateToday","90343":"address"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

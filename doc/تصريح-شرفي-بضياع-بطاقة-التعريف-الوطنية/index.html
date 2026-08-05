@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["gender","citizen_title","fullName","born_title","birthDate","birthPlace","nationalId","issuanceCity","declarant_title"],
  fc: {"gender":{"t":"select","l":"الجنس","p":"اختر...","q":"الجنس","o":[{"v":"male","l":"ذكر","m":{"citizen_title":"أنا الموقع أسفله السيد","born_title":"المولود","declarant_title":"المصرح"}},{"v":"female","l":"أنثى","m":{"citizen_title":"أنا الموقعة أسفله السيدة","born_title":"المولودة","declarant_title":"المصرحة"}}]},"citizen_title":{"t":"text","l":"citizen_title","p":"citizen_title","q":"citizen_title"},"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"born_title":{"t":"text","l":"born_title","p":"born_title","q":"born_title"},"birthDate":{"t":"text","l":"birthDate","p":"birthDate","q":"birthDate"},"birthPlace":{"t":"text","l":"birthPlace","p":"birthPlace","q":"birthPlace"},"nationalId":{"t":"text","l":"رقم بطاقة التعريف الوطنية","p":"مثال: 123456789012345678","q":"رقم بطاقة التعريف الوطنية"},"issuanceCity":{"t":"text","l":"ولاية أو مدينة التحرير","p":"مثال: وهران","q":"ولاية أو مدينة التحرير"},"declarant_title":{"t":"text","l":"declarant_title","p":"declarant_title","q":"declarant_title"}},
  lr: [],
- th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريح شرفي بضياع بطاقة التعريف الوطنية</div><div class=\"doc-content\"><p>00100: <strong>40402</strong>، 00200 بتاريخ: 11886 بـ: 76570.<br>أصرح وتحت كامل مسؤوليتي القانونية أنني أضعت بطاقة تعريفي الوطنية التي تحمل الرقم: 23972.</p><br><p>أني أضع هذا التصريح تحت تصرف المصالح الإدارية المعنية قصد استخراج وثيقة جديدة.</p></div><div class=\"meta-header\">حرر بـ: 26186 في: 49075</div><div class=\"doc-signature\">إمضاء 00300<br><br><strong>40402</strong>",
+ th: "<div class=\"republic-header\">الجمهورية الجزائرية الديمقراطية الشعبية</div><div class=\"doc-title\">تصريح شرفي بضياع بطاقة التعريف الوطنية</div><div class=\"doc-content\"><p>00100: <strong>68858</strong>، 00200 بتاريخ: 68802 بـ: 49254.<br>أصرح وتحت كامل مسؤوليتي القانونية أنني أضعت بطاقة تعريفي الوطنية التي تحمل الرقم: 93702.</p><br><p>أني أضع هذا التصريح تحت تصرف المصالح الإدارية المعنية قصد استخراج وثيقة جديدة.</p></div><div class=\"meta-header\">حرر بـ: 52702 في: 82982</div><div class=\"doc-signature\">إمضاء 00300<br><br><strong>68858</strong>",
  ph: "<meta charset=\"utf-8\"><title>ضياع بطاقة التعريف</title><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:2.5cm;font-family:'Scheherazade New',serif;display:flex;flex-direction:column;height:29.7cm;box-sizing:border-box;font-size:1.3em;line-height:1.6;text-align:justify}.republic-header{text-align:center;font-weight:700;margin-bottom:10px}.meta-header{text-align:left;font-size:0.9em;margin-top:20px}.doc-title{text-align:center;font-size:1.7em;font-weight:700;text-decoration:underline;margin:40px 0 100px 0}.doc-content{flex-grow:1}.doc-signature{text-align:right;padding-right:1cm}</style>",
  hp: true,
- im: {"11886":"birthDate","23972":"nationalId","26186":"issuanceCity","40402":"fullName","49075":"DateToday","76570":"birthPlace","00100":"citizen_title","00200":"born_title","00300":"declarant_title"}
+ im: {"49254":"birthPlace","52702":"issuanceCity","68802":"birthDate","68858":"fullName","82982":"DateToday","93702":"nationalId","00100":"citizen_title","00200":"born_title","00300":"declarant_title"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

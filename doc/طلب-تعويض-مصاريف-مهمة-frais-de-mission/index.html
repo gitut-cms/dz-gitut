@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","position","missionDest","missionDates","details"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"اسم الموظف"},"position":{"t":"text","l":"الرتبة / الوظيفة","p":"الرتبة / الوظيفة","q":"الرتبة / الوظيفة"},"missionDest":{"t":"text","l":"مكان المهمة (الولاية/البلدية)","p":"مكان المهمة (الولاية/البلدية)","q":"مكان المهمة (الولاية/البلدية)"},"missionDates":{"t":"text","l":"تاريخ الذهاب والإياب","p":"تاريخ الذهاب والإياب","q":"تاريخ الذهاب والإياب"},"details":{"t":"textarea","l":"المصاريف (نقل، إطعام، مبيت)","p":"المصاريف (نقل، إطعام، مبيت)","q":"المصاريف (نقل، إطعام، مبيت)"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم واللقب: 10135<br>الوظيفة: 83810</div><div style=\"text-align:left\">في: 36207</div></div><div class=\"title\">الموضوع: طلب تعويض مصاريف مهمة</div><div class=\"content\">إلى السيد المدير / الآمر بالصرف،<br><br>بناءً على الأمر بمهمة (Ordre de Mission) المرفق، والذي كلفت بموجبه بالتنقل إلى: <strong>20716</strong>.<br>وذلك خلال الفترة الممتدة: <strong>22859</strong>.<br><br>ألتمس من سيادتكم الأمر بصرف تعويضات مصاريف التنقل والإقامة المستحقة قانوناً، والمفصلة كما يلي:<br><strong>30691</strong><br><br>أرفق لكم الوثائق الثبوتية (تذاكر النقل، وصل الفندق، الأمر بمهمة مؤشر عليه).<br><br>تقبلوا مني أسمى عبارات التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>10135</div></div>",
+ th: "<div class=\"header\"><div>الاسم واللقب: 50170<br>الوظيفة: 41989</div><div style=\"text-align:left\">في: 48931</div></div><div class=\"title\">الموضوع: طلب تعويض مصاريف مهمة</div><div class=\"content\">إلى السيد المدير / الآمر بالصرف،<br><br>بناءً على الأمر بمهمة (Ordre de Mission) المرفق، والذي كلفت بموجبه بالتنقل إلى: <strong>67053</strong>.<br>وذلك خلال الفترة الممتدة: <strong>17095</strong>.<br><br>ألتمس من سيادتكم الأمر بصرف تعويضات مصاريف التنقل والإقامة المستحقة قانوناً، والمفصلة كما يلي:<br><strong>92471</strong><br><br>أرفق لكم الوثائق الثبوتية (تذاكر النقل، وصل الفندق، الأمر بمهمة مؤشر عليه).<br><br>تقبلوا مني أسمى عبارات التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المعني:<br>50170</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"10135":"fullName","20716":"missionDest","22859":"missionDates","30691":"details","36207":"DateToday","83810":"position"}
+ im: {"17095":"missionDates","41989":"position","48931":"DateToday","50170":"fullName","67053":"missionDest","92471":"details"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };

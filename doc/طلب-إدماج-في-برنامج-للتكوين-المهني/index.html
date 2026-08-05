@@ -108,10 +108,10 @@ window.serviceData={
  rf: ["fullName","address","residenceCommune","vocationalTrainingCenterName","fieldOfStudy"],
  fc: {"fullName":{"t":"text","l":"الاسم و اللقب","p":"مثال: محمد علي","q":"الاسم و اللقب"},"address":{"t":"text","l":"العنوان","p":"مثال: 123 شارع الحرية، القبة","q":"العنوان"},"residenceCommune":{"t":"text","l":"بلدية السكن","p":"مثال: القبة","q":"بلدية السكن"},"vocationalTrainingCenterName":{"t":"text","l":"اسم مركز التكوين المهني","p":"مثال: مركز التكوين المهني بحسين داي","q":"اسم مركز التكوين المهني"},"fieldOfStudy":{"t":"text","l":"مجال الدراسة","p":"مثال: هندسة معمارية","q":"التخصص المرغوب"}},
  lr: [],
- th: "<div class=\"header\"><div>الاسم: 16992<br>العنوان: 86522</div><div style=\"text-align:left\">66529 في: 87750</div></div><div class=\"title\">الموضوع: طلب إدماج في التكوين المهني</div><div class=\"content\">إلى السيد مدير مركز التكوين المهني والتمهين <strong>16931</strong>،<br><br>لي الشرف أن أتقدم إليكم بطلبي هذا من أجل التسجيل في مؤسستكم لمزاولة التكوين في تخصص: <strong>11513</strong>.<br><br>رغبتي كبيرة في تعلم هذه المهنة والحصول على مؤهل يسمح لي بالاندماج في عالم الشغل.<br><br>في انتظار قبولكم، تقبلوا مني أسمى عبارات التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المترشح:<br>16992</div></div>",
+ th: "<div class=\"header\"><div>الاسم: 21688<br>العنوان: 16255</div><div style=\"text-align:left\">21276 في: 93625</div></div><div class=\"title\">الموضوع: طلب إدماج في التكوين المهني</div><div class=\"content\">إلى السيد مدير مركز التكوين المهني والتمهين <strong>44660</strong>،<br><br>لي الشرف أن أتقدم إليكم بطلبي هذا من أجل التسجيل في مؤسستكم لمزاولة التكوين في تخصص: <strong>16592</strong>.<br><br>رغبتي كبيرة في تعلم هذه المهنة والحصول على مؤهل يسمح لي بالاندماج في عالم الشغل.<br><br>في انتظار قبولكم، تقبلوا مني أسمى عبارات التقدير.</div><div class=\"footer\"><div></div><div class=\"signature-box\">إمضاء المترشح:<br>21688</div></div>",
  ph: "<meta charset=\"utf-8\"><link href=\"https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap\" rel=\"stylesheet\"><style>@page{size:A4;margin:0}.document-container{margin:0;padding:0;font-family:'Scheherazade New',serif}.page{width:210mm;height:297mm;padding:25mm;margin:0 auto;display:flex;flex-direction:column;box-sizing:border-box;background:white;overflow:hidden}.header{display:flex;justify-content:space-between;margin-bottom:20px;font-size:14pt}.title{text-align:center;font-size:22pt;font-weight:700;text-decoration:underline;margin:30px 0 50px 0}.content{flex-grow:1;font-size:18pt;line-height:2;text-align:justify}.footer{margin-top:40px;display:flex;justify-content:space-between;font-size:16pt}.signature-box{min-width:200px;text-align:center}</style>",
  hp: true,
- im: {"11513":"fieldOfStudy","16931":"vocationalTrainingCenterName","16992":"fullName","66529":"residenceCommune","86522":"address","87750":"DateToday"}
+ im: {"16255":"address","16592":"fieldOfStudy","21276":"residenceCommune","21688":"fullName","44660":"vocationalTrainingCenterName","93625":"DateToday"}
 };
 window.serviceData.rf.forEach(f=>window.wizardData[f]="");
  
@@ -273,7 +273,8 @@ window.renderWizardStep=()=>{
  const stepNum = window.currentStepIndex + 1;
  const adContainer = $('wizard-ad-container');
  if (adContainer) {
- adContainer.style.display = 'block';
+ adContainer.style.removeProperty('display');
+ adContainer.style.setProperty('display', 'block', 'important');
  adContainer.innerHTML = '<span class="ad-label">' + (window.i18n.sponsoredAd || 'إعلان ممول') + '</span><div id="wizard-ad-content" class="dynamic-ad-container" data-placement="SERVICE_STEP_' + stepNum + '" data-fallback-placement="SERVICE_SIDEBAR"><div class="loading-ad loading-text-centered">' + (window.i18n.loadingAd || 'جاري تحميل الإعلان...') + '</div></div>';
  if (typeof window.injectGitutAds === 'function') {
  window.injectGitutAds();
@@ -429,7 +430,11 @@ window.openProcessingModal=()=>{
  $('final-download-view').style.display='none';
  
  // Ads controlled by external ads.js
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  
  const title = $('modal-title');
  title.innerHTML = window.animateDots(window.i18n.prepTemplate);
@@ -441,6 +446,11 @@ window.openProcessingModal=()=>{
  if(currentSec <= 0){
  $('modal-timer-block').style.display='none';
  $('format-selection').style.display='grid';
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
@@ -471,7 +481,11 @@ window.prepareSecondTimer=(fmt)=>{
  title.innerHTML = window.animateDots(window.i18n.prepWord);
  }
  
- if(window.renderAds) window.renderAds();
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
 
  window.runCountdown(10, (currentSec) => {
  if (fmt === 'print') {
@@ -484,6 +498,11 @@ window.prepareSecondTimer=(fmt)=>{
  $('modal-timer-block').style.display='none';
  $('final-download-view').style.display='block';
  $('final-btn').onclick=()=>window.executeDownload(window.selectedFormat);
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ } else if (typeof window.refreshAds === 'function') {
+ window.refreshAds();
+ }
  }
  });
 };
