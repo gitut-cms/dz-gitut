@@ -65,10 +65,15 @@
  };
 
  window.refreshAds = function() {
- const containers = document.querySelectorAll('.dynamic-ad-container');
- const country = window.serviceData.countryCode;
- containers.forEach(c => {
- const placement = c.getAttribute('data-placement');
+ if (typeof window.injectGitutAds === 'function') {
+ window.injectGitutAds();
+ return;
+ }
+ const containers = document.querySelectorAll('.dynamic-ad-container, [data-gitut-ad]');
+ const country = window.serviceData ? window.serviceData.countryCode : 'dz';
+ containers.forEach((c, idx) => {
+ if (!c.id) c.id = 'static-ad-container-' + idx;
+ const placement = c.getAttribute('data-placement') || c.getAttribute('data-gitut-ad');
  if (placement) window.injectAd(c.id, placement, country);
  });
  };
@@ -88,7 +93,10 @@
  window.refreshAds();
  window.runCountdown(10, () => {
  if (splitBody) splitBody.style.display = 'none';
- if (formatSelection) formatSelection.style.display = 'flex';
+ if (formatSelection) {
+ formatSelection.style.display = 'flex';
+ window.refreshAds();
+ }
  });
  };
 
@@ -107,14 +115,20 @@
  window.runCountdown(10, () => {
  if (splitBody) splitBody.style.display = 'none';
  const finalDownload = $('final-download-view');
- if (finalDownload) finalDownload.style.display = 'block';
+ if (finalDownload) {
+ finalDownload.style.display = 'block';
+ window.refreshAds();
+ }
  const finalBtnAddress = $('final-btn');
  if (finalBtnAddress) {
  finalBtnAddress.onclick = () => {
  setTimeout(() => {
  if (finalDownload) finalDownload.style.display = 'none';
  const successView = $('success-view');
- if (successView) successView.style.display = 'flex';
+ if (successView) {
+ successView.style.display = 'flex';
+ window.refreshAds();
+ }
  }, 500);
  };
  }
