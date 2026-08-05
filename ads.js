@@ -21,18 +21,23 @@
         }
     }
 
-    const rawData = [{"id":"ef6d36c8-0ae2-407d-b8ff-4646df223280","placements":["DASHBOARD_TOP","BLOG_POST_RELATED_TOP","SERVICE_LIST_TOP","BLOG_LIST_LAST_ITEM_TOP","SERVICE_DETAIL_TOP","PREVIEW_MODAL_LEFT","SERVICE_P1","PDF_INTERSTITIAL","SERVICE_STEP_1","SERVICE_STEP_2","STATIC_DOC_ABOVE_DOWNLOAD_BTN","STATIC_DOC_BELOW_ABOUT","STATIC_DOC_SECOND_TIMER","STATIC_DOC_OPEN_NEW_TAB","STATIC_DOC_CREATE_CV","STATIC_DOC_ABOVE_ABOUT","STATIC_DOC_TIMER_MODAL","DYNAMIC_DOC_ABOVE_DOWNLOAD_BTN","DYNAMIC_DOC_ABOVE_ABOUT","DYNAMIC_DOC_BELOW_ABOUT","DYNAMIC_DOC_TIMER_MODAL","DYNAMIC_DOC_SECOND_TIMER","DYNAMIC_DOC_OPEN_NEW_TAB","DYNAMIC_DOC_CREATE_CV","SERVICE_STEP_3","BLOG_EVERY_2_PARAGRAPHS"],"html":"PHNjcmlwdD4KICBhdE9wdGlvbnMgPSB7CiAgICAna2V5JyA6ICc0NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOCcsCiAgICAnZm9ybWF0JyA6ICdpZnJhbWUnLAogICAgJ2hlaWdodCcgOiAyNTAsCiAgICAnd2lkdGgnIDogMzAwLAogICAgJ3BhcmFtcycgOiB7fQogIH07Cjwvc2NyaXB0Pgo8c2NyaXB0IHNyYz0iaHR0cHM6Ly93d3cuaGlnaHBlcmZvcm1hbmNlZm9ybWF0LmNvbS80NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOC9pbnZva2UuanMiPjwvc2NyaXB0Pgo=","title":"","content":"","imageUrl":"","link":"","displayStyle":"overlay","adFormat":"standard","color":"blue","buttonText":"","isPopup":false,"popupDelay":3,"popupStyle":"modern_light","isEncoded":true}];
+    const codeBank = {"c_hp3j3m":"PHNjcmlwdD4KICBhdE9wdGlvbnMgPSB7CiAgICAna2V5JyA6ICc0NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOCcsCiAgICAnZm9ybWF0JyA6ICdpZnJhbWUnLAogICAgJ2hlaWdodCcgOiAyNTAsCiAgICAnd2lkdGgnIDogMzAwLAogICAgJ3BhcmFtcycgOiB7fQogIH07Cjwvc2NyaXB0Pgo8c2NyaXB0IHNyYz0iaHR0cHM6Ly93d3cuaGlnaHBlcmZvcm1hbmNlZm9ybWF0LmNvbS80NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOC9pbnZva2UuanMiPjwvc2NyaXB0Pgo="};
+    const rawData = [{"id":"ef6d36c8-0ae2-407d-b8ff-4646df223280","placements":["DASHBOARD_TOP","BLOG_POST_RELATED_TOP","SERVICE_LIST_TOP","BLOG_LIST_LAST_ITEM_TOP","SERVICE_DETAIL_TOP","PREVIEW_MODAL_LEFT","SERVICE_P1","PDF_INTERSTITIAL","SERVICE_STEP_1","SERVICE_STEP_2","STATIC_DOC_ABOVE_DOWNLOAD_BTN","STATIC_DOC_BELOW_ABOUT","STATIC_DOC_SECOND_TIMER","STATIC_DOC_OPEN_NEW_TAB","STATIC_DOC_CREATE_CV","STATIC_DOC_ABOVE_ABOUT","STATIC_DOC_TIMER_MODAL","DYNAMIC_DOC_ABOVE_DOWNLOAD_BTN","DYNAMIC_DOC_ABOVE_ABOUT","DYNAMIC_DOC_BELOW_ABOUT","DYNAMIC_DOC_TIMER_MODAL","DYNAMIC_DOC_SECOND_TIMER","DYNAMIC_DOC_OPEN_NEW_TAB","DYNAMIC_DOC_CREATE_CV","SERVICE_STEP_3","BLOG_EVERY_2_PARAGRAPHS"],"htmlKey":"c_hp3j3m","html":null,"title":"","content":"","imageUrl":"","link":"","displayStyle":"overlay","adFormat":"standard","color":"blue","buttonText":"","isPopup":false,"popupDelay":3,"popupStyle":"modern_light","isEncoded":true}];
     window.GITUT_ADS = rawData.map(ad => {
+        let rawHtml = ad.htmlKey ? codeBank[ad.htmlKey] : ad.html;
         if (ad.isEncoded) {
             return {
                 ...ad,
                 title: decodeArabicBase64(ad.title),
                 content: decodeArabicBase64(ad.content),
                 buttonText: decodeArabicBase64(ad.buttonText),
-                html: ad.html ? decodeArabicBase64(ad.html) : null
+                html: rawHtml ? decodeArabicBase64(rawHtml) : null
             };
         }
-        return ad;
+        return {
+            ...ad,
+            html: rawHtml || ad.html
+        };
     });
 
     console.log('Gitut Ads loaded and decoded for dz');
@@ -378,7 +383,7 @@
     window.initGitutPopups = function() {
         const currentPageType = window.PAGE_TYPE || '';
         const popupAds = (window.GITUT_ADS || []).filter(ad => {
-            const isPopup = ad.isPopup || (ad.placements && ad.placements.some(p => p === 'POPUP' || p === 'POPUP_GLOBAL' || p.startsWith('POPUP_') || p.includes('INTERSTITIAL') || p.includes('TIMER_MODAL')));
+            const isPopup = ad.isPopup || (ad.placements && ad.placements.some(p => p === 'POPUP' || p === 'POPUP_GLOBAL' || p.startsWith('POPUP_')));
             if (!isPopup) return false;
 
             const placements = ad.placements || (ad.placement ? [ad.placement] : []);
@@ -388,7 +393,7 @@
             }
 
             if (currentPageType === 'تعبئة_طلب' || currentPageType === 'عرض_طلب_ثابت' || currentPageType === 'خدمة') {
-                return placements.includes('POPUP_DYNAMIC_DOCS') || placements.includes('PDF_INTERSTITIAL') || placements.includes('STATIC_DOC_TIMER_MODAL') || placements.includes('DYNAMIC_DOC_TIMER_MODAL') || placements.includes('POPUP_GLOBAL') || placements.includes('POPUP');
+                return placements.includes('POPUP_DYNAMIC_DOCS') || placements.includes('POPUP_GLOBAL') || placements.includes('POPUP');
             }
 
             if (currentPageType === 'قائمة_الخدمات') {
@@ -419,13 +424,26 @@
                 possiblePlacements.push(fallbackPlacement);
             }
             if (placement.indexOf('SERVICE_STEP_') === 0) {
-                possiblePlacements.push('SERVICE_SIDEBAR', 'SERVICE_DETAIL_TOP');
+                possiblePlacements.push(
+                    'SERVICE_SIDEBAR',
+                    'SERVICE_STEP_1',
+                    'SERVICE_STEP_2',
+                    'SERVICE_STEP_3',
+                    'SERVICE_STEP_4',
+                    'SERVICE_STEP_5',
+                    'SERVICE_STEP_6',
+                    'SERVICE_STEP_7',
+                    'SERVICE_DETAIL_TOP'
+                );
             }
             if (placement.indexOf('TIMER_MODAL') !== -1) {
-                possiblePlacements.push('PDF_INTERSTITIAL', 'SERVICE_DETAIL_TOP');
+                possiblePlacements.push('TIMER_MODAL', 'PDF_INTERSTITIAL', 'SERVICE_DETAIL_TOP');
             }
             if (placement.indexOf('SECOND_TIMER') !== -1) {
-                possiblePlacements.push('DYNAMIC_DOC_TIMER_MODAL', 'STATIC_DOC_TIMER_MODAL', 'PDF_INTERSTITIAL', 'SERVICE_SIDEBAR');
+                possiblePlacements.push('SECOND_TIMER', 'DYNAMIC_DOC_TIMER_MODAL', 'STATIC_DOC_TIMER_MODAL', 'PDF_INTERSTITIAL', 'SERVICE_SIDEBAR');
+            }
+            if (placement.indexOf('CREATE_CV') !== -1) {
+                possiblePlacements.push('CREATE_CV', 'STATIC_DOC_SECOND_TIMER', 'DYNAMIC_DOC_SECOND_TIMER', 'STATIC_DOC_TIMER_MODAL', 'DYNAMIC_DOC_TIMER_MODAL', 'PDF_INTERSTITIAL');
             }
             if (placement.indexOf('ABOVE_DOWNLOAD_BTN') !== -1) {
                 possiblePlacements.push('SERVICE_DETAIL_TOP');
@@ -454,6 +472,23 @@
                 const adPlacements = ad.placements || (ad.placement ? [ad.placement] : []);
                 return adPlacements.some(p => possiblePlacements.includes(p));
             });
+
+            matches.sort((a, b) => {
+                const aPlacements = a.placements || (a.placement ? [a.placement] : []);
+                const bPlacements = b.placements || (b.placement ? [b.placement] : []);
+                const aIdx = Math.min(...aPlacements.map(p => {
+                    const i = possiblePlacements.indexOf(p);
+                    return i === -1 ? 999 : i;
+                }));
+                const bIdx = Math.min(...bPlacements.map(p => {
+                    const i = possiblePlacements.indexOf(p);
+                    return i === -1 ? 999 : i;
+                }));
+                return aIdx - bIdx;
+            });
+
+            const parentAdWrap = container.closest('#wizard-ad-container, .ad-container, .sidebar-ad-container, .sidebar-card, .preview-modal-ad-box, .details-ad');
+
             if (matches.length === 0) {
                 container.innerHTML = '';
                 container.style.setProperty('display', 'none', 'important');
@@ -462,6 +497,9 @@
                 container.style.border = 'none';
                 container.style.boxShadow = 'none';
                 container.style.background = 'transparent';
+                if (parentAdWrap) {
+                    parentAdWrap.style.setProperty('display', 'none', 'important');
+                }
                 return;
             }
             if (placementCounts[placement] === undefined) {
@@ -478,7 +516,17 @@
                 container.style.border = 'none';
                 container.style.boxShadow = 'none';
                 container.style.background = 'transparent';
+                if (parentAdWrap) {
+                    parentAdWrap.style.setProperty('display', 'none', 'important');
+                }
                 return;
+            }
+            if (parentAdWrap) {
+                parentAdWrap.style.removeProperty('display');
+                if (parentAdWrap.classList.contains('hidden')) {
+                    parentAdWrap.classList.remove('hidden');
+                }
+                parentAdWrap.style.setProperty('display', 'block', 'important');
             }
             container.style.removeProperty('margin');
             container.style.removeProperty('padding');
