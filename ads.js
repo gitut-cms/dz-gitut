@@ -159,7 +159,7 @@
             
             const doc = iframe.contentWindow || iframe.contentDocument;
             if (doc) {
-                const idoc = (doc as any).document || doc;
+                const idoc = doc.document || doc;
                 idoc.open();
                 idoc.write('<!DOCTYPE html><html><head><style>body{margin:0;padding:0;display:flex;justify-content:center;align-items:center;text-align:center;background:transparent;}</style></head><body>' + htmlContent + '</body></html>');
                 idoc.close();
