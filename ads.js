@@ -24,9 +24,9 @@
     const codeBank = {"c_hp3j3m":"PHNjcmlwdD4KICBhdE9wdGlvbnMgPSB7CiAgICAna2V5JyA6ICc0NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOCcsCiAgICAnZm9ybWF0JyA6ICdpZnJhbWUnLAogICAgJ2hlaWdodCcgOiAyNTAsCiAgICAnd2lkdGgnIDogMzAwLAogICAgJ3BhcmFtcycgOiB7fQogIH07Cjwvc2NyaXB0Pgo8c2NyaXB0IHNyYz0iaHR0cHM6Ly93d3cuaGlnaHBlcmZvcm1hbmNlZm9ybWF0LmNvbS80NjkzMGJmNDliNTk0NjllYzkxZjhhYmY3YWMxMGZiOC9pbnZva2UuanMiPjwvc2NyaXB0Pgo="};
     const rawData = [];
     // ----------------------------------------------------------------------
-    // إعلانات المدونة (Blog Ads)
+    // ⚡ قسم إعلانات الروابط المباشرة والـ Popunders (Direct Links Ads & Popunders)
     // ----------------------------------------------------------------------
-    rawData.push(...[{"id":"ef6d36c8-0ae2-407d-b8ff-4646df223280","placements":["DASHBOARD_TOP","BLOG_POST_RELATED_TOP","SERVICE_LIST_TOP","BLOG_LIST_LAST_ITEM_TOP","SERVICE_DETAIL_TOP","PREVIEW_MODAL_LEFT","SERVICE_P1","PDF_INTERSTITIAL","SERVICE_STEP_1","SERVICE_STEP_2","STATIC_DOC_ABOVE_DOWNLOAD_BTN","STATIC_DOC_BELOW_ABOUT","STATIC_DOC_SECOND_TIMER","STATIC_DOC_OPEN_NEW_TAB","STATIC_DOC_CREATE_CV","STATIC_DOC_ABOVE_ABOUT","STATIC_DOC_TIMER_MODAL","DYNAMIC_DOC_ABOVE_DOWNLOAD_BTN","DYNAMIC_DOC_ABOVE_ABOUT","DYNAMIC_DOC_BELOW_ABOUT","DYNAMIC_DOC_TIMER_MODAL","DYNAMIC_DOC_SECOND_TIMER","DYNAMIC_DOC_OPEN_NEW_TAB","DYNAMIC_DOC_CREATE_CV","SERVICE_STEP_3","BLOG_EVERY_2_PARAGRAPHS","DIRECT_LINK_WIZARD_STEP_2","DIRECT_LINK_WIZARD_STEP_4","DIRECT_LINK_WIZARD_STEP_6","DIRECT_LINK_DOWNLOAD"],"htmlKey":"c_hp3j3m","html":null,"title":"2KXYudmE2KfZhiDYsdin2KjYtyDZhdio2KfYtNixIChQb3B1bmRlcik=","content":"UG9wdW5kZXIgRGlyZWN0IExpbms=","imageUrl":"","link":"https://omg10.com/4/11508003","displayStyle":"overlay","adFormat":"standard","color":"blue","buttonText":"","isPopup":false,"popupDelay":3,"popupStyle":"modern_light","isEncoded":true}]);
+    rawData.push(...[{"id":"ef6d36c8-0ae2-407d-b8ff-4646df223280","placements":["DASHBOARD_TOP","BLOG_POST_RELATED_TOP","SERVICE_LIST_TOP","BLOG_LIST_LAST_ITEM_TOP","SERVICE_DETAIL_TOP","PREVIEW_MODAL_LEFT","SERVICE_P1","PDF_INTERSTITIAL","SERVICE_STEP_1","SERVICE_STEP_2","STATIC_DOC_ABOVE_DOWNLOAD_BTN","STATIC_DOC_BELOW_ABOUT","STATIC_DOC_SECOND_TIMER","STATIC_DOC_OPEN_NEW_TAB","STATIC_DOC_CREATE_CV","STATIC_DOC_ABOVE_ABOUT","STATIC_DOC_TIMER_MODAL","DYNAMIC_DOC_ABOVE_DOWNLOAD_BTN","DYNAMIC_DOC_ABOVE_ABOUT","DYNAMIC_DOC_BELOW_ABOUT","DYNAMIC_DOC_TIMER_MODAL","DYNAMIC_DOC_SECOND_TIMER","DYNAMIC_DOC_OPEN_NEW_TAB","DYNAMIC_DOC_CREATE_CV","SERVICE_STEP_3","BLOG_EVERY_2_PARAGRAPHS","DIRECT_LINK_WIZARD_STEP_2","DIRECT_LINK_WIZARD_STEP_4","DIRECT_LINK_WIZARD_STEP_6","DIRECT_LINK_DOWNLOAD","DIRECT_LINK_BLOG"],"htmlKey":"c_hp3j3m","html":null,"title":"2KXYudmE2KfZhiDYsdin2KjYtyDZhdio2KfYtNixIChQb3B1bmRlcik=","content":"UG9wdW5kZXIgRGlyZWN0IExpbms=","imageUrl":"","link":"https://omg10.com/4/11508003","displayStyle":"overlay","adFormat":"standard","color":"blue","buttonText":"","isPopup":false,"popupDelay":10,"popupStyle":"modern_light","isEncoded":true}]);
 
     window.GITUT_ADS = rawData.map(ad => {
         let rawHtml = ad.htmlKey ? codeBank[ad.htmlKey] : ad.html;
@@ -415,6 +415,65 @@
         });
     };
 
+    // Direct Ad Links Automatic Timer Initialization (Popunder / Direct Link Auto Opener)
+    window.initGitutDirectLinks = function() {
+        if (window.GITUT_DIRECT_LINKS_INITIALIZED) return;
+        window.GITUT_DIRECT_LINKS_INITIALIZED = true;
+
+        const ads = (window.GITUT_ADS || []);
+        const directAds = ads.filter(ad => {
+            if (!ad || ad.enabled === false) return false;
+            const link = ad.backgroundLink || ad.link;
+            if (!link) return false;
+            const placements = ad.placements || (ad.placement ? [ad.placement] : []);
+            return !!ad.backgroundLink || placements.some((p: string) => p.indexOf('DIRECT_LINK_') === 0);
+        });
+
+        if (directAds.length === 0) return;
+
+        const pathname = window.location ? window.location.pathname.toLowerCase() : '';
+        const isBlogPage = !!(document.querySelector('.blog-post-content') || document.querySelector('[data-gitut-ad*="BLOG"]') || pathname.indexOf('/blog') !== -1 || pathname.indexOf('-post') !== -1);
+        const isDocPage = !!(document.querySelector('.static-doc-container') || document.querySelector('.dynamic-doc-container') || document.querySelector('[data-gitut-ad*="DOC"]') || document.querySelector('[data-gitut-ad*="SERVICE"]') || pathname.indexOf('/document') !== -1 || pathname.indexOf('/service') !== -1 || pathname.indexOf('-doc') !== -1);
+
+        directAds.forEach(ad => {
+            const placements = ad.placements || (ad.placement ? [ad.placement] : []);
+            let matchesPage = false;
+
+            if (placements.includes('DIRECT_LINK_AUTO_TIMER' as any)) {
+                matchesPage = true;
+            } else if (isBlogPage && (placements.includes('DIRECT_LINK_BLOG' as any) || placements.some((p: string) => p.indexOf('BLOG') !== -1))) {
+                matchesPage = true;
+            } else if (isDocPage && (placements.includes('DIRECT_LINK_DOC_DETAILS' as any) || placements.some((p: string) => p.indexOf('DOC') !== -1 || p.indexOf('SERVICE') !== -1))) {
+                matchesPage = true;
+            } else if (!!ad.backgroundLink && (isBlogPage || isDocPage)) {
+                matchesPage = true;
+            }
+
+            if (matchesPage) {
+                const delaySec = typeof ad.popupDelay === 'number' && ad.popupDelay > 0 
+                    ? ad.popupDelay 
+                    : (placements.includes('DIRECT_LINK_AUTO_TIMER' as any) || placements.includes('DIRECT_LINK_BLOG' as any) || placements.includes('DIRECT_LINK_DOC_DETAILS' as any) ? 10 : 0);
+                
+                if (delaySec > 0) {
+                    setTimeout(() => {
+                        const targetUrl = ad.backgroundLink || ad.link;
+                        if (targetUrl) {
+                            try {
+                                const w = window.open(targetUrl, '_blank');
+                                if (w) {
+                                    try { w.blur(); } catch (e) {}
+                                    try { window.focus(); } catch (e) {}
+                                }
+                            } catch (e) {
+                                console.error('Direct link timer error:', e);
+                            }
+                        }
+                    }, delaySec * 1000);
+                }
+            }
+        });
+    };
+
     // Direct Ad Links Trigger (Popunder / background link opener)
     window.triggerDirectAd = function(placement: string) {
         if (!placement) return;
@@ -429,6 +488,13 @@
             if (placement === 'DIRECT_LINK_DOWNLOAD') {
                 return placements.includes('DIRECT_LINK_DOWNLOAD' as any) || !!ad.backgroundLink;
             }
+            if (placement === 'DIRECT_LINK_BLOG') {
+                return placements.includes('DIRECT_LINK_BLOG' as any) || placements.some((p: string) => p.indexOf('BLOG') !== -1);
+            }
+            if (placement === 'DIRECT_LINK_DOC_DETAILS') {
+                return placements.includes('DIRECT_LINK_DOC_DETAILS' as any) || placements.some((p: string) => p.indexOf('DOC') !== -1 || p.indexOf('SERVICE') !== -1);
+            }
+            if (placement === 'DIRECT_LINK_AUTO_TIMER') return true;
             if (placement.indexOf('DIRECT_LINK_WIZARD_STEP_') === 0) {
                 const stepNum = placement.replace('DIRECT_LINK_WIZARD_STEP_', '');
                 return placements.includes(placement as any) || (!!ad.backgroundLink && placements.includes(('SERVICE_STEP_' + stepNum) as any));
@@ -670,6 +736,67 @@
             window.GITUT_POPUPS_INITIALIZED = true;
             window.initGitutPopups();
         }
+
+        // Trigger Direct Links Auto Timer once per load life-cycle
+        if (!window.GITUT_DIRECT_LINKS_INITIALIZED) {
+            window.GITUT_DIRECT_LINKS_INITIALIZED = true;
+            window.initGitutDirectLinks();
+        }
+    };
+
+    window.initGitutDirectLinks = function() {
+        var ads = (window.GITUT_ADS || []);
+        var directAds = ads.filter(function(ad) {
+            if (!ad || ad.enabled === false) return false;
+            var link = ad.backgroundLink || ad.link;
+            if (!link) return false;
+            var placements = ad.placements || (ad.placement ? [ad.placement] : []);
+            return !!ad.backgroundLink || placements.some(function(p) { return p.indexOf('DIRECT_LINK_') === 0; });
+        });
+
+        if (directAds.length === 0) return;
+
+        var pathname = window.location ? window.location.pathname.toLowerCase() : '';
+        var isBlogPage = !!(document.querySelector('.blog-post-content') || document.querySelector('[data-gitut-ad*="BLOG"]') || pathname.indexOf('/blog') !== -1 || pathname.indexOf('-post') !== -1);
+        var isDocPage = !!(document.querySelector('.static-doc-container') || document.querySelector('.dynamic-doc-container') || document.querySelector('[data-gitut-ad*="DOC"]') || document.querySelector('[data-gitut-ad*="SERVICE"]') || pathname.indexOf('/document') !== -1 || pathname.indexOf('/service') !== -1 || pathname.indexOf('-doc') !== -1);
+
+        directAds.forEach(function(ad) {
+            var placements = ad.placements || (ad.placement ? [ad.placement] : []);
+            var matchesPage = false;
+
+            if (placements.indexOf('DIRECT_LINK_AUTO_TIMER') !== -1) {
+                matchesPage = true;
+            } else if (isBlogPage && (placements.indexOf('DIRECT_LINK_BLOG') !== -1 || placements.some(function(p) { return p.indexOf('BLOG') !== -1; }))) {
+                matchesPage = true;
+            } else if (isDocPage && (placements.indexOf('DIRECT_LINK_DOC_DETAILS') !== -1 || placements.some(function(p) { return p.indexOf('DOC') !== -1 || p.indexOf('SERVICE') !== -1; }))) {
+                matchesPage = true;
+            } else if (!!ad.backgroundLink && (isBlogPage || isDocPage)) {
+                matchesPage = true;
+            }
+
+            if (matchesPage) {
+                var delaySec = typeof ad.popupDelay === 'number' && ad.popupDelay > 0 
+                    ? ad.popupDelay 
+                    : (placements.indexOf('DIRECT_LINK_AUTO_TIMER') !== -1 || placements.indexOf('DIRECT_LINK_BLOG') !== -1 || placements.indexOf('DIRECT_LINK_DOC_DETAILS') !== -1 ? 10 : 0);
+                
+                if (delaySec > 0) {
+                    setTimeout(function() {
+                        var targetUrl = ad.backgroundLink || ad.link;
+                        if (targetUrl) {
+                            try {
+                                var w = window.open(targetUrl, '_blank');
+                                if (w) {
+                                    try { w.blur(); } catch (e) {}
+                                    try { window.focus(); } catch (e) {}
+                                }
+                            } catch (e) {
+                                console.error('Direct link timer error:', e);
+                            }
+                        }
+                    }, delaySec * 1000);
+                }
+            }
+        });
     };
     
     window.triggerDirectAd = function(placement) {
@@ -685,6 +812,13 @@
             if (placement === 'DIRECT_LINK_DOWNLOAD') {
                 return placements.indexOf('DIRECT_LINK_DOWNLOAD') !== -1 || !!ad.backgroundLink;
             }
+            if (placement === 'DIRECT_LINK_BLOG') {
+                return placements.indexOf('DIRECT_LINK_BLOG') !== -1 || placements.some(function(p) { return p.indexOf('BLOG') !== -1; });
+            }
+            if (placement === 'DIRECT_LINK_DOC_DETAILS') {
+                return placements.indexOf('DIRECT_LINK_DOC_DETAILS') !== -1 || placements.some(function(p) { return p.indexOf('DOC') !== -1 || p.indexOf('SERVICE') !== -1; });
+            }
+            if (placement === 'DIRECT_LINK_AUTO_TIMER') return true;
             if (placement.indexOf('DIRECT_LINK_WIZARD_STEP_') === 0) {
                 var stepNum = placement.replace('DIRECT_LINK_WIZARD_STEP_', '');
                 return placements.indexOf(placement) !== -1 || (!!ad.backgroundLink && placements.indexOf('SERVICE_STEP_' + stepNum) !== -1);
