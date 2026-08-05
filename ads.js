@@ -122,6 +122,27 @@
     const event = new CustomEvent('gitut_ads_ready', { detail: window.GITUT_ADS });
     window.dispatchEvent(event);
 
+    function injectHtmlWithScripts(targetContainer, htmlContent) {
+        if (!targetContainer || !htmlContent) return;
+        targetContainer.innerHTML = htmlContent;
+
+        const oldScripts = Array.from(targetContainer.querySelectorAll('script'));
+        oldScripts.forEach(oldScript => {
+            const newScript = document.createElement('script');
+            Array.from(oldScript.attributes).forEach(attr => {
+                newScript.setAttribute(attr.name, attr.value);
+            });
+            if (oldScript.src) {
+                newScript.src = oldScript.src;
+            } else {
+                newScript.textContent = oldScript.textContent;
+            }
+            if (oldScript.parentNode) {
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            }
+        });
+    }
+
     // Popup implementation
     function showGitutPopup(ad) {
         if (!ad) return;
@@ -156,119 +177,156 @@
             '}';
         wrapper.appendChild(styleElement);
 
-        let htmlContent = '';
-
-        if (style === 'promo_banner') {
-            // Floating Bottom Banner / Bar
-            wrapper.style.bottom = '20px';
-            wrapper.style.left = '50%';
-            wrapper.style.transform = 'translateX(-50%) translateY(20px)';
-            wrapper.style.width = '90%';
-            wrapper.style.maxWidth = '850px';
-            wrapper.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-
-            const imgHtml = ad.imageUrl ? '<img src="' + ad.imageUrl + '" style="width:70px;height:70px;object-fit:cover;border-radius:12px;margin-' + (isRtl ? 'left' : 'right') + ':16px;box-shadow:0 4px 10px rgba(0,0,0,0.06);" referrerPolicy="no-referrer"/>' : '';
-
-            htmlContent = 
-                '<div style="background:#ffffff; position:relative; display:flex; align-items:center; border:1px solid #e1e8f0; border-radius:30px; box-shadow:0 15px 40px rgba(15,23,42,0.15); padding:16px 20px; width:100%; font-family:inherit;">' +
-                    '<button class="close-gitut-popup" style="position:absolute; top:12px; ' + (isRtl ? 'left' : 'right') + ':16px; background:none; border:none; cursor:pointer; color:#94a3b8; font-size:18px; width:24px; height:24px; display:flex; align-items:center; justify-content:center; transition:color 0.2s;">✕</button>' +
-                    '<div style="display:flex; align-items:center; flex-grow:1; flex-direction:' + (isRtl ? 'row-reverse' : 'row') + '; margin-' + (isRtl ? 'left' : 'right') + ':40px; width:100%">' +
-                        '<div style="display:flex; align-items:center; flex-grow:1; ' + (isRtl ? 'text-align:right' : 'text-align:left') + '; flex-direction:' + (isRtl ? 'row-reverse' : 'row') + '; gap:16px">' +
-                            imgHtml +
-                            '<div style="flex-grow:1; margin-top: 4px;">' +
-                                '<div style="font-size:10px; color:#94a3b8; font-weight:800; text-transform:uppercase; margin-bottom:2px; letter-spacing:0.05em;">' + (isRtl ? 'إعلان مروّج' : 'PROMOTED') + '</div>' +
-                                '<h3 style="margin:0 0 4px 0; font-size:15px; font-weight:800; color:#0f172a; line-height:1.2;">' + ad.title + '</h3>' +
-                                '<p style="margin:0; font-size:12px; color:#475569; line-height:1.4; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;">' + ad.content + '</p>' +
-                            '</div>' +
-                        '</div>' +
-                        '<a href="' + ad.link + '" target="_blank" rel="noopener noreferrer" class="gitut-popup-btn" style="flex-shrink:0; background:' + color + '; color:white; padding:10px 22px; border-radius:12px; font-size:13px; font-weight:800; text-decoration:none; white-space:nowrap; box-shadow:0 4px 12px ' + color + '40; transition:transform 0.2s; margin-' + (isRtl ? 'right' : 'left') + ':16px;">' + (ad.buttonText || (isRtl ? 'اكتشف الآن' : 'Discover Now')) + '</a>' +
-                    '</div>' +
-                '</div>';
-        } else if (style === 'fullscreen') {
-            // Immersive Fullscreen Page Style
-            wrapper.style.inset = '0';
-            wrapper.style.background = 'rgba(15, 23, 42, 0.98)';
-            wrapper.style.display = 'flex';
-            wrapper.style.alignItems = 'center';
-            wrapper.style.justifyContent = 'center';
-            wrapper.style.padding = '24px';
-
-            const imgHtml = ad.imageUrl ? '<img src="' + ad.imageUrl + '" style="width:100%; max-height:350px; object-fit:cover; border-radius:24px; margin-bottom:24px; box-shadow:0 10px 30px rgba(0,0,0,0.3);" referrerPolicy="no-referrer"/>' : '';
-
-            htmlContent = 
-                '<div class="gitut-popup-card" style="position:relative; width:100%; max-width:650px; text-align:center; color:white; font-family:inherit; transition:transform 0.4s ease; transform:scale(0.95);">' +
-                    '<button class="close-gitut-popup" style="position:absolute; top:-40px; ' + (isRtl ? 'left' : 'right') + ':0px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); cursor:pointer; color:white; font-size:18px; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background 0.2s;">✕</button>' +
-                    imgHtml +
-                    '<div style="font-size:11px; color:' + color + '; font-weight:900; text-transform:uppercase; margin-bottom:8px; letter-spacing:0.1em;">' + (isRtl ? 'إعلان ترويجي مميز' : 'FEATURED PROMOTION') + '</div>' +
-                    '<h2 style="margin:0 0 12px 0; font-size:32px; font-weight:900; line-height:1.2; text-shadow:0 2px 4px rgba(0,0,0,0.5);">' + ad.title + '</h2>' +
-                    '<p style="margin:0 0 32px 0; font-size:16px; color:#94a3b8; line-height:1.6; max-width:500px; margin-left:auto; margin-right:auto;">' + ad.content + '</p>' +
-                    '<a href="' + ad.link + '" target="_blank" rel="noopener noreferrer" class="gitut-popup-btn" style="display:inline-block; background:' + color + '; color:white; padding:14px 40px; border-radius:16px; font-size:16px; font-weight:900; text-decoration:none; box-shadow:0 8px 25px ' + color + '50; transition:all 0.2s;">' + (ad.buttonText || (isRtl ? 'اكتشف الآن' : 'Discover Now')) + '</a>' +
-                '</div>';
-        } else {
-            // Modal overlays (modern_light, dark_elegant, glassmorphism)
+        if (ad.html) {
+            // Custom HTML / Script Ad Popup
             wrapper.style.inset = '0';
             wrapper.style.display = 'flex';
             wrapper.style.alignItems = 'center';
             wrapper.style.justifyContent = 'center';
             wrapper.style.padding = '20px';
 
-            // Click shadow to close wrapper
             const overlayBackdrop = document.createElement('div');
             overlayBackdrop.style.position = 'absolute';
             overlayBackdrop.style.inset = '0';
             overlayBackdrop.style.cursor = 'pointer';
-
-            if (style === 'glassmorphism') {
-                overlayBackdrop.style.background = 'rgba(15, 23, 42, 0.4)';
-                overlayBackdrop.style.backdropFilter = 'blur(12px)';
-                overlayBackdrop.style.webkitBackdropFilter = 'blur(12px)';
-            } else {
-                overlayBackdrop.style.background = 'rgba(15, 23, 42, 0.6)';
-                overlayBackdrop.style.backdropFilter = 'blur(4px)';
-                overlayBackdrop.style.webkitBackdropFilter = 'blur(4px)';
-            }
+            overlayBackdrop.style.background = 'rgba(15, 23, 42, 0.6)';
+            overlayBackdrop.style.backdropFilter = 'blur(4px)';
+            overlayBackdrop.style.webkitBackdropFilter = 'blur(4px)';
             wrapper.appendChild(overlayBackdrop);
 
-            let cardStyles = '';
-            let titleColor = '';
-            let contentColor = '';
-            let badgeStyle = '';
+            const card = document.createElement('div');
+            card.className = 'gitut-popup-card';
+            card.style.cssText = 'background:#ffffff; color:#0f172a; border:1px solid #e2e8f0; box-shadow:0 30px 60px -15px rgba(15,23,42,0.25); position:relative; width:100%; max-width:480px; border-radius:24px; padding:32px 20px 20px 20px; font-family:inherit; transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform:scale(0.9); text-align:center; z-index:10;';
 
-            if (style === 'dark_elegant') {
-                cardStyles = 'background:#0f172a; color:#ffffff; border:1px solid rgba(255,255,255,0.15); box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);';
-                titleColor = '#ffffff';
-                contentColor = '#94a3b8';
-                badgeStyle = 'background:rgba(255,255,255,0.1); color:#94a3b8; border:1px solid rgba(255,255,255,0.1);';
-            } else if (style === 'glassmorphism') {
-                cardStyles = 'background:rgba(255, 255, 255, 0.15); backdrop-filter:blur(25px); -webkit-backdrop-filter:blur(25px); color:#ffffff; border:1px solid rgba(255,255,255,0.25); box-shadow:0 30px 60px rgba(0,0,0,0.3);';
-                titleColor = '#ffffff';
-                contentColor = '#e2e8f0';
-                badgeStyle = 'background:rgba(255,255,255,0.2); color:#ffffff; border:1px solid rgba(255,255,255,0.1);';
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'close-gitut-popup';
+            closeBtn.style.cssText = 'position:absolute; top:10px; ' + (isRtl ? 'left' : 'right') + ':10px; background:#f1f5f9; border:none; border-radius:50%; cursor:pointer; color:#64748b; font-size:16px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; transition:all 0.2s; z-index:100;';
+            closeBtn.innerHTML = '✕';
+            card.appendChild(closeBtn);
+
+            const adContentDiv = document.createElement('div');
+            adContentDiv.style.cssText = 'width:100%; display:flex; justify-content:center; align-items:center; overflow:hidden; min-height:100px;';
+            card.appendChild(adContentDiv);
+
+            wrapper.appendChild(card);
+            document.body.appendChild(wrapper);
+
+            injectHtmlWithScripts(adContentDiv, ad.html);
+        } else {
+            let htmlContent = '';
+
+            if (style === 'promo_banner') {
+                // Floating Bottom Banner / Bar
+                wrapper.style.bottom = '20px';
+                wrapper.style.left = '50%';
+                wrapper.style.transform = 'translateX(-50%) translateY(20px)';
+                wrapper.style.width = '90%';
+                wrapper.style.maxWidth = '850px';
+                wrapper.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+
+                const imgHtml = ad.imageUrl ? '<img src="' + ad.imageUrl + '" style="width:70px;height:70px;object-fit:cover;border-radius:12px;margin-' + (isRtl ? 'left' : 'right') + ':16px;box-shadow:0 4px 10px rgba(0,0,0,0.06);" referrerPolicy="no-referrer"/>' : '';
+
+                htmlContent = 
+                    '<div style="background:#ffffff; position:relative; display:flex; align-items:center; border:1px solid #e1e8f0; border-radius:30px; box-shadow:0 15px 40px rgba(15,23,42,0.15); padding:16px 20px; width:100%; font-family:inherit;">' +
+                        '<button class="close-gitut-popup" style="position:absolute; top:12px; ' + (isRtl ? 'left' : 'right') + ':16px; background:none; border:none; cursor:pointer; color:#94a3b8; font-size:18px; width:24px; height:24px; display:flex; align-items:center; justify-content:center; transition:color 0.2s;">✕</button>' +
+                        '<div style="display:flex; align-items:center; flex-grow:1; flex-direction:' + (isRtl ? 'row-reverse' : 'row') + '; margin-' + (isRtl ? 'left' : 'right') + ':40px; width:100%">' +
+                            '<div style="display:flex; align-items:center; flex-grow:1; ' + (isRtl ? 'text-align:right' : 'text-align:left') + '; flex-direction:' + (isRtl ? 'row-reverse' : 'row') + '; gap:16px">' +
+                                imgHtml +
+                                '<div style="flex-grow:1; margin-top: 4px;">' +
+                                    '<div style="font-size:10px; color:#94a3b8; font-weight:800; text-transform:uppercase; margin-bottom:2px; letter-spacing:0.05em;">' + (isRtl ? 'إعلان مروّج' : 'PROMOTED') + '</div>' +
+                                    '<h3 style="margin:0 0 4px 0; font-size:15px; font-weight:800; color:#0f172a; line-height:1.2;">' + ad.title + '</h3>' +
+                                    '<p style="margin:0; font-size:12px; color:#475569; line-height:1.4; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;">' + ad.content + '</p>' +
+                                '</div>' +
+                            '</div>' +
+                            '<a href="' + ad.link + '" target="_blank" rel="noopener noreferrer" class="gitut-popup-btn" style="flex-shrink:0; background:' + color + '; color:white; padding:10px 22px; border-radius:12px; font-size:13px; font-weight:800; text-decoration:none; white-space:nowrap; box-shadow:0 4px 12px ' + color + '40; transition:transform 0.2s; margin-' + (isRtl ? 'right' : 'left') + ':16px;">' + (ad.buttonText || (isRtl ? 'اكتشف الآن' : 'Discover Now')) + '</a>' +
+                        '</div>' +
+                    '</div>';
+            } else if (style === 'fullscreen') {
+                // Immersive Fullscreen Page Style
+                wrapper.style.inset = '0';
+                wrapper.style.background = 'rgba(15, 23, 42, 0.98)';
+                wrapper.style.display = 'flex';
+                wrapper.style.alignItems = 'center';
+                wrapper.style.justifyContent = 'center';
+                wrapper.style.padding = '24px';
+
+                const imgHtml = ad.imageUrl ? '<img src="' + ad.imageUrl + '" style="width:100%; max-height:350px; object-fit:cover; border-radius:24px; margin-bottom:24px; box-shadow:0 10px 30px rgba(0,0,0,0.3);" referrerPolicy="no-referrer"/>' : '';
+
+                htmlContent = 
+                    '<div class="gitut-popup-card" style="position:relative; width:100%; max-width:650px; text-align:center; color:white; font-family:inherit; transition:transform 0.4s ease; transform:scale(0.95);">' +
+                        '<button class="close-gitut-popup" style="position:absolute; top:-40px; ' + (isRtl ? 'left' : 'right') + ':0px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); cursor:pointer; color:white; font-size:18px; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background 0.2s;">✕</button>' +
+                        imgHtml +
+                        '<div style="font-size:11px; color:' + color + '; font-weight:900; text-transform:uppercase; margin-bottom:8px; letter-spacing:0.1em;">' + (isRtl ? 'إعلان ترويجي مميز' : 'FEATURED PROMOTION') + '</div>' +
+                        '<h2 style="margin:0 0 12px 0; font-size:32px; font-weight:900; line-height:1.2; text-shadow:0 2px 4px rgba(0,0,0,0.5);">' + ad.title + '</h2>' +
+                        '<p style="margin:0 0 32px 0; font-size:16px; color:#94a3b8; line-height:1.6; max-width:500px; margin-left:auto; margin-right:auto;">' + ad.content + '</p>' +
+                        '<a href="' + ad.link + '" target="_blank" rel="noopener noreferrer" class="gitut-popup-btn" style="display:inline-block; background:' + color + '; color:white; padding:14px 40px; border-radius:16px; font-size:16px; font-weight:900; text-decoration:none; box-shadow:0 8px 25px ' + color + '50; transition:all 0.2s;">' + (ad.buttonText || (isRtl ? 'اكتشف الآن' : 'Discover Now')) + '</a>' +
+                    '</div>';
             } else {
-                // modern_light
-                cardStyles = 'background:#ffffff; color:#0f172a; border:1px solid #e2e8f0; box-shadow:0 30px 60px -15px rgba(15,23,42,0.2);';
-                titleColor = '#0f172a';
-                contentColor = '#475569';
-                badgeStyle = 'background:#f1f5f9; color:#64748b; border:1px solid #e2e8f0;';
+                // Modal overlays (modern_light, dark_elegant, glassmorphism)
+                wrapper.style.inset = '0';
+                wrapper.style.display = 'flex';
+                wrapper.style.alignItems = 'center';
+                wrapper.style.justifyContent = 'center';
+                wrapper.style.padding = '20px';
+
+                // Click shadow to close wrapper
+                const overlayBackdrop = document.createElement('div');
+                overlayBackdrop.style.position = 'absolute';
+                overlayBackdrop.style.inset = '0';
+                overlayBackdrop.style.cursor = 'pointer';
+
+                if (style === 'glassmorphism') {
+                    overlayBackdrop.style.background = 'rgba(15, 23, 42, 0.4)';
+                    overlayBackdrop.style.backdropFilter = 'blur(12px)';
+                    overlayBackdrop.style.webkitBackdropFilter = 'blur(12px)';
+                } else {
+                    overlayBackdrop.style.background = 'rgba(15, 23, 42, 0.6)';
+                    overlayBackdrop.style.backdropFilter = 'blur(4px)';
+                    overlayBackdrop.style.webkitBackdropFilter = 'blur(4px)';
+                }
+                wrapper.appendChild(overlayBackdrop);
+
+                let cardStyles = '';
+                let titleColor = '';
+                let contentColor = '';
+                let badgeStyle = '';
+
+                if (style === 'dark_elegant') {
+                    cardStyles = 'background:#0f172a; color:#ffffff; border:1px solid rgba(255,255,255,0.15); box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);';
+                    titleColor = '#ffffff';
+                    contentColor = '#94a3b8';
+                    badgeStyle = 'background:rgba(255,255,255,0.1); color:#94a3b8; border:1px solid rgba(255,255,255,0.1);';
+                } else if (style === 'glassmorphism') {
+                    cardStyles = 'background:rgba(255, 255, 255, 0.15); backdrop-filter:blur(25px); -webkit-backdrop-filter:blur(25px); color:#ffffff; border:1px solid rgba(255,255,255,0.25); box-shadow:0 30px 60px rgba(0,0,0,0.3);';
+                    titleColor = '#ffffff';
+                    contentColor = '#e2e8f0';
+                    badgeStyle = 'background:rgba(255,255,255,0.2); color:#ffffff; border:1px solid rgba(255,255,255,0.1);';
+                } else {
+                    // modern_light
+                    cardStyles = 'background:#ffffff; color:#0f172a; border:1px solid #e2e8f0; box-shadow:0 30px 60px -15px rgba(15,23,42,0.2);';
+                    titleColor = '#0f172a';
+                    contentColor = '#475569';
+                    badgeStyle = 'background:#f1f5f9; color:#64748b; border:1px solid #e2e8f0;';
+                }
+
+                const imgHtml = ad.imageUrl ? '<div style="width:100%; height:200px; overflow:hidden; border-radius:18px; margin-bottom:18px; background:#f1f5f9; position:relative;"><img src="' + ad.imageUrl + '" style="width:100%; height:100%; object-fit:cover;" referrerPolicy="no-referrer"/><div style="position:absolute; top:12px; ' + (isRtl ? 'right' : 'left') + ':12px; ' + badgeStyle + ' padding:3px 10px; border-radius:6px; font-size:10px; font-weight:800; text-transform:uppercase;">' + (isRtl ? 'إعلان مروّج' : 'SPONSORED') + '</div></div>' : '<div style="display:inline-block; ' + badgeStyle + ' padding:4px 12px; border-radius:6px; font-size:10px; font-weight:800; text-transform:uppercase; margin-bottom:12px; width:fit-content;">' + (isRtl ? 'إعلان مروّج' : 'SPONSORED') + '</div>';
+
+                htmlContent = 
+                    '<div class="gitut-popup-card" style="' + cardStyles + ' position:relative; width:100%; max-width:440px; border-radius:28px; padding:24px; font-family:inherit; transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform:scale(0.9); text-align:' + (isRtl ? 'right' : 'left') + ';">' +
+                        '<button class="close-gitut-popup" style="position:absolute; top:20px; ' + (isRtl ? 'left' : 'right') + ':20px; background:none; border:none; cursor:pointer; color:#94a3b8; font-size:22px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; transition:color 0.2s; z-index:100;">✕</button>' +
+                        imgHtml +
+                        '<h3 style="margin:0 0 8px 0; font-size:20px; font-weight:800; color:' + titleColor + '; line-height:1.3;">' + ad.title + '</h3>' +
+                        '<p style="margin:0 0 24px 0; font-size:14px; color:' + contentColor + '; line-height:1.5;">' + ad.content + '</p>' +
+                        '<a href="' + ad.link + '" target="_blank" rel="noopener noreferrer" class="gitut-popup-btn" style="display:block; text-align:center; background:' + color + '; color:white; padding:12px; border-radius:14px; font-size:14px; font-weight:800; text-decoration:none; box-shadow:0 6px 18px ' + color + '30; transition:all 0.2s;">' + (ad.buttonText || (isRtl ? 'اكتشف الآن' : 'Discover Now')) + '</a>' +
+                    '</div>';
             }
 
-            const imgHtml = ad.imageUrl ? '<div style="width:100%; height:200px; overflow:hidden; border-radius:18px; margin-bottom:18px; background:#f1f5f9; position:relative;"><img src="' + ad.imageUrl + '" style="width:100%; height:100%; object-fit:cover;" referrerPolicy="no-referrer"/><div style="position:absolute; top:12px; ' + (isRtl ? 'right' : 'left') + ':12px; ' + badgeStyle + ' padding:3px 10px; border-radius:6px; font-size:10px; font-weight:800; text-transform:uppercase;">' + (isRtl ? 'إعلان مروّج' : 'SPONSORED') + '</div></div>' : '<div style="display:inline-block; ' + badgeStyle + ' padding:4px 12px; border-radius:6px; font-size:10px; font-weight:800; text-transform:uppercase; margin-bottom:12px; width:fit-content;">' + (isRtl ? 'إعلان مروّج' : 'SPONSORED') + '</div>';
+            const container = document.createElement('div');
+            container.innerHTML = htmlContent;
+            wrapper.appendChild(container.firstChild);
 
-            htmlContent = 
-                '<div class="gitut-popup-card" style="' + cardStyles + ' position:relative; width:100%; max-width:440px; border-radius:28px; padding:24px; font-family:inherit; transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform:scale(0.9); text-align:' + (isRtl ? 'right' : 'left') + ';">' +
-                    '<button class="close-gitut-popup" style="position:absolute; top:20px; ' + (isRtl ? 'left' : 'right') + ':20px; background:none; border:none; cursor:pointer; color:#94a3b8; font-size:22px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; transition:color 0.2s; z-index:100;">✕</button>' +
-                    imgHtml +
-                    '<h3 style="margin:0 0 8px 0; font-size:20px; font-weight:800; color:' + titleColor + '; line-height:1.3;">' + ad.title + '</h3>' +
-                    '<p style="margin:0 0 24px 0; font-size:14px; color:' + contentColor + '; line-height:1.5;">' + ad.content + '</p>' +
-                    '<a href="' + ad.link + '" target="_blank" rel="noopener noreferrer" class="gitut-popup-btn" style="display:block; text-align:center; background:' + color + '; color:white; padding:12px; border-radius:14px; font-size:14px; font-weight:800; text-decoration:none; box-shadow:0 6px 18px ' + color + '30; transition:all 0.2s;">' + (ad.buttonText || (isRtl ? 'اكتشف الآن' : 'Discover Now')) + '</a>' +
-                '</div>';
+            document.body.appendChild(wrapper);
         }
-
-        const container = document.createElement('div');
-        container.innerHTML = htmlContent;
-        wrapper.appendChild(container.firstChild);
-
-        document.body.appendChild(wrapper);
 
         // Force browser paint, then animate in
         setTimeout(() => {
@@ -321,9 +379,10 @@
         const currentPageType = window.PAGE_TYPE || '';
         const popupAds = window.GITUT_ADS.filter(ad => {
             if (ad.isPopup) return true;
-            if (ad.placements.includes('POPUP_DYNAMIC_DOCS') && (currentPageType === 'تعبئة_طلب' || currentPageType === 'عرض_طلب_ثابت')) return true;
-            if (ad.placements.includes('POPUP_BLOG') && currentPageType === 'تفاصيل_التدوينة') return true;
-            if (ad.placements.includes('POPUP_LISTS') && (currentPageType === 'قائمة_الخدمات' || currentPageType === 'المدونة')) return true;
+            if (ad.placements && ad.placements.some(p => p === 'POPUP' || p === 'POPUP_GLOBAL' || p.startsWith('POPUP_'))) return true;
+            if (ad.placements && ad.placements.includes('POPUP_DYNAMIC_DOCS') && (currentPageType === 'تعبئة_طلب' || currentPageType === 'عرض_طلب_ثابت')) return true;
+            if (ad.placements && ad.placements.includes('POPUP_BLOG') && currentPageType === 'تفاصيل_التدوينة') return true;
+            if (ad.placements && ad.placements.includes('POPUP_LISTS') && (currentPageType === 'قائمة_الخدمات' || currentPageType === 'المدونة')) return true;
             return false;
         });
         popupAds.forEach(ad => {
@@ -376,15 +435,7 @@
             }
             container.style.display = 'block';
             if (match.html) {
-                container.innerHTML = '';
-                try {
-                    const range = document.createRange();
-                    range.selectNode(container);
-                    const fragment = range.createContextualFragment(match.html);
-                    container.appendChild(fragment);
-                } catch(e) {
-                    container.innerHTML = match.html;
-                }
+                injectHtmlWithScripts(container, match.html);
             } else {
                 const isRtl = document.documentElement.dir === 'rtl' || document.documentElement.lang === 'ar';
                 const colorMap = { blue: '#2563eb', orange: '#ea580c' };
