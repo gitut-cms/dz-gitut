@@ -449,9 +449,26 @@
                 container.style.display = 'none';
                 return;
             }
-            container.style.display = 'block';
+            container.style.display = 'flex';
+            container.style.flexDirection = 'column';
+            container.style.justifyContent = 'center';
+            container.style.alignItems = 'center';
+            container.style.textAlign = 'center';
+            container.style.marginLeft = 'auto';
+            container.style.marginRight = 'auto';
+            container.style.width = '100%';
+
             if (match.html) {
                 injectHtmlWithScripts(container, match.html);
+                try {
+                    Array.from(container.children).forEach(function(child) {
+                        if (child && child.style) {
+                            child.style.marginLeft = 'auto';
+                            child.style.marginRight = 'auto';
+                            child.style.textAlign = 'center';
+                        }
+                    });
+                } catch(e) {}
             } else {
                 const isRtl = document.documentElement.dir === 'rtl' || document.documentElement.lang === 'ar';
                 const colorMap = { blue: '#2563eb', orange: '#ea580c' };
@@ -460,7 +477,7 @@
 
                 if (format === 'minimal') {
                     const imgHtml = match.imageUrl ? '<img src="' + match.imageUrl + '" style="width:48px;height:48px;object-fit:cover;border-radius:8px;margin-' + (isRtl ? 'left' : 'right') + ':12px;box-shadow:0 2px 4px rgba(0,0,0,0.05);" referrerPolicy="no-referrer"/>' : '';
-                    container.innerHTML = '<div style="margin:16px 0; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;padding:12px;border:1px solid #e5e7eb;border-radius:12px;background:#f9fafb;text-decoration:none;color:inherit;transition:all 0.2s ease; font-family: inherit;">' +
+                    container.innerHTML = '<div style="margin:16px auto; width:100%; max-width:600px; display:flex; justify-content:center; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;padding:12px;border:1px solid #e5e7eb;border-radius:12px;background:#f9fafb;text-decoration:none;color:inherit;transition:all 0.2s ease; font-family: inherit; width:100%;">' +
                         imgHtml +
                         '<div style="flex-grow:1;text-align:' + (isRtl ? 'right' : 'left') + '">' +
                             '<div style="font-size:10px;color:#9ca3af;font-weight:bold;text-transform:uppercase;margin-bottom:2px">' + (isRtl ? 'إعلان مروّج' : 'SPONSORED') + '</div>' +
@@ -471,7 +488,7 @@
                     '</a></div>';
                 } else if (format === 'banner') {
                     const imgHtml = match.imageUrl ? '<img src="' + match.imageUrl + '" style="width:100%;height:140px;object-fit:cover;display:block;opacity:0.85;" referrerPolicy="no-referrer"/>' : '<div style="height:140px;background:#1e293b;"></div>';
-                    container.innerHTML = '<div style="margin:16px 0; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:block;border-radius:16px;overflow:hidden;position:relative;text-decoration:none;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);background:#000; font-family: inherit;">' +
+                    container.innerHTML = '<div style="margin:16px auto; width:100%; max-width:700px; display:flex; justify-content:center; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:block;border-radius:16px;overflow:hidden;position:relative;text-decoration:none;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);background:#000; font-family: inherit; width:100%;">' +
                         imgHtml +
                         '<div style="position:absolute;top:12px;' + (isRtl ? 'left' : 'right') + ':12px;">' +
                             '<span style="background:rgba(255,255,255,0.9);color:#000;padding:4px 8px;border-radius:6px;font-size:10px;font-weight:900;letter-spacing:0.5px;box-shadow:0 2px 4px rgba(0,0,0,0.2);">' + (isRtl ? 'إعلان AD' : 'AD') + '</span>' +
@@ -483,7 +500,7 @@
                     '</a></div>';
                 } else if (format === 'card') {
                     const imgHtml = match.imageUrl ? '<div style="position:relative;"><img src="' + match.imageUrl + '" style="width:100%;height:160px;object-fit:cover;display:block;" referrerPolicy="no-referrer"/><div style="position:absolute;top:10px;' + (isRtl ? 'right' : 'left') + ':10px;background:rgba(0,0,0,0.6);color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold;backdrop-filter:blur(4px);">' + (isRtl ? 'إعلان مروّج' : 'Sponsored') + '</div></div>' : '<div style="background:#f3f4f6;padding:4px 8px;font-size:11px;font-weight:bold;color:#6b7280;text-align:center;">' + (isRtl ? 'إعلان مروّج' : 'Sponsored') + '</div>';
-                    container.innerHTML = '<div style="margin:16px 0; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;border:1px solid #e5e7eb;border-radius:16px;background:#ffffff;text-decoration:none;color:inherit;overflow:hidden;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);transition:transform 0.2s; font-family: inherit;">' +
+                    container.innerHTML = '<div style="margin:16px auto; width:100%; max-width:500px; display:flex; justify-content:center; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;border:1px solid #e5e7eb;border-radius:16px;background:#ffffff;text-decoration:none;color:inherit;overflow:hidden;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);transition:transform 0.2s; font-family: inherit; width:100%;">' +
                         imgHtml +
                         '<div style="padding:16px;text-align:' + (isRtl ? 'right' : 'left') + '">' +
                             '<h3 style="margin:0 0 8px 0;font-size:16px;font-weight:bold;color:#111827;">' + match.title + '</h3>' +
@@ -493,7 +510,7 @@
                     '</a></div>';
                 } else {
                     const imgHtml = match.imageUrl ? '<div style="position:relative;flex-shrink:0;width:120px;height:120px;overflow:hidden;border-radius:12px;background:#f3f4f6;"><img src="' + match.imageUrl + '" style="width:100%;height:100%;object-fit:cover;" referrerPolicy="no-referrer"/><div style="position:absolute;top:8px;' + (isRtl ? 'right' : 'left') + ':8px;background:rgba(0,0,0,0.6);color:white;padding:2px 6px;border-radius:4px;font-size:9px;font-weight:bold;letter-spacing:0.5px;">AD</div></div>' : '';
-                    container.innerHTML = '<div style="margin:16px 0; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:block;border:1px solid #e2e8f0;border-radius:16px;background:#ffffff;padding:16px;text-decoration:none;color:inherit;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);transition:all 0.2s ease; font-family: inherit;">' +
+                    container.innerHTML = '<div style="margin:16px auto; width:100%; max-width:600px; display:flex; justify-content:center; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:block;border:1px solid #e2e8f0;border-radius:16px;background:#ffffff;padding:16px;text-decoration:none;color:inherit;box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);transition:all 0.2s ease; font-family: inherit; width:100%;">' +
                         '<div style="display:flex;align-items:center;gap:16px;flex-direction:' + (isRtl ? 'row-reverse' : 'row') + '">' +
                             imgHtml +
                             '<div style="flex-grow:1;text-align:' + (isRtl ? 'right' : 'left') + ';">' +
