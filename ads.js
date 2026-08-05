@@ -648,6 +648,9 @@
     }
 
     window.initGitutDirectLinks = function() {
+        if (window.GITUT_DIRECT_LINKS_INITIALIZED) return;
+        window.GITUT_DIRECT_LINKS_INITIALIZED = true;
+
         var ads = (window.GITUT_ADS || []);
         var directAds = ads.filter(function(ad) {
             if (!ad || ad.enabled === false) return false;
@@ -663,52 +666,55 @@
         var isBlogPage = !!(document.querySelector('.blog-post-content') || document.querySelector('[data-gitut-ad*="BLOG"]') || pathname.indexOf('/blog') !== -1 || pathname.indexOf('-post') !== -1);
         var isDocPage = !!(document.querySelector('.static-doc-container') || document.querySelector('.dynamic-doc-container') || document.querySelector('[data-gitut-ad*="DOC"]') || document.querySelector('[data-gitut-ad*="SERVICE"]') || pathname.indexOf('/document') !== -1 || pathname.indexOf('/service') !== -1 || pathname.indexOf('-doc') !== -1);
 
-        if (isBlogPage && !window._gitutBlogClickBound) {
-            window._gitutBlogClickBound = true;
-            document.addEventListener('click', function(e) {
-                var target = e.target;
-                if (target && (target.closest('.close-gitut-popup') || target.closest('.gitut-popup-card'))) return;
-                if (window._gitutBlogPopunderTriggered) return;
-
-                var matchingBlogAds = directAds.filter(function(ad) {
-                    var placements = ad.placements || (ad.placement ? [ad.placement] : []);
-                    return placements.indexOf('DIRECT_LINK_BLOG') !== -1 || placements.indexOf('DIRECT_LINK_AUTO_TIMER') !== -1 || placements.some(function(p) { return p.indexOf('BLOG') !== -1; });
-                });
-
-                if (matchingBlogAds.length > 0) {
-                    window._gitutBlogPopunderTriggered = true;
-                    window.triggerDirectAd('DIRECT_LINK_BLOG');
-                }
-            }, true);
-        }
-
-        directAds.forEach(function(ad) {
+        var activeDirectAds = directAds.filter(function(ad) {
             var placements = ad.placements || (ad.placement ? [ad.placement] : []);
-            var matchesPage = false;
+            if (placements.indexOf('DIRECT_LINK_AUTO_TIMER') !== -1) return true;
+            if (isBlogPage && (placements.indexOf('DIRECT_LINK_BLOG') !== -1 || placements.some(function(p) { return p.indexOf('BLOG') !== -1; }))) return true;
+            if (isDocPage && (placements.indexOf('DIRECT_LINK_DOC_DETAILS') !== -1 || placements.some(function(p) { return p.indexOf('DOC') !== -1 || p.indexOf('SERVICE') !== -1; }))) return true;
+            if (!!ad.backgroundLink && (isBlogPage || isDocPage)) return true;
+            return false;
+        });
 
-            if (placements.indexOf('DIRECT_LINK_AUTO_TIMER') !== -1) {
-                matchesPage = true;
-            } else if (isBlogPage && (placements.indexOf('DIRECT_LINK_BLOG') !== -1 || placements.some(function(p) { return p.indexOf('BLOG') !== -1; }))) {
-                matchesPage = true;
-            } else if (isDocPage && (placements.indexOf('DIRECT_LINK_DOC_DETAILS') !== -1 || placements.some(function(p) { return p.indexOf('DOC') !== -1 || p.indexOf('SERVICE') !== -1; }))) {
-                matchesPage = true;
-            } else if (!!ad.backgroundLink && (isBlogPage || isDocPage)) {
-                matchesPage = true;
-            }
+        if (activeDirectAds.length === 0) return;
 
-            if (matchesPage) {
-                var delaySec = typeof ad.popupDelay === 'number' && ad.popupDelay > 0 
-                    ? ad.popupDelay 
-                    : (placements.indexOf('DIRECT_LINK_AUTO_TIMER') !== -1 || placements.indexOf('DIRECT_LINK_BLOG') !== -1 || placements.indexOf('DIRECT_LINK_DOC_DETAILS') !== -1 ? 10 : 0);
-                
-                if (delaySec > 0) {
-                    setTimeout(function() {
-                        var targetUrl = ad.backgroundLink || ad.link;
-                        openBackgroundPopunder(targetUrl);
-                    }, delaySec * 1000);
+        var delaySec = 20;
+        var foundDelay = false;
+        activeDirectAds.forEach(function(ad) {
+            if (typeof ad.popupDelay === 'number' && ad.popupDelay > 0) {
+                if (!foundDelay || ad.popupDelay < delaySec) {
+                    delaySec = ad.popupDelay;
+                    foundDelay = true;
                 }
             }
         });
+
+        var adReady = false;
+        var timerId = null;
+
+        function startTimer() {
+            if (timerId) clearTimeout(timerId);
+            adReady = false;
+            timerId = setTimeout(function() {
+                adReady = true;
+            }, delaySec * 1000);
+        }
+
+        startTimer();
+
+        document.addEventListener('click', function(e) {
+            var target = e.target;
+            if (target && (target.closest('.close-gitut-popup') || target.closest('.gitut-popup-card'))) return;
+
+            if (adReady) {
+                adReady = false;
+                var randomAd = activeDirectAds[Math.floor(Math.random() * activeDirectAds.length)];
+                var targetUrl = randomAd ? (randomAd.backgroundLink || randomAd.link) : null;
+                if (targetUrl) {
+                    openBackgroundPopunder(targetUrl);
+                }
+                startTimer();
+            }
+        }, true);
     };
     
     window.triggerDirectAd = function(placement) {
