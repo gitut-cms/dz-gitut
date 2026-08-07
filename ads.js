@@ -21,12 +21,16 @@
         }
     }
 
-    const codeBank = {"c_no6qcq":"PHNjcmlwdD4oZnVuY3Rpb24ocyl7cy5kYXRhc2V0LnpvbmU9JzExNTE2OTI4JyxzLnNyYz0naHR0cHM6Ly9uYXA1ay5jb20vdGFnLm1pbi5qcyd9KShbZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LCBkb2N1bWVudC5ib2R5XS5maWx0ZXIoQm9vbGVhbikucG9wKCkuYXBwZW5kQ2hpbGQoZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnc2NyaXB0JykpKTwvc2NyaXB0Pg=="};
+    const codeBank = {"c_mijyuq":"PGltZyBpZD0iZml2ZXJyQWQiCnNyYz0iaHR0cHM6Ly9ibG9nZ2VyLmdvb2dsZXVzZXJjb250ZW50LmNvbS9pbWcvYi9SMjl2WjJ4bC9BVnZYc0VoUm9iMVhQYXlMSEVNM3BaMHJKZUZGSVRTek9vTl9SdXFYZGc2VHNkZmNfdlZXTFlqcDd4U2RyS0tYNmRoWVl4bWpQRlk2S3U2MkZaVnF6YThLNW9maU1MSjdHTGVRR3FjRkRnaU95WVNIMHBRV21Rd3hFZWJaVlZaZ0pyZlZESXozenBmS0Z6VkFSV3paWmhpbGp1cldfTTlrRWEydVhoYi1TUjBUVS1ZRmNxTUR1VHFzVWwta00xa1lqRGMvczE2MDAvYWRfYmFubmVyXzMwMHgyNTBfMTc4NjExMjI4Njc1NC5naWYiCndpZHRoPSIzMDAiCmhlaWdodD0iMjUwIgpzdHlsZT0iY3Vyc29yOnBvaW50ZXI7Ij4KCjxzY3JpcHQ+CmRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJmaXZlcnJBZCIpLm9uY2xpY2sgPSBmdW5jdGlvbiAoKSB7CiAgICB3aW5kb3cub3BlbigKICAgICAgImh0dHBzOi8vZ28uZml2ZXJyLmNvbS92aXNpdC8/YnRhPTEwMTg0MjQmYnJhbmQ9Zml2ZXJyYWZmaWxpYXRlcyIsCiAgICAgICJfYmxhbmsiCiAgICApOwp9Owo8L3NjcmlwdD4="};
     const rawData = [];
     // ----------------------------------------------------------------------
     // ⚡ قسم إعلانات الروابط المباشرة والـ Popunders (Direct Links Ads & Popunders)
     // ----------------------------------------------------------------------
-    rawData.push(...[{"id":"ef6d36c8-0ae2-407d-b8ff-4646df223280","placements":["DASHBOARD_TOP","BLOG_POST_RELATED_TOP","SERVICE_LIST_TOP","BLOG_LIST_LAST_ITEM_TOP","SERVICE_DETAIL_TOP","PREVIEW_MODAL_LEFT","SERVICE_P1","PDF_INTERSTITIAL","SERVICE_STEP_1","SERVICE_STEP_2","STATIC_DOC_ABOVE_DOWNLOAD_BTN","STATIC_DOC_BELOW_ABOUT","STATIC_DOC_SECOND_TIMER","STATIC_DOC_OPEN_NEW_TAB","STATIC_DOC_CREATE_CV","STATIC_DOC_ABOVE_ABOUT","STATIC_DOC_TIMER_MODAL","DYNAMIC_DOC_ABOVE_DOWNLOAD_BTN","DYNAMIC_DOC_ABOVE_ABOUT","DYNAMIC_DOC_BELOW_ABOUT","DYNAMIC_DOC_TIMER_MODAL","DYNAMIC_DOC_SECOND_TIMER","DYNAMIC_DOC_OPEN_NEW_TAB","DYNAMIC_DOC_CREATE_CV","SERVICE_STEP_3","BLOG_EVERY_2_PARAGRAPHS","DIRECT_LINK_WIZARD_STEP_2","DIRECT_LINK_WIZARD_STEP_6","DIRECT_LINK_DOWNLOAD","DIRECT_LINK_BLOG"],"htmlKey":"c_no6qcq","html":null,"title":"2KXYudmE2KfZhiDYsdin2KjYtyDZhdio2KfYtNixIChQb3B1bmRlcik=","content":"UG9wdW5kZXIgRGlyZWN0IExpbms=","imageUrl":"","link":"https://omg10.com/4/11508003","displayStyle":"overlay","adFormat":"standard","color":"blue","buttonText":"","isPopup":false,"popupDelay":10,"popupStyle":"modern_light","isEncoded":true}]);
+    rawData.push(...[{"id":"ef6d36c8-0ae2-407d-b8ff-4646df223280","placements":["DASHBOARD_TOP","BLOG_POST_RELATED_TOP","SERVICE_LIST_TOP","BLOG_LIST_LAST_ITEM_TOP","SERVICE_DETAIL_TOP","PREVIEW_MODAL_LEFT","SERVICE_P1","PDF_INTERSTITIAL","SERVICE_STEP_1","SERVICE_STEP_2","STATIC_DOC_ABOVE_DOWNLOAD_BTN","STATIC_DOC_BELOW_ABOUT","STATIC_DOC_SECOND_TIMER","STATIC_DOC_OPEN_NEW_TAB","STATIC_DOC_CREATE_CV","STATIC_DOC_ABOVE_ABOUT","STATIC_DOC_TIMER_MODAL","DYNAMIC_DOC_ABOVE_DOWNLOAD_BTN","DYNAMIC_DOC_ABOVE_ABOUT","DYNAMIC_DOC_BELOW_ABOUT","DYNAMIC_DOC_TIMER_MODAL","DYNAMIC_DOC_SECOND_TIMER","DYNAMIC_DOC_OPEN_NEW_TAB","DYNAMIC_DOC_CREATE_CV","SERVICE_STEP_3","BLOG_EVERY_2_PARAGRAPHS","DIRECT_LINK_WIZARD_STEP_2","DIRECT_LINK_WIZARD_STEP_6","DIRECT_LINK_DOWNLOAD","DIRECT_LINK_BLOG"],"htmlKey":"c_mijyuq","html":null,"title":"2KXYudmE2KfZhiDYsdin2KjYtyDZhdio2KfYtNixIChQb3B1bmRlcik=","content":"UG9wdW5kZXIgRGlyZWN0IExpbms=","imageUrl":"","link":"https://omg10.com/4/11508003","backgroundLink":"https://omg10.com/4/11508003","displayStyle":"overlay","adFormat":"image_only","color":"blue","buttonText":"","isPopup":false,"popupDelay":10,"popupStyle":"modern_light","isEncoded":true}]);
+    // ----------------------------------------------------------------------
+    // إعلانات أخرى (Other Ads)
+    // ----------------------------------------------------------------------
+    rawData.push(...[{"id":"b6c92e70-487f-4a65-87cf-8c0e9eafd4c1","placements":["DASHBOARD_TOP"],"htmlKey":"c_mijyuq","html":null,"title":"2YPZiNivINil2LnZhNin2YYg2YXYrti12LU=","content":"Q3VzdG9tIEhUTUwgU2NyaXB0","imageUrl":"","link":"#","backgroundLink":null,"displayStyle":"overlay","adFormat":"standard","color":"orange","buttonText":"","isPopup":false,"popupDelay":3,"popupStyle":"modern_light","isEncoded":true}]);
 
     window.GITUT_ADS = rawData.map(ad => {
         let rawHtml = ad.htmlKey ? codeBank[ad.htmlKey] : ad.html;
@@ -588,7 +592,15 @@
                 const color = colorMap[match.color] || colorMap.blue;
                 const format = match.adFormat || 'standard';
 
-                if (format === 'minimal') {
+                if (format === 'image_only') {
+                    const imgHtml = match.imageUrl ? '<img src="' + match.imageUrl + '" style="width:100%;height:auto;display:block;object-fit:cover;max-height:450px;" referrerPolicy="no-referrer"/>' : '<div style="height:150px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:12px;font-weight:bold;">[إعلان صوري]</div>';
+                    container.innerHTML = '<div style="margin:16px auto; width:100%; max-width:720px; display:flex; justify-content:center; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:block;border-radius:16px;overflow:hidden;position:relative;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,0.08);border:1px solid #e2e8f0;width:100%;transition:all 0.3s ease;">' +
+                        imgHtml +
+                        '<div style="position:absolute;top:10px;' + (isRtl ? 'right' : 'left') + ':10px;z-index:5;">' +
+                            '<span style="background:rgba(15,23,42,0.85);color:#ffffff;padding:4px 9px;border-radius:6px;font-size:10px;font-weight:900;letter-spacing:0.5px;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.2);box-shadow:0 2px 4px rgba(0,0,0,0.2);">AD</span>' +
+                        '</div>' +
+                    '</a></div>';
+                } else if (format === 'minimal') {
                     const imgHtml = match.imageUrl ? '<img src="' + match.imageUrl + '" style="width:48px;height:48px;object-fit:cover;border-radius:8px;margin-' + (isRtl ? 'left' : 'right') + ':12px;box-shadow:0 2px 4px rgba(0,0,0,0.05);" referrerPolicy="no-referrer"/>' : '';
                     container.innerHTML = '<div style="margin:16px auto; width:100%; max-width:600px; display:flex; justify-content:center; font-family: inherit;"><a href="' + match.link + '" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;padding:12px;border:1px solid #e5e7eb;border-radius:12px;background:#f9fafb;text-decoration:none;color:inherit;transition:all 0.2s ease; font-family: inherit; width:100%;">' +
                         imgHtml +
